@@ -35,25 +35,45 @@ class AdminController extends Controller
             $response["message"] = $validator->errors()->all();
             return redirect()->to('/')->withErrors($validator->errors());
         } else {
+            $user = User::where('email', '=', \request()->email)->first();
+            if (!$user && !Hash::check($request->password, $user->password)) {
+                return redirect()->to('/')->withErrors([
+                    'email' => 'The provided credentials do not match',
+                ]);
 
-            if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password,])) {
-                $auth = Auth::guard('admin')->user()->id;
+            } else {
+                $auth = $user->id;
                 $check = $this->getUserBrowserDetails($request, $auth);
                 if ($check) {
+                    Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password,]);
                     $request->session()->regenerate();
+//                    return redirect()->to('/dashboard');
+                } else {
+                    $this->createUserBrowserDetails($request, $auth);
+                    return view('admin.auth.otp', ['user' => $user->id]);
                 }
-                else{
-                    return back()->withErrors([
-                        'email' => 'The provided credentials do not match',
-                    ]);
-                }
+            }
+            return redirect()->to('/dashboard');
+        }
+    }
+
+    public function verify(Request $request)
+    {
+        $otp = UserTwoFactor::where('opt_number', $request->otp)
+//                ->where('is_verified', '=', 0)
+            ->first();
+        if (!empty($otp)) {
+            $user = User::find($request->id);
+            if (Auth::guard('admin')->attempt(['email' => $user->email, 'password' => $user->password,])) {
+                $request->session()->regenerateToken();
                 return redirect()->to('/dashboard');
             }
+        } else {
             return back()->withErrors([
-                'email' => 'The provided credentials do not match',
+                'otp' => 'Invalid OTP',
             ]);
-            /*make response*/
         }
+        return redirect()->to('/dashboard');
     }
 
     public function logout()
@@ -181,4 +201,27 @@ class AdminController extends Controller
         return !empty($data) ? true : false;
     }
 
+    private function createUserBrowserDetails($request, $auth)
+    {
+        // Create an instance of the Agent class
+        $agent = new Agent();
+
+        // Get the User-Agent string from the request
+        $userAgent = $request->header('User-Agent');
+
+        // Set the User-Agent string for parsing (optional, as it defaults to the request header)
+        $agent->setUserAgent($userAgent);
+        // Extract browser details
+        $data = UserTwoFactor::create([
+            'user_id'    => $auth,
+            'opt_number' => '1234',
+            'ip_address' => $request->ip(),
+            'browser'    => $agent->browser(),
+            'version'    => $agent->version($agent->browser()),
+            'platform'   => $agent->platform(),
+            'is_mobile'  => $agent->isMobile(),
+            'is_desktop' => $agent->isDesktop(),
+        ]);
+        return !empty($data) ? true : false;
+    }
 }

@@ -70,10 +70,9 @@
                                             <input type="checkbox" onclick="handleCheck(this)"
                                                    class="checkbox check-all">
                                         </th>
-                                        <th>Name</th>
-                                        <th>Image</th>
-                                        <th>Is Allowed</th>
-                                        <th>Date</th>
+                                        <th>Country Name</th>
+                                        <th>State Name</th>
+{{--                                        <th>Status</th>--}}
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
@@ -103,7 +102,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "{{ route('tableUnits') }}",
+                "url": "{{ route('tableState') }}",
                 "data": function(d) {
                     var unindexed_array = $("#filterForm").serializeArray();
                     $.map(unindexed_array, function(n, i) {

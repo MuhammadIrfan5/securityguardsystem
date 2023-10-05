@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Region;
+use App\Models\Country;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class RegionController extends Controller
+class StateController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['activeMenu'] = 'Region';
-        return view('admin.region.table',$data);
-
+        $data['activeMenu'] = "State";
+        return view('admin.state.table',$data);
     }
 
     public function tableData(Request $request)
@@ -27,7 +27,7 @@ class RegionController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Region();
+        $country = new State();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -74,24 +74,26 @@ class RegionController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->id,
-                $record->country,
-                $record->title,
-                $record->slug,
-                date('d.m.Y H:i:s', strtotime($record->created_at)),
-                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
+                $record->country->name,
+                $record->name,
+//                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->status])->render(),
+                view('admin.defaultComponents.editViewDelete', [
+//                    'deleteUrl' => route('DeleteLoan', ['id' => $record->id])
+                ])->render()
             ];
         }
         return response($response, 201);
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $data['country'] = \App\Models\Country::all();
+        $data['country'] = Country::all();
+        $data['activeMenu'] = "Add City";
 
-        return view('admin.region.add', $data);
+        return view('admin.state.add', $data);
     }
 
     /**
@@ -100,13 +102,12 @@ class RegionController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
-        $country = new Region();
-        $country['country'] = $request->country_id;
-        $country['title'] = $request->title;
-        $country['slug'] = $request['slug'];
-        $country->save();
-        Session::flash('message', 'Region Added successfully');
-        return redirect(route('region.index'));
+        $data = new State();
+        $data['country_id'] = $request->country_id;
+        $data['name'] = $request->name;
+        $data->save();
+        Session::flash('message', 'State Added successfully');
+        return redirect(route('state.index'));
     }
 
     /**

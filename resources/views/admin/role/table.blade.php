@@ -1,8 +1,9 @@
 @extends('admin.layout.app')
 @section('page-css')
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
-        th,td {
+        th, td {
             padding: 5px !important;
         }
     </style>
@@ -45,8 +46,8 @@
                         <div class="card" style="border-radius:10px;">
                             <div class="card-header" style="border-radius: 10px">
                                 <div class="text-left m-auto float-left">
-                                    <h3 class="content-header-title">City List</h3>
-                                    <p>List of all Cities.</p>
+                                    <h3 class="content-header-title">{{$activeMenu}} List</h3>
+                                    <p>List of all {{$activeMenu}}.</p>
                                 </div>
                                 {{--                                <div class="text-right">--}}
                                 {{--                                    <div class="btn-group">--}}
@@ -63,17 +64,17 @@
                                 {{--                                </div>--}}
                             </div>
                             <div class="card-body">
-                                <table id="table" class="table table-striped table-bordered ajax-sourced dataTable" width="100%">
+                                <table id="table" class="table table-striped table-bordered ajax-sourced dataTable"
+                                       width="100%">
                                     <thead>
                                     <tr>
                                         <th>
                                             <input type="checkbox" onclick="handleCheck(this)"
                                                    class="checkbox check-all">
                                         </th>
-                                        <th>Country Name</th>
-                                        <th>State Name</th>
-                                        <th>City Name</th>
-                                        {{--                                        <th>Actions</th>--}}
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -99,12 +100,12 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "{{ route('cityTable') }}",
-                "data": function(d) {
+                "url": "{{ route('role.listData') }}",
+                "data": function (d) {
                     var unindexed_array = $("#filterForm").serializeArray();
-                    $.map(unindexed_array, function(n, i) {
+                    $.map(unindexed_array, function (n, i) {
                         d[n['name']] = n['value'];
-                    });4
+                    });
                 }
             },
             columnDefs: [{
@@ -113,6 +114,7 @@
                 "width": "20px"
             }]
         });
+
         // Check Boxes
         function handleCheck(cb) {
             if ($(cb).hasClass("check-all")) {
@@ -129,7 +131,8 @@
                 }
             }
         }
-        $("#reload").click(function() {
+
+        $("#reload").click(function () {
             table.ajax.reload()
         });
     </script>

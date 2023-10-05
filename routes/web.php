@@ -10,8 +10,10 @@ use App\Http\Controllers\Admin\RawController;
 use App\Http\Controllers\Admin\RecipeController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\ShiftManagerController;
+use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\UnitManagerController;
 use App\Http\Controllers\Admin\UnitsController;
 use App\Http\Controllers\Admin\BannerController;
@@ -38,6 +40,8 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('/', [AdminController::class, 'Login'])->name('login');
 
     Route::post('/dologin', [AdminController::class, 'doLogin'])->name('DoLogin');
+
+    Route::post('/verify-otp', [AdminController::class, 'verify'])->name('verify.otp');
 
     Route::get('/forgot-password', [AdminController::class, 'forgotPassword'])->name('PasswordForgot');
 
@@ -85,9 +89,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('machine-table', [MachinesController::class, 'tableData'])->name('tableMachine');
 
 
-
-    Route::resource('region', RegionController::class);
-    Route::get('units-region', [RegionController::class, 'tableData'])->name('tableRegion');
+    Route::resource('state', StateController::class);
+    Route::get('units-state', [StateController::class, 'tableData'])->name('tableState');
 
     /*Country*/
     Route::get('country', [CountryController::class, 'index'])->name('Country');
@@ -104,37 +107,20 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
     Route::get('city-table', [CityController::class, 'tableCity'])->name('cityTable');
 
-    Route::get('add-city',[CityController::class, 'create'])->name('addCity');
+    Route::get('add-city', [CityController::class, 'create'])->name('addCity');
 
     Route::post('create-city', [CityController::class, 'store'])->name('createCity');
 
-    /*history*/
-    Route::resource('history', HistoryController::class);
 
-    /*raw*/
-    Route::resource('raw', RawController::class);
-    Route::get('units-raw', [RawController::class, 'tableData'])->name('tableRaw');
-
-
-    /*products*/
-    Route::resource('products', ProductController::class);
-    Route::get('listData',[ProductController::class,'listData'])->name('product.listData');
+    /*Role*/
+    Route::resource('role', RoleController::class);
+    Route::get('listData', [RoleController::class, 'tableData'])->name('role.listData');
 
     /*Users*/
 
     Route::resource('users', UserController::class);
-    Route::get('user-list',[UserController::class,'tableData'])->name('user.tableData');
+    Route::get('user-list', [UserController::class, 'tableData'])->name('user.tableData');
 
-    /*recipe*/
-    Route::resource('recipe', RecipeController::class);
-
-    /*shift manager*/
-    Route::resource('shiftmanager', ShiftManagerController::class);
-    Route::get('shiftmanager-list',[ShiftManagerController::class,'tableData'])->name('shiftmanager.tableData');
-
-    Route::resource('report', ReportController::class);
-
-    Route::resource('productsvariation', ProductVariationControler::class);
 
     Route::get('/pdf-banners', [BannerController::class, 'PDF'])->name('BannersPDF');
     Route::get('BannerCreate', [BannerController::class, 'tableBanner'])->name('BannerCreate');

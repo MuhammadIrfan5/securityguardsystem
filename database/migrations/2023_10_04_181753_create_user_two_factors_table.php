@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('platform');
             $table->boolean('is_mobile');
             $table->boolean('is_desktop');
+            $table->boolean('is_verified')->default(0);
             $table->timestamps();
         });
     }

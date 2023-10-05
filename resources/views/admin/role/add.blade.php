@@ -11,35 +11,31 @@
                         <div class="card p-2" style="border-radius: 10px">
                             <div class="card-header">
                                 <div class="text-left m-auto float-left">
-                                    <h3 class="content-header-title">Add Country</h3>
-                                    <p>Add Country to display on application.</p>
+                                    <h3 class="content-header-title">Add {{$activeMenu}}</h3>
+                                    <p>Add {{$activeMenu}} to display on application.</p>
                                 </div>
                             </div>
                             <div class="card-content collapse show m-1">
-                                <form action="{{route('createCountry')}}" method="post"
+                                <form action="{{route('role.update',$role->id)}}" method="post"
                                       enctype="multipart/form-data" class="form row">
+                                    @method('PUT')
                                     @csrf
                                     <div class="form-group col-md-6">
-                                        <label for="title">Name</label>
-                                        <input type="text" class="form-control" placeholder="Country Name" name="name"  title="Banner's Title" value="{{old('title')}}" >
+                                        <label for="line_manager">State List</label>
+                                        <select list="is_active" name="is_active" class="form-control">
+                                            <option value="none" selected disabled>Status</option>
+                                                <option value="0"{{$role->is_active==0? 'selected':''}}>In Active</option>
+                                                <option value="1" {{$role->is_active==1? 'selected':''}}>Active</option>
+                                        </select>
                                         <span class="text-danger">
-                                            @error('title')
+                                                @error('state_id')
                                             {{ $message }}
                                             @enderror
                                             </span>
                                     </div>
-{{--                                    <div class="form-group col-md-6">--}}
-{{--                                        <label for="title">Alpha-3</label>--}}
-{{--                                        <input type="text" class="form-control" placeholder="alpha-3" name="alpha-3"  title="alpha-3" value="{{old('alpha-3')}}" >--}}
-{{--                                        <span class="text-danger">--}}
-{{--                                            @error('alpha-3')--}}
-{{--                                            {{ $message }}--}}
-{{--                                            @enderror--}}
-{{--                                            </span>--}}
-{{--                                    </div>--}}
                                     <div class=" p-1 col-12 text-right text-white">
                                         <a href="{{url()->previous()}}" class="btn btn-warning  text-center">Cancel</a>
-                                        <button type="submit" class="btn btn-primary  text-center">Add Country</button>
+                                        <button type="submit" class="btn btn-primary  text-center">Update</button>
                                     </div>
                                 </form>
                             </div>

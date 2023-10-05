@@ -77,19 +77,21 @@ class UserController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->country_name,
-                $record->city_name,
+                $record->role->name,
+                $record->city->name,
                 $record->first_name,
                 $record->last_name,
-                $record->phone,
+//                $record->middle_name,
                 $record->email,
-                $record->gender,
+//                $record->secondary_email,
+                $record->phone1,
+//                $record->phone2,
+                $record->address,
+                $record->dob,
                 view('admin.defaultComponents.profileImage', ["url" => $record->image])->render(),
-                $record->status,
-                $record->remarks,
-                $record->role,
                 date('d.m.Y H:i:s', strtotime($record->created_at)),
-                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
+//                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
+                ""
             ];
         }
         return response($response, 201);

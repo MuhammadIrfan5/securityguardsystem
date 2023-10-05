@@ -20,19 +20,22 @@
                    data-original-title="General"></i>
             </li>
 
-{{--            <li class=" nav-item"><a href="#"><i class="fa fa-users" aria-hidden="true"></i><span class="menu-title"--}}
-{{--                                                                                                  data-i18n="">Users</span></a>--}}
-{{--                <ul class="menu-content">--}}
-{{--                    <li class=" {{ request()->is('users') ? ' active' : '' }}">--}}
-{{--                        <a class="menu-item" href={{ route('users.index') }}>Users </a>--}}
-{{--                    </li>--}}
-{{--                    <li class=" {{ request()->is('users/create') ? ' active' : '' }}">--}}
-{{--                        <a class="menu-item" href=--}}
-{{--                            {{ route('users.create') }}--}}
-{{--                        >Add Users</a>--}}
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </li>--}}
+            <li class=" nav-item"><a href="#"><i class="fa fa-users" aria-hidden="true"></i><span class="menu-title"
+                                                                                                  data-i18n="">Users</span></a>
+                <ul class="menu-content">
+                    <li class=" {{ request()->is('users') ? ' active' : '' }}">
+                        <a class="menu-item" href={{ route('users.index') }}>Users </a>
+                    </li>
+                    <li class=" {{ request()->is('users/create') ? ' active' : '' }}">
+                        <a class="menu-item" href=
+                            {{ route('users.create') }}
+                        >Add Users</a>
+                    </li>
+                    <li class=" {{ request()->is('role') ? ' active' : '' }}">
+                        <a class="menu-item" href={{ route('role.index') }}>Roles </a>
+                    </li>
+                </ul>
+            </li>
 
 {{--            <li class=" nav-item"><a href="#"><i class="fa fa-users" aria-hidden="true"></i><span class="menu-title"--}}
 {{--                                                                                                  data-i18n="">Units</span></a>--}}
@@ -183,39 +186,41 @@
     {{--                    </li>--}}
     {{--                </ul>--}}
     {{--            </li>--}}
-    {{--            <li class=" nav-item"><a href="#"> <i class="fa fa-flag-o" aria-hidden="true"></i><span class="menu-title"--}}
-    {{--                                                                                                    data-i18n="">Country</span></a>--}}
-    {{--                <ul class="menu-content">--}}
-    {{--                    <li class=" {{ request()->is('country') ? ' active' : '' }}">--}}
-    {{--                        <a class="menu-item" href="{{route('Country')}}">Country</a>--}}
-    {{--                    </li>--}}
-    {{--                    <li class=" {{ request()->is('add-country') ? ' active' : '' }}">--}}
-    {{--                        <a class="menu-item" href="{{route('addCountry')}}">Add Country</a>--}}
-    {{--                    </li>--}}
-    {{--                </ul>--}}
-    {{--            </li>--}}
-    {{--            <li class=" nav-item"><a href="#"> <i class="fa fa-flag-o" aria-hidden="true"></i><span class="menu-title"--}}
-    {{--                                                                                                    data-i18n="">City</span></a>--}}
-    {{--                <ul class="menu-content">--}}
-    {{--                    <li class=" {{ request()->is('city') ? ' active' : '' }}">--}}
-    {{--                        <a class="menu-item" href="{{route('City')}}">City</a>--}}
-    {{--                    </li>--}}
-    {{--                    <li class=" {{ request()->is('add-city') ? ' active' : '' }}">--}}
-    {{--                        <a class="menu-item" href="{{route('addCity')}}">Add City</a>--}}
-    {{--                    </li>--}}
-    {{--                </ul>--}}
-    {{--            </li>--}}
-    {{--            <li class=" nav-item"><a href="#"> <i class="fa fa-flag-o" aria-hidden="true"></i><span class="menu-title"--}}
-    {{--                                                                                                    data-i18n="">Region</span></a>--}}
-    {{--                <ul class="menu-content">--}}
-    {{--                    <li class=" {{ request()->is('region') ? ' active' : '' }}">--}}
-    {{--                        <a class="menu-item" href="{{route('region.index')}}">Region</a>--}}
-    {{--                    </li>--}}
-    {{--                    <li class=" {{ request()->is('region/create') ? ' active' : '' }}">--}}
-    {{--                        <a class="menu-item" href="{{route('region.create')}}">Add Region</a>--}}
-    {{--                    </li>--}}
-    {{--                </ul>--}}
-    {{--            </li>--}}
+                <li class=" nav-item"><a href="#"> <i class="fa fa-flag-o" aria-hidden="true"></i><span class="menu-title"
+                                                                                                        data-i18n="">Country</span></a>
+                    <ul class="menu-content">
+                        <li class=" {{ request()->is('country') ? ' active' : '' }}">
+                            <a class="menu-item" href="{{route('Country')}}">Country</a>
+                        </li>
+                        <li class=" {{ request()->is('add-country') ? ' active' : '' }}">
+                            <a class="menu-item" href="{{route('addCountry')}}">Add Country</a>
+                        </li>
+                    </ul>
+                </li>
+                        <li class=" nav-item"><a href="#"> <i class="fa fa-flag-o" aria-hidden="true"></i><span
+                                        class="menu-title"
+                                        data-i18n="">State</span></a>
+                            <ul class="menu-content">
+                                <li class=" {{ request()->is('state') ? ' active' : '' }}">
+                                    <a class="menu-item" href="{{route('state.index')}}">State</a>
+                                </li>
+                                <li class=" {{ request()->is('state/create') ? ' active' : '' }}">
+                                    <a class="menu-item" href="{{route('state.create')}}">Add State</a>
+                                </li>
+                            </ul>
+                        </li>
+                <li class=" nav-item"><a href="#"> <i class="fa fa-flag-o" aria-hidden="true"></i><span class="menu-title"
+                                                                                                        data-i18n="">City</span></a>
+                    <ul class="menu-content">
+                        <li class=" {{ request()->is('city') ? ' active' : '' }}">
+                            <a class="menu-item" href="{{route('City')}}">City</a>
+                        </li>
+                        <li class=" {{ request()->is('add-city') ? ' active' : '' }}">
+                            <a class="menu-item" href="{{route('addCity')}}">Add City</a>
+                        </li>
+                    </ul>
+                </li>
+
     {{--            <li class=" nav-item {{ request()->is('report') ? ' active' : '' }}">--}}
     {{--                <a href="--}}
     {{--                {{route('report.index')}}--}}

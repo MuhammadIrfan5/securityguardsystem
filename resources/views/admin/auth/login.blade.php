@@ -16,9 +16,9 @@
                     <span class="font-small-2 ">Login</span>
                 </div>
                 <div class="card-body">
-                    @foreach ($errors->all() as $error)
-                        <span class="text-danger">{{ $error }}</span>
-                    @endforeach
+                        @error('email')
+                    <span class="text-danger">{{ $email }}</span>
+                        @enderror
                     <form class="form-horizontal form-simple m-1 " action="{{ route('DoLogin') }}" method="post">
                         @csrf
                         <fieldset class="form-group position-relative has-icon-left ">

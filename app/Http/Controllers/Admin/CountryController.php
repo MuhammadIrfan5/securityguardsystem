@@ -83,8 +83,14 @@ class CountryController extends Controller
     public function createCountry(Request $request)
     {
         $country = new Country();
-        $country['title'] = $request->name;
-        $country['alpha-3'] = $request['alpha-3'];
+        $country['name'] = $request->name;
+        $country['iso2'] = '';
+        $country['iso3'] = '';
+        $country['phone_code'] = '';
+        $country['dialling_pattern'] = '';
+        $country['region'] = '';
+        $country['sub_region'] = '';
+        $country['status'] = 'pending';
         $country->save();
         Session::flash('message', 'Country Added successfully');
         return redirect(route('Country'));
