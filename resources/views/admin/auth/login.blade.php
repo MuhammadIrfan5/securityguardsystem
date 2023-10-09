@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body">
                         @error('email')
-                    <span class="text-danger">{{ $email }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                         @enderror
                     <form class="form-horizontal form-simple m-1 " action="{{ route('DoLogin') }}" method="post">
                         @csrf

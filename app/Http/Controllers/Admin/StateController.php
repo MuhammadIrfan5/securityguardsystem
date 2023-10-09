@@ -74,7 +74,8 @@ class StateController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->country->name,
+//                $record->country->name,
+                $record->country_id,
                 $record->name,
 //                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->status])->render(),
                 view('admin.defaultComponents.editViewDelete', [

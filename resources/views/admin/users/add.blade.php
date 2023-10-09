@@ -22,15 +22,44 @@
 
 
                                     <div class="form-group col-md-6">
+                                        <label for="title">Role</label>
+                                        <select list="region" name="role_id" class="form-control">
+                                            <option value="none" selected disabled>Role List</option>
+                                            @foreach($role as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger">
+                                                @error('role_id')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
                                         <label for="title">Country</label>
                                         <select list="region" name="country_name" class="form-control">
                                             <option value="none" selected disabled>Country List</option>
                                             @foreach($country as $user)
-                                                <option value="{{ $user->title }}">{{ $user->title}}</option>
-                                            @endforeach
+                                                <option value="{{ $user->id }}">{{ $user->name}}</option>                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                                 @error('region')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="title">State</label>
+                                        <select list="region" name="state_id" class="form-control">
+                                            <option value="none" selected disabled>State List</option>
+                                            @foreach($state as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger">
+                                                @error('state_id')
                                             {{ $message }}
                                             @enderror
                                             </span>
@@ -41,8 +70,7 @@
                                         <select list="region" name="city_name" class="form-control">
                                             <option value="none" selected disabled>CIty List</option>
                                             @foreach($city as $user)
-                                                <option value="{{ $user->title }}">{{ $user->title}}</option>
-                                            @endforeach
+                                                <option value="{{ $user->id }}">{{ $user->name}}</option>                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                                 @error('city_id')
@@ -65,7 +93,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="title">Last Name</label>
                                         <input type="text" class="form-control" placeholder="Last Name" name="last_name"
-                                               title="Last Name">
+                                               title="Last Name" required>
                                         <span class="text-danger">
                                             @error('last_name')
                                             {{ $message }}
@@ -74,11 +102,33 @@
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="title">Phone</label>
-                                        <input type="text" class="form-control" placeholder="Last Name" name="phone"
-                                               title="Phone">
+                                        <label for="title">Middle Name</label>
+                                        <input type="text" class="form-control" placeholder="Middle Name" name="middle_name"
+                                               title="Middle Name">
                                         <span class="text-danger">
-                                            @error('phone')
+                                            @error('middle_name')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="title">Phone Number 1</label>
+                                        <input type="number" class="form-control" placeholder="Phone Number 1" name="phone1"
+                                               title="Phone Number 1" required>
+                                        <span class="text-danger">
+                                            @error('phone1')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="title">Phone Number 2</label>
+                                        <input type="number" class="form-control" placeholder="Phone Number 2" name="phone2"
+                                               title="Phone Number 2" required>
+                                        <span class="text-danger">
+                                            @error('phone2')
                                             {{ $message }}
                                             @enderror
                                             </span>
@@ -90,6 +140,39 @@
                                                title="Email">
                                         <span class="text-danger">
                                             @error('email')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="title">Secondary Email</label>
+                                        <input type="email" class="form-control" placeholder="Email" name="secondary_email"
+                                               title="Secondary Email">
+                                        <span class="text-danger">
+                                            @error('secondary_email')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="title">Address</label>
+                                        <input type="text" class="form-control" placeholder="Address" name="address"
+                                               title="Address">
+                                        <span class="text-danger">
+                                            @error('address')
+                                            {{ $message }}
+                                            @enderror
+                                            </span>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="title">Date Of Birth</label>
+                                        <input type="date" class="form-control" placeholder="DOB" name="dob"
+                                               title="DOB">
+                                        <span class="text-danger">
+                                            @error('dob')
                                             {{ $message }}
                                             @enderror
                                             </span>
@@ -110,30 +193,14 @@
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="title">Remarks</label>
-                                        <input type="text" class="form-control" placeholder="Remarks" name="remarks"
-                                               title="Remarks">
+                                        <label for="title">Password</label>
+                                        <input type="password" class="form-control" placeholder="Password" name="password"
+                                               title="Password">
                                         <span class="text-danger">
-                                            @error('remarks')
+                                            @error('password')
                                             {{ $message }}
                                             @enderror
                                             </span>
-                                    </div>
-
-                                    <div class="form-group col-md-6">
-                                        <label for="title">Role</label>
-                                        <select list="role" name="role" class="form-control">
-                                            <option value="none" selected disabled>Status List</option>
-                                            <option value="master-admin">Master-Admin</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="unit-manager">Unit-Manager</option>
-                                            <option value="shift-manager">Shift-Manager</option>
-                                        </select>
-                                        <span class="text-danger">
-                                            @error('gender')
-                                            {{ $message }}
-                                            @enderror
-                                        </span>
                                     </div>
 
                                     <div class="form-group col-md-6">

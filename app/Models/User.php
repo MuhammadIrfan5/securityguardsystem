@@ -18,9 +18,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'image',
+        'country_id',
+        'state_id',
+        'city_id',
+        'phone1',
         'email',
+        'address',
+        'role_id',
         'password',
+        'first_name',
+        'last_name',
+        'dob',
+        'gender',
+        'admin_approved',
     ];
 
     /**
@@ -40,12 +51,16 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password'          => 'hashed',
     ];
-    public function city(){
-        return $this->belongsTo(City::class,'city_id');
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
     }
-    public function role(){
-        return $this->belongsTo(Role::class,'role_id');
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
     }
 }

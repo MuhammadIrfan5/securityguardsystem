@@ -21,10 +21,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
                     <form method="POST" action="{{ route('verify.otp') }}">
                         @csrf
-                        <input type="hidden" name="id" value="{{$user}}">
+                        <input type="hidden" name="id" value="{{request()->id}}">
+                        <input type="hidden" name="email" value="{{request()->email}}">
+                        <input type="hidden" name="password" value="{{request()->password}}">
                         <div class="form-group">
                             <label for="otp">{{ __('OTP') }}</label>
                             <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror"

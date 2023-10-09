@@ -1,8 +1,9 @@
 @extends('admin.layout.app')
 @section('page-css')
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
-        th,td {
+        th, td {
             padding: 5px !important;
         }
     </style>
@@ -63,7 +64,8 @@
                                 {{--                                </div>--}}
                             </div>
                             <div class="card-body">
-                                <table id="table" class="table table-striped table-bordered ajax-sourced dataTable" width="100%">
+                                <table id="table" class="table table-striped table-bordered ajax-sourced dataTable"
+                                       width="100%">
                                     <thead>
                                     <tr>
                                         <th>
@@ -73,7 +75,7 @@
                                         <th>Country Name</th>
                                         <th>State Name</th>
                                         <th>City Name</th>
-                                        {{--                                        <th>Actions</th>--}}
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -100,11 +102,12 @@
             serverSide: true,
             ajax: {
                 "url": "{{ route('cityTable') }}",
-                "data": function(d) {
+                "data": function (d) {
                     var unindexed_array = $("#filterForm").serializeArray();
-                    $.map(unindexed_array, function(n, i) {
+                    $.map(unindexed_array, function (n, i) {
                         d[n['name']] = n['value'];
-                    });4
+                    });
+                    4
                 }
             },
             columnDefs: [{
@@ -113,6 +116,7 @@
                 "width": "20px"
             }]
         });
+
         // Check Boxes
         function handleCheck(cb) {
             if ($(cb).hasClass("check-all")) {
@@ -129,7 +133,8 @@
                 }
             }
         }
-        $("#reload").click(function() {
+
+        $("#reload").click(function () {
             table.ajax.reload()
         });
     </script>

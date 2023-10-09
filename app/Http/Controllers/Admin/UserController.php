@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Role;
+use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -81,16 +84,13 @@ class UserController extends Controller
                 $record->city->name,
                 $record->first_name,
                 $record->last_name,
-//                $record->middle_name,
                 $record->email,
-//                $record->secondary_email,
                 $record->phone1,
-//                $record->phone2,
                 $record->address,
                 $record->dob,
                 view('admin.defaultComponents.profileImage', ["url" => $record->image])->render(),
                 date('d.m.Y H:i:s', strtotime($record->created_at)),
-//                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
+                //                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
                 ""
             ];
         }
@@ -105,6 +105,8 @@ class UserController extends Controller
         $data['activeMenu'] = 'Add User';
         $data['country'] = Country::all();
         $data['city'] = City::all();
+        $data['state'] = State::all();
+        $data['role'] = Role::where('is_active',1)->get();
         return view('admin.users.add', $data);
     }
 
@@ -113,6 +115,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
+
         $profile_image = '';
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -122,19 +126,22 @@ class UserController extends Controller
             $profile_image = 'uploads/user' . $imageName;
         }
         $data = new User();
-        $data['country_name'] = $request->country_name;
-        $data['country_code'] = 123;
-        $data['city_name'] = $request->city_name;
+        $data['role_id'] = $request->role_id;
+        $data['country_id'] = $request->country_name;
+        $data['city_id'] = $request->city_name;
+        $data['state_id'] = $request->state_id;
         $data['first_name'] = $request->first_name;
         $data['last_name'] = $request->last_name;
-        $data['phone'] = $request->phone;
+        $data['middle_name'] = $request->middle_name;
+        $data['phone1'] = $request->phone1;
+        $data['phone2'] = $request->phone2;
         $data['email'] = $request->email;
+        $data['secondary_email'] = $request->secondary_email;
         $data['gender'] = $request->gender;
-        $data['image'] = $request->image;
-        $data['status'] = $request->status;
-        $data['remarks'] = $request->remarks;
-        $data['role'] = $request->role;
-        $data['status'] = 'pending';
+        $data['admin_approved'] = 1;
+        $data['address'] = $request->address;
+        $data['dob'] = $request->dob;
+        $data['password'] = Hash::make($request->password);
         $data['image'] = $profile_image;
         $data->save();
         Session::flash('message', 'User Added successfully');

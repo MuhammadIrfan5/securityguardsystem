@@ -76,10 +76,14 @@ class CityController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->country->name,
+                $record->country_id,
+                //$record->country->name,
                 $record->state->name,
                 $record->name,
-                $record['short-code'],
+                view('admin.defaultComponents.delete', [
+                    'deleteUrl' => route('deleteCity', ['id' => $record->id])
+                ])->render()
+
             ];
         }
         return response($response, 201);
@@ -139,6 +143,9 @@ class CityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customer = City::find($id);
+        $customer->delete();
+        Session::flash('info', 'City deleted successfully');
+        return redirect()->route('City');
     }
 }

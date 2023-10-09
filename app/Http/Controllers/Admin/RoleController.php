@@ -127,7 +127,7 @@ class RoleController extends Controller
             $data =  Role::find($id);
             $data['is_active'] = (int)$request->is_active;
             $data->save();
-            Session::flash('message', 'State Updated successfully');
+            Session::flash('message', 'Role Updated successfully');
             return redirect(route('role.index'));
         }
 

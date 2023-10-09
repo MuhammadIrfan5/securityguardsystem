@@ -73,7 +73,7 @@ class CountryController extends Controller
                 $record->name,
                 view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->status])->render(),
                 view('admin.defaultComponents.editViewDelete', [
-//                    'deleteUrl' => route('DeleteLoan', ['id' => $record->id])
+                    'deleteUrl' => route('deleteCountry', ['id' => $record->id])
                 ])->render()
             ];
         }
@@ -94,6 +94,14 @@ class CountryController extends Controller
         $country->save();
         Session::flash('message', 'Country Added successfully');
         return redirect(route('Country'));
+    }
+
+    public function destroy(string $id)
+    {
+        $customer = Country::find($id);
+        $customer->delete();
+        Session::flash('info', 'Country deleted successfully');
+        return redirect()->route('Country');
     }
 
 }

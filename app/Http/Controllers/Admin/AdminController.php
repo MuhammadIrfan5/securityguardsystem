@@ -36,8 +36,8 @@ class AdminController extends Controller
             return redirect()->to('/')->withErrors($validator->errors());
         } else {
             $user = User::where('email', '=', \request()->email)->first();
-            if (!$user && !Hash::check($request->password, $user->password)) {
-                return redirect()->to('/')->withErrors([
+            if (empty($user) || !Hash::check($request->password, $user->password)) {
+                return back()->withErrors([
                     'email' => 'The provided credentials do not match',
                 ]);
 
@@ -45,16 +45,27 @@ class AdminController extends Controller
                 $auth = $user->id;
                 $check = $this->getUserBrowserDetails($request, $auth);
                 if ($check) {
-                    Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password,]);
+                    Auth::guard('admin')->attempt(
+                        [
+                            'email'    => $request->email,
+                            'password' => $request->password,
+                            'role_id'  => 1
+                        ]
+                    );
                     $request->session()->regenerate();
 //                    return redirect()->to('/dashboard');
                 } else {
                     $this->createUserBrowserDetails($request, $auth);
-                    return view('admin.auth.otp', ['user' => $user->id]);
+                    return redirect()->route('confirm-otp', ['id' => $user->id, 'email' => $request->email, 'password' => $request->password]);
                 }
             }
             return redirect()->to('/dashboard');
         }
+    }
+
+    public function confirmOtp(Request $request)
+    {
+        return view('admin.auth.otp', ['user' => $request->id]);
     }
 
     public function verify(Request $request)
@@ -64,16 +75,19 @@ class AdminController extends Controller
             ->first();
         if (!empty($otp)) {
             $user = User::find($request->id);
-            if (Auth::guard('admin')->attempt(['email' => $user->email, 'password' => $user->password,])) {
-                $request->session()->regenerateToken();
-                return redirect()->to('/dashboard');
-            }
+            $auth = Auth::guard('admin')->attempt(
+                [
+                    'email'    => $request->email,
+                    'password' => $request->password,
+                    'role_id'  => 1
+                ]);
+            $request->session()->regenerate();
+            return redirect()->to('/dashboard');
         } else {
             return back()->withErrors([
-                'otp' => 'Invalid OTP',
+                'otp' => 'Not Valid',
             ]);
         }
-        return redirect()->to('/dashboard');
     }
 
     public function logout()

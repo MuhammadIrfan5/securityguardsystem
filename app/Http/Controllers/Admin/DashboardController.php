@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\AdvanceSalary;
 use App\Models\ApplyLeave;
 use App\Models\Attendance;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Loan;
 use App\Models\Machine;
 use App\Models\Product;
@@ -17,14 +19,14 @@ class DashboardController extends Controller
     public function dashboardIndex()
     {
         $data = array();
-        $data['userCount'] = 0;
-//            User::count();??
+        $data['userCount'] =
+            User::count();
         $data['managerCount'] = 0;
-//            User::whereIn('role', ['shift-manager', 'unit-manager'])->count();
-        $data['machineCount'] = 0;
-//            Machine::count();
-        $data['productCount'] = 0;
-//        Product::count();
+        User::where('role_id', 2)->count();
+        $data['machineCount'] =
+            City::count();
+        $data['productCount'] =
+            Country::count();
 //        $travel = Travel::all();
 //        $user = User::all();
 //        $data['total'] = $attendance->count() + $travel->count() + $loan->count() + $advanceSalary->count();

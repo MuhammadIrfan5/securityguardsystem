@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
             'first_name' => ('admin'),
             'last_name'  => ('admin'),
             'dob'        => ('admin'),
+            'gender'     => 'male',
         ]);
     }
 }
