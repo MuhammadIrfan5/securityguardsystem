@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -19,10 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['activeMenu'] = 'Users';
+        $data['title'] = 'Users';
         $data['country'] = Country::all();
         $data['city'] = City::all();
-        return view('admin.users.table', $data);
+        return view('admin.user.list', $data);
     }
 
     public function tableData(Request $request)
@@ -88,7 +89,7 @@ class UserController extends Controller
                 $record->phone1,
                 $record->address,
                 $record->dob,
-                view('admin.defaultComponents.profileImage', ["url" => $record->image])->render(),
+                view('admin.layout.defaultComponent.profileImage', ["url" => $record->image])->render(),
                 date('d.m.Y H:i:s', strtotime($record->created_at)),
                 //                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
                 ""
@@ -102,12 +103,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        $data['activeMenu'] = 'Add User';
+        $data['title'] = 'User';
         $data['country'] = Country::all();
-        $data['city'] = City::all();
+        $data['city'] = City::paginate(10);
         $data['state'] = State::all();
         $data['role'] = Role::where('is_active',1)->get();
-        return view('admin.users.add', $data);
+        return view('admin.user.add', $data);
     }
 
     /**
@@ -115,8 +116,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-
+        $validate  = [
+            'email' => 'required|unique:users,email',
+        ];
+        $validator = Validator::make($request->all(), $validate);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+        } else {
         $profile_image = '';
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -146,6 +152,7 @@ class UserController extends Controller
         $data->save();
         Session::flash('message', 'User Added successfully');
         return redirect(route('users.index'));
+    }
     }
 
     /**

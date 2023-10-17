@@ -11,9 +11,8 @@
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "{{route('panel.user.list')}}",
+            "url": "{{route('user.tableData')}}",
             "data": function (d) {
-                console.log('here');
                 var unindexed_array = $("#filterForm").serializeArray();
                 $.map(unindexed_array, function (n, i) {
                     d[n['name']] = n['value'];

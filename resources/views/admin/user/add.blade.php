@@ -8,7 +8,7 @@
         <h1>Add {{$title}}</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('panel.dashboard')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                 <li class="breadcrumb-item">Tables</li>
                 <li class="breadcrumb-item active">Data</li>
             </ol>
@@ -24,20 +24,181 @@
                 </div>
         @endif
         <!-- Floating Labels Form -->
-            <form class="" method="post" action="{{url('/panel/users/sf_guard_user')}}">
+
+            <form class="" method="post" action="{{route('users.store')}}">
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="floatingUsername" placeholder="username"
-                                   name="username"
+                            <select name="role_id" class="form-select"
+                                    id="role_id">
+                                <option disabled selected>Role list</option>
+                                @foreach($role as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select name="country_name" class="form-select"
+                                    id="country_name">
+                                <option disabled selected>Country list</option>
+                                @foreach($country as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select name="state_id" class="form-select"
+                                    id="state_id">
+                                <option disabled selected>State list</option>
+                                @foreach($state as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select name="city_name" class="form-select"
+                                    id="city_name">
+                                <option disabled selected>City list</option>
+                                @foreach($city as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingFirstname" placeholder="First Name"
+                                   name="first_name"
                                    required>
-                            <label for="floatingUsername">User Name</label>
-                            @error('username')
+                            <label for="floatingUsername">First Name</label>
+                            @error('first_name')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
                             </div>
                             @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingLastname" placeholder="Last Name"
+                                   name="last_name"
+                                   required>
+                            <label for="floatingLastname">Last Name</label>
+                            @error('last_name')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingMiddlename" placeholder="Middle Name"
+                                   name="middle_name"
+                                   required>
+                            <label for="floatingMiddlename">Middle Name</label>
+                            @error('last_name')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="floatingPhone" placeholder="Phone Number 1"
+                                   name="phone1"
+                                   required>
+                            <label for="floatingPhone">Phone Number 1</label>
+                            @error('phone1')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="floatingPhone2" placeholder="Phone Number 2"
+                                   name="phone2"
+                                   required>
+                            <label for="floatingPhone2">Phone Number 2</label>
+                            @error('phone2')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="floatingEmail" placeholder="Email" name="email"
+                                   required>
+                            <label for="floatingEmail">Email</label>
+                            @error('email')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="floatingEmail" placeholder="Secondary Email"
+                                   name="secondary_email"
+                                   required>
+                            <label for="floatingEmail">Secondary Email</label>
+                            @error('secondary_email')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="floatingAddress" placeholder="Address"
+                                   name="address"
+                                   required>
+                            <label for="floatingAddress">Address</label>
+                            @error('address')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="floatingBirth" placeholder="Date Of Birth"
+                                   name="dob"
+                                   required>
+                            <label for="floatingBirth">Date Of Birth</label>
+                            @error('dob')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select name="gender" class="form-select"
+                                    id="state_id">
+                                <option disabled selected>Gender list</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
                         </div>
                     </div>
 
@@ -53,74 +214,18 @@
                             @enderror
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                        <div class="form-floating ">
-                            <input type="password" class="form-control redColor" id="floatingRepassword"
-                                   placeholder="Password again"
-                                   name="password_confirmation" required>
-                            <label for="floatingrepassword">Password</label>
-                            @error('password_confirmation')
-                            <div class="alert alert-danger" role="alert">
-                                {{ $message }}
-                                <span id='message'></span>
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="email" class="form-control" id="floatingEmail" placeholder="Email" name="email"
-                                   required>
-                            <label for="floatingEmail">Email</label>
-                            @error('email')
+                            <input type="file" class="form-control" id="floatingImage" placeholder="Image"
+                                   name="image" required>
+                            <label for="floatingImage">Image</label>
+                            @error('image')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
                             </div>
                             @enderror
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                        <label class="col-sm-6 col-form-label">Select group</label>
-                        <div class="col-sm-10">
-                            <select class="form-select js-example-basic-multiple" name="group[]" multiple
-                                    aria-label="multiple select example">
-                                <option disabled>Open this select menu</option>
-                                @foreach($group as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="col-sm-6 col-form-label">Select permission</label>
-                        <div class="col-sm-10">
-                            <select class="form-select js-example-basic-multiple" name="permission[]" multiple
-                                    aria-label="multiple select example">
-                                <option disabled>Open this select menu</option>
-                                @foreach($permission as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" name="is_active" type="checkbox" id="flexSwitchCheckChecked"
-                                   checked="">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Is Active</label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" name="is_super_admin" type="checkbox"
-                                   id="flexSwitchChecked">
-                            <label class="form-check-label" for="flexSwitchChecked">Super Admin</label>
-                        </div>
-                    </div>
-
                 </div>
                 <br>
                 <div class="text-end">
@@ -137,13 +242,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         // Select2 Multiple
-        $('.js-example-basic-multiple').select2({
-            searchable: true,
-            allowClear: true,
-            minimumResultsForSearch: Infinity,
-        });
 
-        $('.alert-danger').delay(3000).fadeOut('slow');
 
         $('#floatingRepassword').on('keyup', function () {
             if ($('#floatingPassword').val() == $('#floatingRepassword').val()) {
@@ -151,15 +250,7 @@
                 // $('.redColor').html('Matching').css('background-color', 'green');
             } else
                 $('.redColor').html('Not Matching').css('border-color', 'red');
-                // $('.redColor').html('Not Matching').css('background-color', 'red');
+            // $('.redColor').html('Not Matching').css('background-color', 'red');
         });
-
-        {{--$.get("{{ url('listOfPermission') }}", function (data) {--}}
-        {{--    $.each(data, function (index, value) {--}}
-        {{--        subcategory.append(--}}
-        {{--            $('<option></option>').val(value.id).html(value.sub_cat_name)--}}
-        {{--        );--}}
-        {{--    });--}}
-        {{--});--}}
     </script>
 @endsection

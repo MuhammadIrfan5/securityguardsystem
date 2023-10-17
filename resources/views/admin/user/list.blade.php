@@ -5,11 +5,11 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('sf_guard_user.create')}}" class="btn btn-primary">Create</a>
+            <a href="{{route('users.create')}}" class="btn btn-primary">Create</a>
         </div>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('panel.dashboard')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                 <li class="breadcrumb-item active">{{$title}}</li>
             </ol>
         </nav>
@@ -35,12 +35,17 @@
                             <th>
                                 <input type="checkbox" onclick="handleCheck(this)" class="checkbox check-all">
                             </th>
-                            <th scope="col">#</th>
-                            <th scope="col">User Name</th>
-                            <th scope="col">Created at</th>
-                            <th scope="col">Updated at</th>
-                            <th scope="col">Last Login</th>
-                            <th scope="col"></th>
+                            <th>Role</th>
+                            <th>City Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>DOB</th>
+                            <th>Image</th>
+                            <th>Date</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>

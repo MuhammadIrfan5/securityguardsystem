@@ -10,18 +10,7 @@
             </a>
         </li><!-- End Dashboard Nav -->
 
-{{--        <li class="nav-item">--}}
-{{--            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">--}}
-{{--                <i class="bi bi-person"></i><span>Site Management</span><i class="bi bi-chevron-down ms-auto"></i>--}}
-{{--            </a>--}}
-{{--            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">--}}
-{{--                <li>--}}
-{{--                    <a href="{{route('sf_guard_user.index')}}"--}}
-{{--                       class="{{ request()->is('panel/users/sf_guard_user') ? 'active' : '' }}">--}}
 
-{{--                        <i class="bi bi-circle"></i><span>User list</span>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
 {{--                <li>--}}
 {{--                    <a href="{{route('sf_guard_group.index')}}"--}}
 {{--                       class="{{ request()->is('panel/users/sf_guard_group') ? 'active' : '' }}">--}}
@@ -198,27 +187,33 @@
 {{--            </ul>--}}
 {{--        </li><!-- End Components Nav -->--}}
 
-{{--        <li class="nav-item">--}}
-{{--            <a class="nav-link collapsed" data-bs-target="#sales-nav1" data-bs-toggle="collapse" href="#">--}}
-{{--                <i class="bi bi-layout-text-window-reverse"></i><span>Sales</span><i--}}
-{{--                    class="bi bi-chevron-down ms-auto"></i>--}}
-{{--            </a>--}}
-{{--            <ul id="sales-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">--}}
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#sales-nav1" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>User list</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="sales-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('users.index')}}"
+                       class="{{ request()->is('users') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Users</span>
+                    </a>
+                </li>
 {{--                <li>--}}
-{{--                    <a href="{{route('sales-orders.create')}}"--}}
-{{--                       class="{{ request()->is('panel/users/sales-orders') ? 'active' : '' }}">--}}
-{{--                        <i class="bi bi-circle"></i><span>Create Order</span>--}}
+{{--                    <a href="{{route('users.create')}}"--}}
+{{--                       class="{{request()->is('users/create') ? ' active' : '' }}">--}}
+{{--                        <i class="bi bi-circle"></i><span>Add Users</span>--}}
 {{--                    </a>--}}
 {{--                </li>--}}
-{{--                <li>--}}
-{{--                    <a href="{{route('coupons.index')}}"--}}
-{{--                       class="{{ request()->is('panel/users/coupons') ? 'active' : '' }}">--}}
-{{--                        <i class="bi bi-circle"></i><span>Coupons</span>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-{{--            </ul>--}}
-{{--        </li><!-- End Components Nav -->--}}
+                <li>
+                    <a href="{{route('role.index')}}"
+                       class="{{ request()->is('role') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Roles</span>
+                    </a>
+                </li>
 
+            </ul>
+        </li><!-- End Components Nav -->
     </ul>
 
 </aside><!-- End Sidebar-->

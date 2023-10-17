@@ -41,7 +41,8 @@
                                         <select list="region" name="country_name" class="form-control">
                                             <option value="none" selected disabled>Country List</option>
                                             @foreach($country as $user)
-                                                <option value="{{ $user->id }}">{{ $user->name}}</option>                                            @endforeach
+                                                <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                                 @error('region')
@@ -70,7 +71,8 @@
                                         <select list="region" name="city_name" class="form-control">
                                             <option value="none" selected disabled>CIty List</option>
                                             @foreach($city as $user)
-                                                <option value="{{ $user->id }}">{{ $user->name}}</option>                                            @endforeach
+                                                <option value="{{ $user->id }}">{{ $user->name}}</option>
+                                            @endforeach
                                         </select>
                                         <span class="text-danger">
                                                 @error('city_id')
