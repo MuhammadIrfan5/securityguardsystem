@@ -1,34 +1,33 @@
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <title>{{env('APP_NAME')}}</title>
-    <link rel="shortcut icon" href="{{asset('app-icon.png')}}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
-          rel="stylesheet">
-    <!-- BEGIN VENDOR CSS-->
-    <link rel="stylesheet" href="{{asset('theme-assets/plugins/fontawesome-free/css/all.min.css')}}">
-    <link rel="stylesheet"  href="{{asset('app-assets/css/vendors.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/extensions/unslider.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/weather-icons/climacons.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/fonts/meteocons/style.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/charts/morris.css')}}">
-    <!-- END VENDOR CSS-->
-    <!-- BEGIN STACK CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/app.min.css')}}">
-    <!-- END STACK CSS-->
-    <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/core/menu/menu-types/vertical-menu.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/core/colors/palette-gradient.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/fonts/simple-line-icons/style.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/core/colors/palette-gradient.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/pages/timeline.min.css')}}">
-    <!-- END Page Level CSS-->
-    <!-- BEGIN Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
+    <title>Dashboard - {{env('APP_NAME')}}</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    @yield('page-css')
+    <!-- Favicons -->
+    <link href="{{asset("/admin/assets/img/favicon.png")}}" rel="icon">
+    <link href="{{asset("/admin/assets/img/apple-touch-icon.png")}}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="{{asset("https://fonts.gstatic.com")}}" rel="preconnect">
+    <link href="{{asset("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i")}}" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{asset("/admin/assets/vendor/bootstrap/css/bootstrap.min.css")}}" rel="stylesheet">
+    <link href="{{asset("/admin/assets/vendor/bootstrap-icons/bootstrap-icons.css")}}" rel="stylesheet">
+    <link href="{{asset("/admin/assets/vendor/boxicons/css/boxicons.min.css")}}" rel="stylesheet">
+    <link href="{{asset("/admin/assets/vendor/quill/quill.snow.css")}}" rel="stylesheet">
+    <link href="{{asset("/admin/assets/vendor/quill/quill.bubble.css")}}" rel="stylesheet">
+    <link href="{{asset("/admin/assets/vendor/remixicon/remixicon.css")}}" rel="stylesheet">
+    <link href="{{asset("/admin/assets/vendor/simple-datatables/style.css")}}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{{asset("/admin/assets/css/style.css")}}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
 </head>

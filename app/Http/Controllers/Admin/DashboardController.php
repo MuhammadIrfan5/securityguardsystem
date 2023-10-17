@@ -40,6 +40,6 @@ class DashboardController extends Controller
 //        $data['travel'] = $travel;
 //        $data['user'] = $user;
 
-        return view('admin.dashboard.dashboard', $data);
+        return view('admin.dashboard', $data);
     }
 }

@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
-@include('admin.layout.head')
+<html lang="en">
+@include('Admin.layout.head')
+<body>
+<main>
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 
-@yield('page-css')
-<body class="vertical-layout vertical-menu 2-columns   menu-expanded fixed-navbar"
-      data-open="click" data-menu="vertical-menu" data-col="2-columns">
-<!-- ////////////////////////////////////////////////////////////////////////////-->
+        @yield('content')
+    </section>
 
-@yield('section')
-{{--    @include('layout.backend.script')--}}
+</main><!-- End #main -->
 
-{{--    @yield('page-script')--}}
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+@include('Admin.layout.script')
 </body>
 </html>
