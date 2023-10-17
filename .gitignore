@@ -22,7 +22,6 @@ Homestead.yaml
 auth.json
 .env
 composer.lock
-composer.json
 /.vscode
 
 .idea
