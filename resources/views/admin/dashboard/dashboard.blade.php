@@ -34,7 +34,7 @@
                                 <div class="media">
                                     <div class="media-body text-left w-100">
                                         <h3 class="danger">{{$managerCount}}</h3>
-                                        <span>Total Managers</span>
+                                        <span>Total Admins</span>
                                     </div>
                                     <div class="media-right media-middle">
                                         <i class="icon-social-dropbox danger font-large-2 float-right"></i>
@@ -55,7 +55,7 @@
                                 <div class="media">
                                     <div class="media-body text-left w-100">
                                         <h3 class="success">{{$productCount}}</h3>
-                                        <span>Total Products</span>
+                                        <span>Total Country</span>
                                     </div>
                                     <div class="media-right media-middle">
                                         <i class="icon-layers success font-large-2 float-right"></i>
@@ -76,7 +76,7 @@
                                 <div class="media">
                                     <div class="media-body text-left w-100">
                                         <h3 class="warning">{{$machineCount}}</h3>
-                                        <span>Total Machine</span>
+                                        <span>Total City</span>
                                     </div>
                                     <div class="media-right media-middle">
                                         <i class="icon-globe warning font-large-2 float-right"></i>

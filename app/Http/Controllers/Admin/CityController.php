@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
+use App\Models\State;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -75,11 +76,14 @@ class CityController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->countryId->title,
-                $record->title,
-                $record->region,
-                $record->slug,
-                $record['short-code'],
+                $record->country_id,
+                //$record->country->name,
+                $record->state->name,
+                $record->name,
+                view('admin.defaultComponents.delete', [
+                    'deleteUrl' => route('deleteCity', ['id' => $record->id])
+                ])->render()
+
             ];
         }
         return response($response, 201);
@@ -91,7 +95,8 @@ class CityController extends Controller
     public function create()
     {
         $data['country'] = Country::all();
-        $data['region'] = Region::all();
+        $data['state'] = State::all();
+        $data['activeMenu'] = "Add City";
         return view('admin.city.addCity', $data);
     }
 
@@ -101,11 +106,9 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $country = new City();
-        $country['country'] = $request->country_id;
-        $country['title'] = $request->title;
-        $country['slug'] = $request->slug;
-        $country['short-code'] = $request->shortCode;
-        $country['region'] = $request->region;
+        $country['country_id'] = $request->country_id;
+        $country['state_id'] = $request->state_id;
+        $country['name'] = $request->name;
         $country->save();
         Session::flash('message', 'City Added successfully');
         return redirect(route('City'));
@@ -140,6 +143,9 @@ class CityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customer = City::find($id);
+        $customer->delete();
+        Session::flash('info', 'City deleted successfully');
+        return redirect()->route('City');
     }
 }

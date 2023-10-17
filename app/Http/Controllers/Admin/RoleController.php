@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
-class ShiftController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['activeMenu'] = 'Shift ';
-        return view('admin.shift.table',$data);
+        $data['activeMenu'] = "Role";
+        return view('admin.role.table', $data);
     }
 
-    public function tableUnits(Request $request)
+    public function tableData(Request $request)
     {
         $response = [
             "draw"            => $request->draw,
@@ -24,7 +26,7 @@ class ShiftController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Sh();
+        $country = new Role();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -71,10 +73,11 @@ class ShiftController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->cityId->title,
-                $record->title,
-                date('d.m.Y H:i:s', strtotime($record->created_at)),
-                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
+                $record->name,
+                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->is_active])->render(),
+                view('admin.defaultComponents.delete', [
+                    'deleteUrl' => route('role.edit', ['role' => $record->id])
+                ])->render()
             ];
         }
         return response($response, 201);
@@ -85,8 +88,7 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        $data['activeMenu'] = 'Add Shift ';
-        return view('admin.shift.add',$data);
+        //
     }
 
     /**
@@ -110,22 +112,31 @@ class ShiftController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['role'] = Role::find($id);
+        $data['activeMenu'] = "Role";
+        return view('admin.role.add', $data);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        /**
+         * Update the specified resource in storage.
+         */
+        public
+        function update(Request $request, string $id)
+        {
+            $data =  Role::find($id);
+            $data['is_active'] = (int)$request->is_active;
+            $data->save();
+            Session::flash('message', 'Role Updated successfully');
+            return redirect(route('role.index'));
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        /**
+         * Remove the specified resource from storage.
+         */
+        public
+        function destroy(string $id)
+        {
+            //
+        }
     }
-}

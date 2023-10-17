@@ -71,17 +71,17 @@
                                                    class="checkbox check-all">
                                         </th>
 
-                                        <th>country_name</th>
-                                        <th>city_name</th>
-                                        <th>first_name</th>
-                                        <th>last_name</th>
-                                        <th>phone</th>
-                                        <th>email</th>
-                                        <th>gender</th>
-                                        <th>image</th>
-                                        <th>status</th>
-                                        <th>remarks</th>
-                                        <th>role</th>
+                                        <th>Role</th>
+                                        <th>City Name</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>DOB</th>
+                                        <th>Image</th>
+{{--                                        <th>status</th>--}}
+{{--                                        <th>remarks</th>--}}
                                         <th>Date</th>
                                         <th>Actions</th>
                                     </tr>
