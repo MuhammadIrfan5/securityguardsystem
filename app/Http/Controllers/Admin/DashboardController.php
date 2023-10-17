@@ -18,8 +18,8 @@ class DashboardController extends Controller
 {
     public function dashboardIndex()
     {
-        $data = array();
-        $data['userCount'] =
+        $data                 = array();
+        $data['userCount']    =
             User::count();
         $data['managerCount'] = 0;
         User::where('role_id', 2)->count();
@@ -39,7 +39,12 @@ class DashboardController extends Controller
 //        $data['loan'] = $loan;
 //        $data['travel'] = $travel;
 //        $data['user'] = $user;
-
+        $timezonelist = \DateTimeZone::listIdentifiers(\DateTimeZone::ALL);
+        $response=[];
+        foreach ($timezonelist as $item) {
+            $date = new \DateTime("now", new \DateTimeZone($item) );
+            $response['data'][] = $date;
+        }
         return view('admin.dashboard', $data);
     }
 }
