@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\BannerController;
@@ -89,9 +90,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('users', UserController::class);
     Route::get('user-list', [UserController::class, 'tableData'])->name('user.tableData');
 
-
-    Route::get('/pdf-banners', [BannerController::class, 'PDF'])->name('BannersPDF');
-    Route::get('BannerCreate', [BannerController::class, 'tableBanner'])->name('BannerCreate');
-
+    /*Employee*/
+    Route::resource('employee', EmployeeController::class);
+    Route::get('employee-list', [EmployeeController::class, 'tableData'])->name('employee.tableData');
 
 });

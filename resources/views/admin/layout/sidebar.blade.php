@@ -213,7 +213,22 @@
                 </li>
 
             </ul>
-        </li><!-- End Components Nav -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Employee list</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="sales-nav2" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('employee.index')}}"
+                       class="{{ request()->is('employee') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Employee list</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- End Components Nav -->
     </ul>
 
 </aside><!-- End Sidebar-->
