@@ -228,6 +228,26 @@
                 </li>
             </ul>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Location list</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="sales-nav3" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('location.index')}}"
+                       class="{{ request()->is('location') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Location list</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('locationType.index')}}"
+                       class="{{ request()->is('locationType') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Location type list</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <!-- End Components Nav -->
     </ul>
 

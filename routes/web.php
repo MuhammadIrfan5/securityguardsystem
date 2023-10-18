@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\BannerController;
@@ -93,5 +95,13 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     /*Employee*/
     Route::resource('employee', EmployeeController::class);
     Route::get('employee-list', [EmployeeController::class, 'tableData'])->name('employee.tableData');
+
+    /*Location*/
+    Route::resource('location', LocationController::class);
+    Route::get('location-list', [LocationController::class, 'tableData'])->name('location.tableData');
+
+    /*Location type*/
+    Route::resource('locationType', LocationTypeController::class);
+    Route::get('locationType-list', [LocationTypeController::class, 'tableData'])->name('locationType.tableData');
 
 });

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Location extends Model
 {
     use HasFactory;
+    public function maintype(){
+        return $this->belongsTo(LocationType::class,'location_type');
+    }
 }
