@@ -248,6 +248,21 @@
                 </li>
             </ul>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#sales-nav4" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Job list</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('assign-job.index')}}"
+                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Job list</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- End Components Nav -->
     </ul>
 

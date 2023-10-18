@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\RoleController;
@@ -103,5 +104,10 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     /*Location type*/
     Route::resource('locationType', LocationTypeController::class);
     Route::get('locationType-list', [LocationTypeController::class, 'tableData'])->name('locationType.tableData');
+
+    /*Location type*/
+    Route::resource('assign-job', JobController::class);
+    Route::get('assign-job-list', [JobController::class, 'tableData'])->name('assign.job.tableData');
+
 
 });
