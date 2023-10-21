@@ -1,4 +1,4 @@
-@extends('Admin.layout.main')
+@extends('admin.layout.main')
 
 @section('content')
 
@@ -54,5 +54,5 @@
     </section>
 @endsection
 @section('page-js')
-    @include('Admin.employee.pageJs')
+    @include('admin.employee.pageJs')
 @endsection

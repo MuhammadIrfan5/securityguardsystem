@@ -15,9 +15,11 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['id' => 1, 'name' => 'SuperAdmin'],
-            ['id' => 2, 'name' => 'Admin'],
-            ['id' => 3, 'name' => 'User']
+            ['name' => 'SuperAdmin'],
+            ['name' => 'Admin'],
+            ['name' => 'Client'],
+            ['name' => 'Security Guard'],
+            ['name' => 'User'],
         ];
         Role::insert($roles);
 

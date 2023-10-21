@@ -1,4 +1,4 @@
-@extends('Admin.layout.blank')
+@extends('admin.layout.blank')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">

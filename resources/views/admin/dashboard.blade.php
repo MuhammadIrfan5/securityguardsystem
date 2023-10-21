@@ -1,4 +1,4 @@
-@extends('Admin.layout.main')
+@extends('admin.layout.main')
 @section('content')
     <div class="pagetitle">
         <h1>Dashboard</h1>
