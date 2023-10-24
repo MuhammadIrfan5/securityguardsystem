@@ -74,12 +74,12 @@ class JobController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->employee_id,
-                $record->location_id,
+                $record->employee->name,
+                $record->location->name,
                 $record->check_in,
                 $record->calling_number,
-                view('Admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
-                view('Admin.layout.defaultComponent.editButton', [
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
+                view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('assign-job.edit', $record->id)
                 ])->render(),
             ];
@@ -95,7 +95,7 @@ class JobController extends Controller
         $data['title']    = 'Assign Job';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
-        return view('Admin.job.add', $data);
+        return view('admin.job.add', $data);
     }
 
     /**
@@ -139,7 +139,7 @@ class JobController extends Controller
         $data['employee'] = Employee::all();
         $data['data']     = Job::find($id);
 
-        return view('Admin.job.edit', $data);
+        return view('admin.job.edit', $data);
 
     }
 

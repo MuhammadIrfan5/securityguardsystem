@@ -15,19 +15,19 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $data['title'] = "Employee";
+        $data['title'] = "Location";
         return view('admin.location.list', $data);
     }
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Location();
+        $country = new Location();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -72,9 +72,9 @@ class LocationController extends Controller
 //        }
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
-            $mainCategory='';
-            if ($record->maintype->parent_id!=0){
-                $mainCategory=LocationType::find($record->maintype->parent_id)['type'];
+            $mainCategory = '';
+            if ($record->maintype->parent_id != 0) {
+                $mainCategory = LocationType::find($record->maintype->parent_id)['type'];
             }
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
@@ -82,8 +82,8 @@ class LocationController extends Controller
                 $record->address,
                 $record->timezone,
                 $record->coverage_time,
-                $mainCategory.' ('.$record->maintype->type.")",
-                view('Admin.layout.defaultComponent.editButton', [
+                $mainCategory . ' (' . $record->maintype->type . ")",
+                view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('location.edit', $record->id)
                 ])->render(),
             ];
@@ -96,12 +96,14 @@ class LocationController extends Controller
      */
     public function create()
     {
-        $data['title']    = 'Location';
-        $locationType     = LocationType::where('parent_id', '!=', 0)->get()->toArray();
-        $locationType2    = LocationType::where('id', 2)->get()->toArray();
+        $data = array();
+        $data['locationType'] = array();
+        $data['title'] = 'Location';
+        $locationType = LocationType::where('parent_id', '!=', 0)->get()->toArray();
+        $locationType2 = LocationType::where('id', 1)->get()->toArray();
         $datalocationType = array_merge($locationType, $locationType2);
         foreach ($datalocationType as $item) {
-            $parentName             = LocationType::find($item['parent_id']);
+            $parentName = LocationType::find($item['parent_id']);
             $data['locationType'][] = [
                 'id'   => $item['id'],
                 'type' => !empty($parentName) ? $parentName->type . ' (' . $item['type'] . ")" : $item['type']
@@ -124,14 +126,14 @@ class LocationController extends Controller
             'locationType_id' => 'required',
         ]);
 
-        $data                    = new Location();
-        $data->name              = $request->name;
-        $data->user_id              = $request->user()['id'];
-        $data->address           = $request->address;
-        $data->timezone_id       = $request->timezone_id;
-        $data->timezone          = TimeZone::find($request->timezone_id)['timezone'];
-        $data->coverage_time     = date('h:i:s', strtotime($request->coverage_time));
-        $data->location_type     = $request->locationType_id;
+        $data = new Location();
+        $data->name = $request->name;
+        $data->user_id = $request->user()['id'];
+        $data->address = $request->address;
+        $data->timezone_id = $request->timezone_id;
+        $data->timezone = TimeZone::find($request->timezone_id)['timezone'];
+        $data->coverage_time = date('h:i:s', strtotime($request->coverage_time));
+        $data->location_type = $request->locationType_id;
         $data->location_sub_type = '';
 
         $data->save();

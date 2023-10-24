@@ -74,8 +74,8 @@ class RoleController extends Controller
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
                 $record->name,
-                view('Admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
-                  view('Admin.layout.defaultComponent.editButton', [
+                view('admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
+                  view('admin.layout.defaultComponent.editButton', [
                       'editUrl' => route('role.edit', $record->id)
                   ])->render(),
             ];

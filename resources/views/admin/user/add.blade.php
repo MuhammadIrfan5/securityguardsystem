@@ -23,6 +23,11 @@
                     {{ session('msg') }}
                 </div>
         @endif
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+        @endif
         <!-- Floating Labels Form -->
 
             <form class="" method="post" action="{{route('users.store')}}">
@@ -120,7 +125,7 @@
                                    name="phone1"
                                    required>
                             <label for="floatingPhone">Phone Number 1</label>
-                            @error('phone1')
+                                @error('phone1')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
                             </div>

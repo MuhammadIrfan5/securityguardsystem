@@ -21,13 +21,13 @@ class EmployeeController extends Controller
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Employee();
+        $country = new Employee();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -78,9 +78,9 @@ class EmployeeController extends Controller
                 $record->id_number,
                 $record->phone_one,
                 $record->phone_two,
-                view('Admin.layout.defaultComponent.status', [ "boolean" => $record->is_regular_guard ])->render(),
+                view('admin.layout.defaultComponent.status', ["boolean" => $record->is_regular_guard])->render(),
                 $record->notes,
-                view('Admin.layout.defaultComponent.editButton', [
+                view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('employee.edit', $record->id)
                 ])->render(),
             ];
@@ -102,7 +102,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $validate  = [
+        $validate = [
             'name'      => 'required|string',
             'id_number' => 'required|unique:employees,id_number',
             'phone_one' => 'required|string',
@@ -119,6 +119,7 @@ class EmployeeController extends Controller
                 'user_id'          => $request->user()['id'],
                 'phone_two'        => !empty($request->phone_two) ? $request->phone_two : '',
                 'notes'            => !empty($request->notes) ? $request->notes : '',
+                'is_active'        => 0,
                 'is_regular_guard' => $request['is_regular_guard'] == 1 ? 1 : 0,
             ];
             $data = Employee::create($data);
@@ -140,7 +141,7 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         $data['title'] = 'Employee';
-        $data['record']=Employee::find($id);
+        $data['record'] = Employee::find($id);
         return view('admin.employee.edit', $data);
     }
 
@@ -149,24 +150,24 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data=Employee::find($id);
-        if(!empty($request->name)){
-            $data->name=$request->name;
+        $data = Employee::find($id);
+        if (!empty($request->name)) {
+            $data->name = $request->name;
         }
-        if(!empty($request->id_number)){
-            $data->id_number=$request->id_number;
+        if (!empty($request->id_number)) {
+            $data->id_number = $request->id_number;
         }
-        if(!empty($request->phone_one)){
-            $data->phone_one=$request->phone_one;
+        if (!empty($request->phone_one)) {
+            $data->phone_one = $request->phone_one;
         }
-        if(!empty($request->phone_two)){
-            $data->phone_two=$request->phone_two;
+        if (!empty($request->phone_two)) {
+            $data->phone_two = $request->phone_two;
         }
-        if(!empty($request->notes)){
-            $data->notes=$request->notes;
+        if (!empty($request->notes)) {
+            $data->notes = $request->notes;
         }
-        if(!empty($request->is_regular_guard)){
-            $data->is_regular_guard=(int)$request->is_regular_guard;
+        if (!empty($request->is_regular_guard)) {
+            $data->is_regular_guard = (int)$request->is_regular_guard;
         }
         $data->save();
 

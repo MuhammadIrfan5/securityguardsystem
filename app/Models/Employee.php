@@ -17,5 +17,6 @@ class Employee extends Model
         'phone_two',
         'notes',
         'is_regular_guard',
+        'is_active',
     ];
 }

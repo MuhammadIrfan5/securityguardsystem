@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostUserRequest;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Role;
@@ -107,22 +108,15 @@ class UserController extends Controller
         $data['country'] = Country::all();
         $data['city'] = City::paginate(10);
         $data['state'] = State::all();
-        $data['role'] = Role::where('is_active',1)->get();
+        $data['role'] = Role::where('is_active', 1)->get();
         return view('admin.user.add', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostUserRequest $request)
     {
-        $validate  = [
-            'email' => 'required|unique:users,email',
-        ];
-        $validator = Validator::make($request->all(), $validate);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
-        } else {
         $profile_image = '';
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -153,7 +147,7 @@ class UserController extends Controller
         Session::flash('message', 'User Added successfully');
         return redirect(route('users.index'));
     }
-    }
+
 
     /**
      * Display the specified resource.
