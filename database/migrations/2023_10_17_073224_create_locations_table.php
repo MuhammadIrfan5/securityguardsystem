@@ -18,7 +18,8 @@ return new class extends Migration
             $table->longText('address');
             $table->foreignId('timezone_id')->constrained('time_zones');
             $table->string('timezone');
-            $table->string('coverage_time');
+            $table->string('coverage_start_time');
+            $table->string('coverage_end_time');
             $table->string('location_type');
             $table->string('location_sub_type');
             $table->timestamps();

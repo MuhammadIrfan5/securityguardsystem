@@ -32,7 +32,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingAddress" placeholder="Address" name="address">
+                        <input type="text" class="form-control" id="floatingAddress" placeholder="Address"
+                               name="address">
                         <label for="floatingAddress">Address</label>
                     </div>
                 </div>
@@ -49,8 +50,14 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time" name="coverage_time">
-                        <label for="floatingcoverage_time">Coverage Time</label>
+                        <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
+                               name="coverage_start_time">
+                        <label for="floatingcoverage_time">Coverage Start Time</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
+                               name="coverage_end_time">
+                        <label for="floatingcoverage_time">Coverage End Time</label>
                     </div>
                 </div>
                 <div class="col-md-6">

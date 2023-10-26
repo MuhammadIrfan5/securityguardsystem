@@ -81,7 +81,7 @@ class LocationController extends Controller
                 $record->name,
                 $record->address,
                 $record->timezone,
-                $record->coverage_time,
+                "<li>$record->coverage_start_time</li>"."<li>$record->coverage_end_time</li>",
                 $mainCategory . ' (' . $record->maintype->type . ")",
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('location.edit', $record->id)
@@ -119,11 +119,12 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'            => 'required',
-            'address'         => 'required',
-            'timezone_id'     => 'required',
-            'coverage_time'   => 'required',
-            'locationType_id' => 'required',
+            'name'                => 'required',
+            'address'             => 'required',
+            'timezone_id'         => 'required',
+            'coverage_start_time' => 'required',
+            'coverage_end_time'   => 'required',
+            'locationType_id'     => 'required',
         ]);
 
         $data = new Location();
@@ -132,7 +133,8 @@ class LocationController extends Controller
         $data->address = $request->address;
         $data->timezone_id = $request->timezone_id;
         $data->timezone = TimeZone::find($request->timezone_id)['timezone'];
-        $data->coverage_time = date('h:i:s', strtotime($request->coverage_time));
+        $data->coverage_start_time = date('h:i:s', strtotime($request->coverage_start_time));
+        $data->coverage_end_time = date('h:i:s', strtotime($request->coverage_end_time));
         $data->location_type = $request->locationType_id;
         $data->location_sub_type = '';
 
