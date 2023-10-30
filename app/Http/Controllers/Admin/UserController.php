@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostUserRequest;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Role;
@@ -11,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -19,10 +21,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['activeMenu'] = 'Users';
+        $data['title'] = 'Users';
         $data['country'] = Country::all();
         $data['city'] = City::all();
-        return view('admin.users.table', $data);
+        return view('admin.user.list', $data);
     }
 
     public function tableData(Request $request)
@@ -88,7 +90,7 @@ class UserController extends Controller
                 $record->phone1,
                 $record->address,
                 $record->dob,
-                view('admin.defaultComponents.profileImage', ["url" => $record->image])->render(),
+                view('admin.layout.defaultComponent.profileImage', ["url" => $record->image])->render(),
                 date('d.m.Y H:i:s', strtotime($record->created_at)),
                 //                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
                 ""
@@ -102,21 +104,19 @@ class UserController extends Controller
      */
     public function create()
     {
-        $data['activeMenu'] = 'Add User';
+        $data['title'] = 'User';
         $data['country'] = Country::all();
-        $data['city'] = City::all();
+        $data['city'] = City::paginate(10);
         $data['state'] = State::all();
-        $data['role'] = Role::where('is_active',1)->get();
-        return view('admin.users.add', $data);
+        $data['role'] = Role::where('is_active', 1)->get();
+        return view('admin.user.add', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostUserRequest $request)
     {
-//        dd($request->all());
-
         $profile_image = '';
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -147,6 +147,7 @@ class UserController extends Controller
         Session::flash('message', 'User Added successfully');
         return redirect(route('users.index'));
     }
+
 
     /**
      * Display the specified resource.

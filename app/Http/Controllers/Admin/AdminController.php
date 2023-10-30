@@ -19,7 +19,7 @@ class AdminController extends Controller
 {
     public function Login()
     {
-        return view('admin.auth.login');
+        return view('admin.login');
     }
 
     public function doLogin(Request $request)
@@ -65,7 +65,7 @@ class AdminController extends Controller
 
     public function confirmOtp(Request $request)
     {
-        return view('admin.auth.otp', ['user' => $request->id]);
+        return view('admin.otp', ['user' => $request->id]);
     }
 
     public function verify(Request $request)

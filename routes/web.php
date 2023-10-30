@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\BannerController;
@@ -89,9 +93,21 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('users', UserController::class);
     Route::get('user-list', [UserController::class, 'tableData'])->name('user.tableData');
 
+    /*Employee*/
+    Route::resource('employee', EmployeeController::class);
+    Route::get('employee-list', [EmployeeController::class, 'tableData'])->name('employee.tableData');
 
-    Route::get('/pdf-banners', [BannerController::class, 'PDF'])->name('BannersPDF');
-    Route::get('BannerCreate', [BannerController::class, 'tableBanner'])->name('BannerCreate');
+    /*Location*/
+    Route::resource('location', LocationController::class);
+    Route::get('location-list', [LocationController::class, 'tableData'])->name('location.tableData');
+
+    /*Location type*/
+    Route::resource('locationType', LocationTypeController::class);
+    Route::get('locationType-list', [LocationTypeController::class, 'tableData'])->name('locationType.tableData');
+
+    /*Location type*/
+    Route::resource('assign-job', JobController::class);
+    Route::get('assign-job-list', [JobController::class, 'tableData'])->name('assign.job.tableData');
 
 
 });

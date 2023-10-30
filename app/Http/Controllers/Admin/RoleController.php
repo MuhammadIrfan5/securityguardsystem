@@ -14,8 +14,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $data['activeMenu'] = "Role";
-        return view('admin.role.table', $data);
+        $data['title'] = "Role";
+        return view('admin.role.list', $data);
     }
 
     public function tableData(Request $request)
@@ -74,10 +74,10 @@ class RoleController extends Controller
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
                 $record->name,
-                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->is_active])->render(),
-                view('admin.defaultComponents.delete', [
-                    'deleteUrl' => route('role.edit', ['role' => $record->id])
-                ])->render()
+                view('admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
+                  view('admin.layout.defaultComponent.editButton', [
+                      'editUrl' => route('role.edit', $record->id)
+                  ])->render(),
             ];
         }
         return response($response, 201);
@@ -112,9 +112,10 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
+        $data['title'] = "Role";
         $data['role'] = Role::find($id);
         $data['activeMenu'] = "Role";
-        return view('admin.role.add', $data);
+        return view('admin.role.edit', $data);
 
     }
 
