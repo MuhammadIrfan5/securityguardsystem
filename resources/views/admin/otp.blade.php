@@ -29,19 +29,26 @@
                             <input type="hidden" name="id" value="{{request()->id}}">
                             <input type="hidden" name="email" value="{{request()->email}}">
                             <input type="hidden" name="password" value="{{request()->password}}">
-                            <div class="form-group">
-                                <label for="otp">{{ __('OTP') }}</label>
-                                <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror"
-                                       name="otp" required autocomplete="otp" autofocus>
-                                @error('otp')
-                                <span class="invalid-feedback" role="alert">
+                            <div class="col-12">
+
+                                <div class="form-group">
+                                    <label for="otp">{{ __('OTP') }}</label>
+                                    <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror"
+                                           name="otp" required autocomplete="otp" autofocus>
+                                    @error('otp')
+                                    <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                    @enderror
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Verify') }}
-                            </button>
+                            <br>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Verify') }}
+                                </button>
+                            </div>
+
                         </form>
 
                     </div>
