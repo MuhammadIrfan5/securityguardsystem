@@ -20,6 +20,10 @@
                     {{ session('msg') }}
                 </div>
         @endif
+                @foreach ($errors->all() as $error)
+                <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+
         <!-- Floating Labels Form -->
             <form class="row g-3" method="post" action="{{route('employee.store')}}">
                 @csrf
@@ -37,13 +41,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" maxlength="11" id="floatingphone_one" placeholder="Contact Number" name="phone_one">
+                        <input type="text" class="form-control" id="floatingphone_one" placeholder="Contact Number" name="phone_one" maxlength="11">
                         <label for="floatingphone_one">Contact Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" maxlength="11" id="floatingphone_two" placeholder="Phone Number 2" name="phone_two">
+                        <input type="text" class="form-control" maxlength="11" id="floatingphone_two" placeholder="Phone Number 2" name="phone_two">
                         <label for="floatingphone_one">Phone Number(Optional)</label>
                     </div>
                 </div>
