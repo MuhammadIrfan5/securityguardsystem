@@ -74,7 +74,7 @@ class EmployeeController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->name,
+                view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('employee.show',$record->id), "username" => $record->name ])->render(),
                 $record->id_number,
                 $record->phone_one,
                 $record->phone_two,
@@ -140,7 +140,10 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $data['activeMenu']='Employee';
+        $data['data']=Employee::find($id);
+        return view('admin.employee.detail',$data);
     }
 
     /**
