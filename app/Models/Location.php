@@ -11,7 +11,4 @@ class Location extends Model
     public function maintype(){
         return $this->belongsTo(LocationType::class,'location_type');
     }
-    public function clientDetail(){
-        return $this->hasOne(ClientLocation::class);
-    }
 }
