@@ -25,26 +25,50 @@
                 @csrf
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Name" name="name">
-                        <label for="floatingName">Name</label>
+                        <input type="text" class="form-control" id="floatingName" placeholder="Employee Name" name="name">
+                        <label for="floatingName">Employee Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingid_number" placeholder="ID Number" name="id_number">
-                        <label for="floatingid_number">ID Number</label>
+                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number" name="id_number">
+                        <label for="floatingid_number">Employee ID Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" id="floatingphone_one" placeholder="Phone Number" name="phone_one">
-                        <label for="floatingphone_one">Phone Number</label>
+                        <input type="number" class="form-control" maxlength="11" id="floatingphone_one" placeholder="Contact Number" name="phone_one">
+                        <label for="floatingphone_one">Contact Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" id="floatingphone_two" placeholder="Phone Number 2" name="phone_two">
+                        <input type="number" class="form-control" maxlength="11" id="floatingphone_two" placeholder="Phone Number 2" name="phone_two">
                         <label for="floatingphone_one">Phone Number(Optional)</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingguard_number" placeholder="Guard Card Number" name="guard_number">
+                        <label for="floatingguard_number">Guard Card Number</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="floatingissue_date" placeholder="Issue Date" name="issue_date">
+                        <label for="floatingissue_date">Issue Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="floatingpay_rate" placeholder="Pay Rate" name="pay_rate">
+                        <label for="floatingpay_rate">Pay Rate</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingmanager_name" placeholder="Manager Name" name="manager_name">
+                        <label for="floatingmanager_name">Manager Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">

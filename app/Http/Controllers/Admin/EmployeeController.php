@@ -21,13 +21,13 @@ class EmployeeController extends Controller
 
     public function tableData(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Employee();
+        $country                  = new Employee();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -78,7 +78,7 @@ class EmployeeController extends Controller
                 $record->id_number,
                 $record->phone_one,
                 $record->phone_two,
-                view('admin.layout.defaultComponent.status', ["boolean" => $record->is_regular_guard])->render(),
+                view('admin.layout.defaultComponent.status', [ "boolean" => $record->is_regular_guard ])->render(),
                 $record->notes,
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('employee.edit', $record->id)
@@ -102,11 +102,15 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = [
-            'name'      => 'required|string',
-            'id_number' => 'required|unique:employees,id_number',
-            'phone_one' => 'required|string',
-            'notes'     => 'nullable|string',
+        $validate  = [
+            'name'         => 'required|string',
+            'id_number'    => 'required|unique:employees,id_number',
+            'phone_one'    => 'required|string',
+            'guard_number' => 'required|string',
+            'issue_date'   => 'required|string',
+            'pay_rate'     => 'required|string',
+            'manager_name' => 'required|string',
+            'notes'        => 'nullable|string',
         ];
         $validator = Validator::make($request->all(), $validate);
         if ($validator->fails()) {
@@ -116,6 +120,10 @@ class EmployeeController extends Controller
                 'name'             => $request->name,
                 'id_number'        => $request->id_number,
                 'phone_one'        => $request->phone_one,
+                'guard_number'     => $request->guard_number,
+                'issue_date'       => $request->issue_date,
+                'pay_rate'         => $request->pay_rate,
+                'manager_name'     => $request->manager_name,
                 'user_id'          => $request->user()['id'],
                 'phone_two'        => !empty($request->phone_two) ? $request->phone_two : '',
                 'notes'            => !empty($request->notes) ? $request->notes : '',
@@ -140,7 +148,7 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        $data['title'] = 'Employee';
+        $data['title']  = 'Employee';
         $data['record'] = Employee::find($id);
         return view('admin.employee.edit', $data);
     }

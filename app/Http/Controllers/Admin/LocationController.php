@@ -120,7 +120,6 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
         $request->validate([
             'name'                => 'required',
             'address'             => 'required',
@@ -135,6 +134,7 @@ class LocationController extends Controller
         $data->user_id             = $request->user()['id'];
         $data->address             = $request->address;
         $data->timezone_id         = $request->timezone_id;
+        $data->license_number      = $request->license_number;
         $data->timezone            = TimeZone::find($request->timezone_id)['timezone'];
         $data->coverage_start_time = date('h:i:s', strtotime($request->coverage_start_time));
         $data->coverage_end_time   = date('h:i:s', strtotime($request->coverage_end_time));

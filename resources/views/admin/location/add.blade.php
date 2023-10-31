@@ -26,14 +26,14 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Location Name" name="name">
+                        <input type="text" class="form-control" id="floatingName" placeholder="Location Name" name="name" required>
                         <label for="floatingName">Location Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingAddress" placeholder="Address"
-                               name="address">
+                               name="address" required>
                         <label for="floatingAddress">Address</label>
                     </div>
                 </div>
@@ -51,19 +51,19 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
-                               name="coverage_start_time">
+                               name="coverage_start_time" required>
                         <label for="floatingcoverage_time">Coverage Start Time</label>
                     </div>
                     <div class="form-floating">
                         <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
-                               name="coverage_end_time">
+                               name="coverage_end_time" required>
                         <label for="floatingcoverage_time">Coverage End Time</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="locationType_id" class="form-select"
-                                id="state_id">
+                                id="state_id" required>
                             <option disabled selected>Location Type list</option>
                             @foreach($locationType as $user)
                                 <option value="{{ $user['id'] }}">{{$user['type']}}</option>

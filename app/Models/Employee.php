@@ -15,8 +15,12 @@ class Employee extends Model
         'phone_one',
         'user_id',
         'phone_two',
+        'guard_number',
+        'issue_date',
+        'pay_rate',
         'notes',
         'is_regular_guard',
         'is_active',
+        'manager_name',
     ];
 }
