@@ -26,8 +26,8 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Name" name="name">
-                        <label for="floatingName">Name</label>
+                        <input type="text" class="form-control" id="floatingName" placeholder="Location Name" name="name">
+                        <label for="floatingName">Location Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -71,6 +71,159 @@
                         </select>
                     </div>
                 </div>
+                {{--client detail--}}
+                <div class="col-md-12">
+
+                    <div class="form-check">
+                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"
+                               id="clientDetails"
+                               onclick="showbox(this)">
+                        <label class="form-check-label" for="clientDetails">
+                            Add Client Details
+                        </label>
+                    </div>
+                </div>
+                <div id="cc_box" class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" maxlength="16" name="client[client_name]"
+                                   id="client_name"
+                            >
+                            <label for="client_name"> Client Name </label>
+                            @error('client_name')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" maxlength="16" name="client[client_designation]"
+                                   id="client_designation"
+                            >
+                            <label for="client_designation"> Client Designation </label>
+                            @error('client_designation')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" maxlength="16" name="client[client_email]"
+                                   id="client_email"
+                            >
+                            <label for="client_email"> Client Email </label>
+                            @error('client_email')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" maxlength="11" name="client[client_phone]"
+                                   id="client_phone"
+                            >
+                            <label for="client_phone"> Client Phone </label>
+                            @error('client_phone')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+
+                </div>
+                {{--License Number--}}
+                <div class="col-md-12">
+                    <div class="form-check">
+                        <input class="form-check-input" value="licenseNumber" type="checkbox" name="clientLicenseNumber"
+                               id="clientLicenseNumber"
+                               onclick="checkOnsite(this)">
+                        <label class="form-check-label" for="clientLicenseNumber">
+                            Trailer On Site
+                        </label>
+                    </div>
+                </div>
+                <div id="licenseNumber" class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" maxlength="16" name="license_number"
+                                   id="license_number">
+                            <label for="license_number"> license Number </label>
+                            @error('license_number')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                {{--Monitoring--}}
+                <div class="col-md-12">
+
+                    <div class="form-check">
+                        <input class="form-check-input" value="Monitoring" type="radio" name="payment_mode"
+                               id="monitoring"
+                                onclick="isMonitoring(this)">
+                        <label class="form-check-label" for="monitoring">
+                            Monitoring
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+
+                        <input class="form-check-input" value="NonMonitoring" type="radio" name="payment_mode" id="NonMonitoring"
+                               checked="" onclick="isMonitoring(this)">
+                        <label class="form-check-label" for="NonMonitoring">
+                            Non Monitoring
+                        </label>
+                    </div>
+                </div>
+
+                <div id="monitoringCheck" class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" maxlength="16" name="monitor[number_of_camera]"
+                                   id="number_of_camera">
+                            <label for="number_of_camera"> Number of Camera </label>
+                            @error('number_of_camera')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" maxlength="16" name="monitor[camera_tower_number]"
+                                   id="camera_tower_number">
+                            <label for="camera_tower_number"> Camera Tower Number  </label>
+                            @error('camera_tower_number')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" maxlength="16" name="monitor[nvr]"
+                                   id="nvr">
+                            <label for="nvr"> NVR  </label>
+                            @error('nvr')
+                            <div class="alert alert-danger" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-6">
                     <div class="form-floating">
                         <textarea class="form-control" style="height: 100px" name="notes"></textarea>
@@ -88,4 +241,7 @@
         </div>
     </div>
 
+@endsection
+@section('page-js')
+    @include('admin.location.addJs')
 @endsection

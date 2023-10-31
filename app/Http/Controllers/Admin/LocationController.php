@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClientLocation;
 use App\Models\Location;
 use App\Models\LocationType;
+use App\Models\MonitorLocation;
 use App\Models\TimeZone;
 use Illuminate\Http\Request;
 
@@ -21,13 +23,13 @@ class LocationController extends Controller
 
     public function tableData(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Location();
+        $country                  = new Location();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -81,7 +83,7 @@ class LocationController extends Controller
                 $record->name,
                 $record->address,
                 $record->timezone,
-                "<li>$record->coverage_start_time</li>"."<li>$record->coverage_end_time</li>",
+                "<li>$record->coverage_start_time</li>" . "<li>$record->coverage_end_time</li>",
                 $mainCategory . ' (' . $record->maintype->type . ")",
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('location.edit', $record->id)
@@ -96,14 +98,14 @@ class LocationController extends Controller
      */
     public function create()
     {
-        $data = array();
+        $data                 = array();
         $data['locationType'] = array();
-        $data['title'] = 'Location';
-        $locationType = LocationType::where('parent_id', '!=', 0)->get()->toArray();
-        $locationType2 = LocationType::where('id', 1)->get()->toArray();
-        $datalocationType = array_merge($locationType, $locationType2);
+        $data['title']        = 'Location';
+        $locationType         = LocationType::where('parent_id', '!=', 0)->get()->toArray();
+        $locationType2        = LocationType::where('id', 1)->get()->toArray();
+        $datalocationType     = array_merge($locationType, $locationType2);
         foreach ($datalocationType as $item) {
-            $parentName = LocationType::find($item['parent_id']);
+            $parentName             = LocationType::find($item['parent_id']);
             $data['locationType'][] = [
                 'id'   => $item['id'],
                 'type' => !empty($parentName) ? $parentName->type . ' (' . $item['type'] . ")" : $item['type']
@@ -118,6 +120,7 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $request->validate([
             'name'                => 'required',
             'address'             => 'required',
@@ -127,19 +130,35 @@ class LocationController extends Controller
             'locationType_id'     => 'required',
         ]);
 
-        $data = new Location();
-        $data->name = $request->name;
-        $data->user_id = $request->user()['id'];
-        $data->address = $request->address;
-        $data->timezone_id = $request->timezone_id;
-        $data->timezone = TimeZone::find($request->timezone_id)['timezone'];
+        $data                      = new Location();
+        $data->name                = $request->name;
+        $data->user_id             = $request->user()['id'];
+        $data->address             = $request->address;
+        $data->timezone_id         = $request->timezone_id;
+        $data->timezone            = TimeZone::find($request->timezone_id)['timezone'];
         $data->coverage_start_time = date('h:i:s', strtotime($request->coverage_start_time));
-        $data->coverage_end_time = date('h:i:s', strtotime($request->coverage_end_time));
-        $data->location_type = $request->locationType_id;
-        $data->location_sub_type = '';
-
+        $data->coverage_end_time   = date('h:i:s', strtotime($request->coverage_end_time));
+        $data->location_type       = $request->locationType_id;
+        $data->location_sub_type   = '';
         $data->save();
 
+        if (!empty($request->client['client_name'])) {
+            ClientLocation::create([
+                'location_id'        => $data->id,
+                'client_name'        => $request->client['client_name'],
+                'client_designation' => $request->client['client_designation'],
+                'client_email'       => $request->client['client_email'],
+                'client_phone'       => $request->client['client_phone']
+            ]);
+        }
+        if (!empty($request->monitor['number_of_camera'])) {
+            MonitorLocation::create([
+                'location_id'         => $data->id,
+                'number_of_camera'    => $request->monitor['number_of_camera'],
+                'camera_tower_number' => $request->monitor['camera_tower_number'],
+                'nvr'                 => $request->monitor['nvr'],
+            ]);
+        }
         return redirect()->route('location.index')->with('msg', 'Location Added Successfully!');
     }
 
