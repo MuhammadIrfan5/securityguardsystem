@@ -17,8 +17,6 @@ class RoleSeeder extends Seeder
         $roles = [
             ['name' => 'SuperAdmin'],
             ['name' => 'Admin'],
-            ['name' => 'Client'],
-            ['name' => 'Security Guard'],
             ['name' => 'User'],
         ];
         Role::insert($roles);
