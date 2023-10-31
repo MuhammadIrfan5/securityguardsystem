@@ -80,7 +80,8 @@ class LocationController extends Controller
             }
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->name,
+                view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show',$record->id), "username" => $record->name ])->render(),
+
                 $record->address,
                 $record->timezone,
                 "<li>$record->coverage_start_time</li>" . "<li>$record->coverage_end_time</li>",
@@ -158,6 +159,8 @@ class LocationController extends Controller
                 'camera_tower_number' => $request->monitor['camera_tower_number'],
                 'nvr'                 => $request->monitor['nvr'],
             ]);
+            $data->is_monitoring=1;
+            $data->update();
         }
         return redirect()->route('location.index')->with('msg', 'Location Added Successfully!');
     }
@@ -167,7 +170,9 @@ class LocationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data['activeMenu']='Location';
+        $data['data']=Location::find($id);
+        return view('admin.location.detail',$data);
     }
 
     /**

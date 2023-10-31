@@ -1,5 +1,5 @@
-@if($is_designer==1)
-    <a href="{{route('superdesigners.show', $Id)}}">{{ $username }}</a>
+@if($is_location==1)
+    <a href="{{$url}}">{{ $username }}</a>
 @elseif($is_designer==0)
     <a href="{{route('project-holder.show', $Id)}}">{{ $username }}</a>
 @else
