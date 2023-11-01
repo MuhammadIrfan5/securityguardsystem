@@ -19,59 +19,67 @@
                 <div class="alert alert-success">
                     {{ session('msg') }}
                 </div>
-        @endif
-                @foreach ($errors->all() as $error)
+            @endif
+            @foreach ($errors->all() as $error)
                 <div class="alert alert-danger">{{ $error }}</div>
-            @endforeach
+        @endforeach
 
         <!-- Floating Labels Form -->
             <form class="row g-3" method="post" action="{{route('employee.store')}}">
                 @csrf
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Employee Name" name="name">
+                        <input type="text" class="form-control" id="floatingName" placeholder="Employee Name"
+                               name="name">
                         <label for="floatingName">Employee Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number" name="id_number">
+                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number"
+                               name="id_number">
                         <label for="floatingid_number">Employee ID Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingphone_one" placeholder="Contact Number" name="phone_one" maxlength="11">
+                        <input type="text" class="form-control" id="floatingphone_one" placeholder="Contact Number"
+                               name="phone_one" maxlength="11">
                         <label for="floatingphone_one">Contact Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" maxlength="11" id="floatingphone_two" placeholder="Phone Number 2" name="phone_two">
+                        <input type="text" class="form-control" maxlength="11" id="floatingphone_two"
+                               placeholder="Phone Number 2" name="phone_two">
                         <label for="floatingphone_one">Phone Number(Optional)</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingguard_number" placeholder="Guard Card Number" name="guard_number">
+                        <input type="text" class="form-control" id="floatingguard_number"
+                               placeholder="Guard Card Number" name="guard_number">
                         <label for="floatingguard_number">Guard Card Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="date" class="form-control" id="floatingissue_date" placeholder="Issue Date" name="issue_date">
+                        <input type="date" class="form-control" id="floatingissue_date" placeholder="Issue Date"
+                               name="issue_date">
                         <label for="floatingissue_date">Issue Date</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" id="floatingpay_rate" placeholder="Pay Rate" name="pay_rate">
+                        <input type="number" class="form-control" id="floatingpay_rate" placeholder="Pay Rate"
+                               name="pay_rate">
                         <label for="floatingpay_rate">Pay Rate</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingmanager_name" placeholder="Manager Name" name="manager_name">
+                        <input type="text" class="form-control" id="floatingmanager_name" placeholder="Manager Name"
+                               name="manager_name">
                         <label for="floatingmanager_name">Manager Name</label>
                     </div>
                 </div>
@@ -85,8 +93,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-check form-switch">
-                        <input type="checkbox" class="form-check-input" name="is_regular_guard"  id="flexSwitchCheckChecked"
-                          value="1" checked>
+                        <input type="checkbox" class="form-check-input" name="is_regular_guard"
+                               id="flexSwitchCheckChecked"
+                               value="1" checked>
                         <label class="form-check-label" for="flexSwitchCheckChecked">Is Regular Guard</label>
                     </div>
                 </div>
