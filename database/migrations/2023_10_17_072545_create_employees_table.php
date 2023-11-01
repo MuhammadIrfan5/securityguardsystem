@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('category_id')->constrained('employee_categories');
             $table->string('name');
             $table->string('id_number');
             $table->string('phone_one');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_regular_guard')->default(1);
             $table->string('guard_number');
             $table->string('issue_date');
+            $table->string('expiry_date');
             $table->string('pay_rate');
             $table->string('manager_name');
             $table->longText('notes')->nullable();

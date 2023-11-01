@@ -26,14 +26,14 @@
                 @method('PUT')
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Name" name="name" value="{{$record->name}}">
-                        <label for="floatingName">Name</label>
+                        <input type="text" class="form-control" id="floatingName" placeholder="Employee Name" name="name" value="{{$record->name}}">
+                        <label for="floatingName">Employee Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingid_number" placeholder="ID Number" name="id_number" value="{{$record->id_number}}">
-                        <label for="floatingid_number">ID Number</label>
+                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number" name="id_number" value="{{$record->id_number}}">
+                        <label for="floatingid_number">Employee ID Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
