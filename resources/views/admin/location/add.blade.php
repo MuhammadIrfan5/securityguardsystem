@@ -26,7 +26,8 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Location Name" name="name" required>
+                        <input type="text" class="form-control" id="floatingName" placeholder="Location Name"
+                               name="name" required>
                         <label for="floatingName">Location Name</label>
                     </div>
                 </div>
@@ -48,12 +49,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-floating">
                         <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
                                name="coverage_start_time" required>
                         <label for="floatingcoverage_time">Coverage Start Time</label>
                     </div>
+                </div>
+                <div class="col-md-3">
                     <div class="form-floating">
                         <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
                                name="coverage_end_time" required>
@@ -71,16 +74,20 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-12">
+                </div>
+
                 {{--client detail--}}
                 <div class="col-md-12">
+                    <h4 class="form-check-label" for="clientDetails">
+                        Add Client Details
+                    </h4>
 
                     <div class="form-check">
                         <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"
                                id="clientDetails"
                                onclick="showbox(this)">
-                        <label class="form-check-label" for="clientDetails">
-                            Add Client Details
-                        </label>
+
                     </div>
                 </div>
                 <div id="cc_box" class="row g-3">
@@ -140,13 +147,14 @@
                 </div>
                 {{--License Number--}}
                 <div class="col-md-12">
+                    <h4 class="form-check-label" for="clientLicenseNumber">
+                        Trailer On Site
+                    </h4>
                     <div class="form-check">
                         <input class="form-check-input" value="licenseNumber" type="checkbox" name="clientLicenseNumber"
                                id="clientLicenseNumber"
                                onclick="checkOnsite(this)">
-                        <label class="form-check-label" for="clientLicenseNumber">
-                            Trailer On Site
-                        </label>
+
                     </div>
                 </div>
                 <div id="licenseNumber" class="row g-3">
@@ -154,7 +162,7 @@
                         <div class="form-floating">
                             <input type="text" class="form-control" maxlength="16" name="license_number"
                                    id="license_number">
-                            <label for="license_number"> license Number </label>
+                            <label for="license_number"> License Number </label>
                             @error('license_number')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
@@ -169,19 +177,20 @@
                     <div class="form-check">
                         <input class="form-check-input" value="Monitoring" type="radio" name="payment_mode"
                                id="monitoring"
-                                onclick="isMonitoring(this)">
-                        <label class="form-check-label" for="monitoring">
+                               onclick="isMonitoring(this)">
+                        <h4 class="form-check-label" for="monitoring">
                             Monitoring
-                        </label>
+                        </h4>
                     </div>
 
                     <div class="form-check">
 
-                        <input class="form-check-input" value="NonMonitoring" type="radio" name="payment_mode" id="NonMonitoring"
+                        <input class="form-check-input" value="NonMonitoring" type="radio" name="payment_mode"
+                               id="NonMonitoring"
                                checked="" onclick="isMonitoring(this)">
-                        <label class="form-check-label" for="NonMonitoring">
+                        <h4 class="form-check-label" for="NonMonitoring">
                             Non Monitoring
-                        </label>
+                        </h4>
                     </div>
                 </div>
 
@@ -202,7 +211,7 @@
                         <div class="form-floating">
                             <input type="number" class="form-control" maxlength="16" name="monitor[camera_tower_number]"
                                    id="camera_tower_number">
-                            <label for="camera_tower_number"> Camera Tower Number  </label>
+                            <label for="camera_tower_number"> Camera Tower Number </label>
                             @error('camera_tower_number')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
@@ -214,7 +223,7 @@
                         <div class="form-floating">
                             <input type="text" class="form-control" maxlength="16" name="monitor[nvr]"
                                    id="nvr">
-                            <label for="nvr"> NVR  </label>
+                            <label for="nvr"> NVR </label>
                             @error('nvr')
                             <div class="alert alert-danger" role="alert">
                                 {{ $message }}
