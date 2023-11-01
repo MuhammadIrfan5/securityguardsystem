@@ -21,21 +21,21 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['title'] = 'Users';
+        $data['title']   = 'Users';
         $data['country'] = Country::all();
-        $data['city'] = City::all();
+        $data['city']    = City::all();
         return view('admin.user.list', $data);
     }
 
     public function tableData(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new User();
+        $country                  = new User();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -90,7 +90,7 @@ class UserController extends Controller
                 $record->phone1,
                 $record->address,
                 $record->dob,
-                view('admin.layout.defaultComponent.profileImage', ["url" => $record->image])->render(),
+                view('admin.layout.defaultComponent.profileImage', [ "url" => $record->image ])->render(),
 //                date('d.m.Y H:i:s', strtotime($record->created_at)),
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('users.edit', $record->id)
@@ -105,11 +105,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $data['title'] = 'User';
+        $data['title']   = 'User';
         $data['country'] = Country::all();
-        $data['city'] = City::paginate(10);
-        $data['state'] = State::all();
-        $data['role'] = Role::where('is_active', 1)->get();
+        $data['city']    = City::paginate(10);
+        $data['state']   = State::all();
+        $data['role']    = Role::where('is_active', 1)->get();
         return view('admin.user.add', $data);
     }
 
@@ -120,30 +120,30 @@ class UserController extends Controller
     {
         $profile_image = '';
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
+            $image     = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/user/'), $imageName);
 
             $profile_image = 'uploads/user' . $imageName;
         }
-        $data = new User();
-        $data['role_id'] = $request->role_id;
-        $data['country_id'] = $request->country_name;
-        $data['city_id'] = $request->city_name;
-        $data['state_id'] = $request->state_id;
-        $data['first_name'] = $request->first_name;
-        $data['last_name'] = $request->last_name;
-        $data['middle_name'] = $request->middle_name;
-        $data['phone1'] = $request->phone1;
-        $data['phone2'] = $request->phone2;
-        $data['email'] = $request->email;
+        $data                    = new User();
+        $data['role_id']         = $request->role_id;
+        $data['country_id']      = $request->country_name;
+        $data['city_id']         = $request->city_name;
+        $data['state_id']        = $request->state_id;
+        $data['first_name']      = $request->first_name;
+        $data['last_name']       = $request->last_name;
+        $data['middle_name']     = $request->middle_name;
+        $data['phone1']          = $request->phone1;
+        $data['phone2']          = $request->phone2;
+        $data['email']           = $request->email;
         $data['secondary_email'] = $request->secondary_email;
-        $data['gender'] = $request->gender;
-        $data['admin_approved'] = 1;
-        $data['address'] = $request->address;
-        $data['dob'] = $request->dob;
-        $data['password'] = Hash::make($request->password);
-        $data['image'] = $profile_image;
+        $data['gender']          = $request->gender;
+        $data['admin_approved']  = 1;
+        $data['address']         = $request->address;
+        $data['dob']             = $request->dob;
+        $data['password']        = Hash::make($request->password);
+        $data['image']           = $profile_image;
         $data->save();
         Session::flash('message', 'User Added successfully');
         return redirect(route('users.index'));
@@ -164,12 +164,12 @@ class UserController extends Controller
     public function edit(string $id)
     {
 
-        $data['value'] = User::find($id);
-        $data['title'] = 'User';
+        $data['value']   = User::find($id);
+        $data['title']   = 'User';
         $data['country'] = Country::all();
-        $data['city'] = City::paginate(10);
-        $data['state'] = State::all();
-        $data['role'] = Role::where('is_active', 1)->get();
+        $data['city']    = City::paginate(10);
+        $data['state']   = State::all();
+        $data['role']    = Role::where('is_active', 1)->get();
         return view('admin.user.edit', $data);
     }
 
@@ -178,13 +178,59 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        $data = User::find($id);
+        if ($request->role_id) {
+            $data['role_id'] = $request->role_id;
+        }
+        if ($request->country_name) {
+            $data['country_id'] = $request->country_name;
+        }
+        if ($request->city_name) {
+            $data['city_id'] = $request->city_name;
+        }
+        if ($request->state_id) {
+            $data['state_id'] = $request->state_id;
+        }
+        if ($request->first_name) {
+            $data['first_name'] = $request->first_name;
+        }
+        if ($request->last_name) {
+            $data['last_name'] = $request->last_name;
+        }
+        if ($request->middle_name) {
+            $data['middle_name'] = $request->middle_name;
+        }
+        if ($request->phone1) {
+            $data['phone1'] = $request->phone1;
+        }
+        if ($request->phone2) {
+            $data['phone2'] = $request->phone2;
+        }
+        if ($request->email) {
+            $data['email'] = $request->email;
+        }
+        if ($request->secondary_email) {
+            $data['secondary_email'] = $request->secondary_email;
+        }
+        if ($request->gender) {
+            $data['gender'] = $request->gender;
+        }
+        if ($request->address) {
+            $data['address'] = $request->address;
+        }
+        if ($request->dob) {
+            $data['dob'] = $request->dob;
+        }
+        $data->save();
+        Session::flash('message', 'User Updated successfully');
+        return redirect(route('users.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public
+    function destroy(string $id)
     {
         //
     }

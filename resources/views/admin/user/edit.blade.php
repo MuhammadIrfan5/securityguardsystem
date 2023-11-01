@@ -44,7 +44,7 @@
                             <select name="country_name" class="form-select"
                                     id="country_name">
                                 @foreach($country as $user)
-                                    <option {{$value->country_id == $user->id  ? 'selected' : ''}}value="{{ $user->id }}">{{ $user->name}}</option>
+                                    <option {{$value->country_id == $user->id  ? 'selected' : ''}} value="{{ $user->id }}">{{ $user->name}}</option>
                                 @endforeach
                             </select>
                         </div>
