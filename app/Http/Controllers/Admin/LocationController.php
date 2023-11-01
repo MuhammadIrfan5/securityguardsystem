@@ -80,7 +80,7 @@ class LocationController extends Controller
             }
             $response['data'][] = [
                 $record->id,
-                view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show',$record->id), "username" => $record->name ])->render(),
+                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show',$record->id), "username" => $record->name ])->render(),
                 $record->address,
                 $record->timezone,
                 "<li>$record->coverage_start_time</li>" . "<li>$record->coverage_end_time</li>",

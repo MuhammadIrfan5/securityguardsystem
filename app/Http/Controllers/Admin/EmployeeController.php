@@ -75,7 +75,7 @@ class EmployeeController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 $record->id,
-                view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('employee.show', $record->id), "username" => $record->name ])->render(),
+                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('employee.show', $record->id), "username" => $record->name ])->render(),
                 $record->id_number,
                 $record->phone_one,
                 $record->expiry_date,
