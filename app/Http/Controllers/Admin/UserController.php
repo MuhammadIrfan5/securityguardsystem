@@ -91,7 +91,7 @@ class UserController extends Controller
                 $record->address,
                 $record->dob,
                 view('admin.layout.defaultComponent.profileImage', ["url" => $record->image])->render(),
-                date('d.m.Y H:i:s', strtotime($record->created_at)),
+//                date('d.m.Y H:i:s', strtotime($record->created_at)),
                 //                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
                 ""
             ];

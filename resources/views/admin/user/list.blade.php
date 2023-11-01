@@ -44,7 +44,7 @@
                             <th>Address</th>
                             <th>DOB</th>
                             <th>Image</th>
-                            <th>Date</th>
+{{--                            <th>Date</th>--}}
                             <th>Actions</th>
                         </tr>
                         </thead>
