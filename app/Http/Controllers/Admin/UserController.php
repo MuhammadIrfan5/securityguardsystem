@@ -92,8 +92,9 @@ class UserController extends Controller
                 $record->dob,
                 view('admin.layout.defaultComponent.profileImage', ["url" => $record->image])->render(),
 //                date('d.m.Y H:i:s', strtotime($record->created_at)),
-                //                view('admin.defaultComponents.editDelete', ["id" => $record->id])->render(),
-                ""
+                view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('users.edit', $record->id)
+                ])->render(),
             ];
         }
         return response($response, 201);
@@ -162,7 +163,14 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $data['value'] = User::find($id);
+        $data['title'] = 'User';
+        $data['country'] = Country::all();
+        $data['city'] = City::paginate(10);
+        $data['state'] = State::all();
+        $data['role'] = Role::where('is_active', 1)->get();
+        return view('admin.user.edit', $data);
     }
 
     /**
@@ -170,7 +178,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
