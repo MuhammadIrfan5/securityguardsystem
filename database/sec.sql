@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2023 at 02:49 PM
+-- Generation Time: Nov 01, 2023 at 08:29 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -61,19 +61,6 @@ CREATE TABLE `client_locations` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `client_locations`
---
-
-INSERT INTO `client_locations` (`id`, `location_id`, `client_name`, `client_designation`, `client_email`, `client_phone`, `created_at`, `updated_at`) VALUES
-(1, 17, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:16:24', '2023-10-31 06:16:24'),
-(2, 18, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:16:41', '2023-10-31 06:16:41'),
-(3, 19, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:16:49', '2023-10-31 06:16:49'),
-(4, 20, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:17:50', '2023-10-31 06:17:50'),
-(5, 21, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:17:59', '2023-10-31 06:17:59'),
-(6, 22, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:18:32', '2023-10-31 06:18:32'),
-(7, 23, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-10-31 06:18:49', '2023-10-31 06:18:49');
-
 -- --------------------------------------------------------
 
 --
@@ -111,13 +98,14 @@ INSERT INTO `countries` (`id`, `iso2`, `iso3`, `name`, `phone_code`, `dialling_p
 CREATE TABLE `employees` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_one` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_two` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_regular_guard` tinyint(1) NOT NULL DEFAULT 1,
   `guard_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `issue_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiry_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pay_rate` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `manager_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -130,9 +118,30 @@ CREATE TABLE `employees` (
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `user_id`, `name`, `id_number`, `phone_one`, `phone_two`, `is_regular_guard`, `guard_number`, `issue_date`, `pay_rate`, `manager_name`, `notes`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Sohail Ali', 'b123', '211212121', '21212', 1, 'ssa1234', '2023-11-01', '10000', 'rwerere', 'sasas', 0, '2023-10-31 06:34:36', '2023-10-31 06:34:36'),
-(2, 1, 'Sohail Ali', 'b1231', '21212121212', '', 1, 'ssa1234', '2023-11-01', '12121', 'Allah Rahi', 'sasa', 0, '2023-10-31 08:49:10', '2023-10-31 08:49:10');
+INSERT INTO `employees` (`id`, `user_id`, `category_id`, `name`, `id_number`, `phone_one`, `phone_two`, `guard_number`, `issue_date`, `expiry_date`, `pay_rate`, `manager_name`, `notes`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'Sohail Ali', 'b123', '21212121212', '', 'ssa1234', '2023-11-01', '2023-12-01', '123', 'Allah Rahi', '', 0, '2023-11-01 01:50:11', '2023-11-01 01:58:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee_categories`
+--
+
+CREATE TABLE `employee_categories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `employee_categories`
+--
+
+INSERT INTO `employee_categories` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Regular', 1, NULL, NULL),
+(2, 'Shack', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -167,13 +176,6 @@ CREATE TABLE `jobs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `jobs`
---
-
-INSERT INTO `jobs` (`id`, `employee_id`, `location_id`, `check_in`, `calling_number`, `is_approved`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '17:35', 'Dispatch', 1, '2023-10-31 07:35:48', '2023-10-31 07:35:56');
-
 -- --------------------------------------------------------
 
 --
@@ -203,32 +205,7 @@ CREATE TABLE `locations` (
 --
 
 INSERT INTO `locations` (`id`, `user_id`, `name`, `address`, `timezone_id`, `timezone`, `coverage_start_time`, `coverage_end_time`, `location_type`, `location_sub_type`, `license_number`, `is_monitoring`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Sohail Ali', 'xwww', 2, 'Africa/Accra', '03:59:00', '10:03:00', '7', '', NULL, 0, NULL, '2023-10-31 06:02:08', '2023-10-31 06:02:08'),
-(2, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:06:29', '2023-10-31 06:06:29'),
-(3, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:07:20', '2023-10-31 06:07:20'),
-(4, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:09:35', '2023-10-31 06:09:35'),
-(5, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:10:44', '2023-10-31 06:10:44'),
-(6, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:10:57', '2023-10-31 06:10:57'),
-(7, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:11:10', '2023-10-31 06:11:10'),
-(8, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:11:18', '2023-10-31 06:11:18'),
-(9, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:11:21', '2023-10-31 06:11:21'),
-(10, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:11:32', '2023-10-31 06:11:32'),
-(11, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:11:47', '2023-10-31 06:11:47'),
-(12, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:12:34', '2023-10-31 06:12:34'),
-(13, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:13:28', '2023-10-31 06:13:28'),
-(14, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:14:39', '2023-10-31 06:14:39'),
-(15, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:14:49', '2023-10-31 06:14:49'),
-(16, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:16:12', '2023-10-31 06:16:12'),
-(17, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:16:24', '2023-10-31 06:16:24'),
-(18, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:16:41', '2023-10-31 06:16:41'),
-(19, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:16:49', '2023-10-31 06:16:49'),
-(20, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:17:50', '2023-10-31 06:17:50'),
-(21, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:17:59', '2023-10-31 06:17:59'),
-(22, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:18:32', '2023-10-31 06:18:32'),
-(23, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '04:04:00', '10:04:00', '3', '', NULL, 0, NULL, '2023-10-31 06:18:49', '2023-10-31 06:18:49'),
-(24, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '05:31:00', '05:31:00', '1', '', NULL, 0, NULL, '2023-10-31 07:32:07', '2023-10-31 07:32:07'),
-(25, 1, 'Sohail Ali', 'xwww', 248, 'Asia/Karachi', '05:32:00', '05:32:00', '1', '', NULL, 0, NULL, '2023-10-31 07:32:42', '2023-10-31 07:32:42'),
-(26, 1, 'Sohail Ali', 'xwww', 212, 'Asia/Aden', '05:33:00', '05:33:00', '3', '', 'sasasa1234', 0, NULL, '2023-10-31 07:33:45', '2023-10-31 07:33:45');
+(1, 1, 'Sohail Ali', 'xwww', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09');
 
 -- --------------------------------------------------------
 
@@ -285,12 +262,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (8, '2023_10_03_000000_create_users_table', 1),
 (9, '2023_10_04_181753_create_user_two_factors_table', 1),
 (10, '2023_10_17_063524_create_time_zones_table', 1),
-(11, '2023_10_17_072545_create_employees_table', 1),
 (12, '2023_10_17_073040_create_location_types_table', 1),
-(13, '2023_10_17_073224_create_locations_table', 1),
 (14, '2023_10_18_100635_create_jobs_table', 1),
-(15, '2023_10_30_172736_create_client_locations_table', 1),
-(16, '2023_10_30_173059_create_monitor_locations_table', 1);
+(17, '2023_11_01_061712_create_employee_categories_table', 2),
+(19, '2023_10_17_073224_create_locations_table', 3),
+(20, '2023_10_30_172736_create_client_locations_table', 3),
+(21, '2023_10_30_173059_create_monitor_locations_table', 3),
+(22, '2023_10_17_072545_create_employees_table', 4);
 
 -- --------------------------------------------------------
 
@@ -307,14 +285,6 @@ CREATE TABLE `monitor_locations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `monitor_locations`
---
-
-INSERT INTO `monitor_locations` (`id`, `location_id`, `number_of_camera`, `camera_tower_number`, `nvr`, `created_at`, `updated_at`) VALUES
-(1, 22, '1', '7', '12', '2023-10-31 06:18:32', '2023-10-31 06:18:32'),
-(2, 23, '1', '7', '12', '2023-10-31 06:18:49', '2023-10-31 06:18:49');
 
 -- --------------------------------------------------------
 
@@ -938,7 +908,14 @@ ALTER TABLE `countries`
 --
 ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `employees_user_id_foreign` (`user_id`);
+  ADD KEY `employees_user_id_foreign` (`user_id`),
+  ADD KEY `employees_category_id_foreign` (`category_id`);
+
+--
+-- Indexes for table `employee_categories`
+--
+ALTER TABLE `employee_categories`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -1048,7 +1025,7 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `client_locations`
 --
 ALTER TABLE `client_locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -1060,6 +1037,12 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `employee_categories`
+--
+ALTER TABLE `employee_categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
@@ -1078,7 +1061,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `location_types`
@@ -1090,13 +1073,13 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `monitor_locations`
 --
 ALTER TABLE `monitor_locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1155,6 +1138,7 @@ ALTER TABLE `client_locations`
 -- Constraints for table `employees`
 --
 ALTER TABLE `employees`
+  ADD CONSTRAINT `employees_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `employee_categories` (`id`),
   ADD CONSTRAINT `employees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
