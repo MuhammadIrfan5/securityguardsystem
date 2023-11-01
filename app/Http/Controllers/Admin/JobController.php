@@ -73,7 +73,7 @@ class JobController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
+                $record->id,
                 $record->employee->name,
                 $record->location->name,
                 $record->check_in,
