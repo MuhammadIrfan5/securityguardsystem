@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('id_number');
             $table->string('phone_one');
             $table->string('phone_two')->nullable();
-            $table->boolean('is_regular_guard')->default(1);
             $table->string('guard_number');
             $table->string('issue_date');
             $table->string('expiry_date');

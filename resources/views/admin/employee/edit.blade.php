@@ -26,26 +26,68 @@
                 @method('PUT')
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Employee Name" name="name" value="{{$record->name}}">
+                        <input type="text" class="form-control" id="floatingName" placeholder="Employee Name"
+                               name="name" value="{{$record->name}}">
                         <label for="floatingName">Employee Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number" name="id_number" value="{{$record->id_number}}">
+                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number"
+                               name="id_number" value="{{$record->id_number}}">
                         <label for="floatingid_number">Employee ID Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" id="floatingphone_one" placeholder="Phone Number" name="phone_one" value="{{$record->phone_one}}">
-                        <label for="floatingphone_one">Phone Number</label>
+                        <input type="text" class="form-control" id="floatingphone_one" placeholder="Contact Number"
+                               name="phone_one" maxlength="11" value="{{$record->phone_one}}">
+                        <label for="floatingphone_one">Contact Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="number" class="form-control" id="floatingphone_two" placeholder="Phone Number 2" name="phone_two" value="{{$record->phone_two}}">
-                        <label for="floatingphone_one">Phone Number(Optional)</label>
+                        <select name="category_id" class="form-select"
+                                id="state_id">
+                            @foreach($categories as $user)
+                                <option {{$record->category_id == $user->id  ? 'selected' : ''}}  value="{{ $user->id }}">{{$user->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingguard_number"
+                               placeholder="Guard Card Number" name="guard_number" value="{{$record->guard_number}}">
+                        <label for="floatingguard_number">Guard Card Number</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="floatingissue_date" placeholder="Issue Date"
+                               name="issue_date" value="{{$record->issue_date}}">
+                        <label for="floatingissue_date">Issue Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="date" class="form-control"  id="floatingexpiry_date"
+                               placeholder="Expiry Date" name="expiry_date" value="{{$record->expiry_date}}">
+                        <label for="floatingexpiry_date">Expiry Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="floatingpay_rate" placeholder="Pay Rate"
+                               name="pay_rate" value="{{$record->pay_rate}}">
+                        <label for="floatingpay_rate">Pay Rate</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingmanager_name" placeholder="Manager Name"
+                               name="manager_name" value="{{$record->manager_name}}">
+                        <label for="floatingmanager_name">Manager Name</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -55,12 +97,14 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                </div>
-                <div class="col-md-6">
-                    <div class="form-check form-switch">
-                        <input type="checkbox" class="form-check-input" name="is_regular_guard"  id="flexSwitchCheckChecked"
-                               value="1" checked>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Is Regular Guard</label>
+                    <div class="form-floating">
+                        <select name="is_active" class="form-select"
+                                id="state_id">
+                            <option {{$record->is_active == '1'  ? 'selected' : ''}} value="1">Active</option>
+                            <option {{$record->is_active == '0'  ? 'selected' : ''}} value="0">In Active</option>
+                        </select>
+                        <label for="floatingphone_one">Status</label>
+
                     </div>
                 </div>
                 <div class="text-end">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\EmployeeCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -73,13 +74,13 @@ class EmployeeController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('employee.show',$record->id), "username" => $record->name ])->render(),
+                $record->id,
+                view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('employee.show', $record->id), "username" => $record->name ])->render(),
                 $record->id_number,
                 $record->phone_one,
-                $record->phone_two,
-                view('admin.layout.defaultComponent.status', [ "boolean" => $record->is_regular_guard ])->render(),
-                $record->notes,
+                $record->expiry_date,
+//                view('admin.layout.defaultComponent.status', [ "boolean" => $record->is_regular_guard ])->render(),
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_active ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('employee.edit', $record->id)
                 ])->render(),
@@ -93,7 +94,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $data['title'] = 'Employee';
+        $data['title']      = 'Employee';
+        $data['categories'] = EmployeeCategory::all();
         return view('admin.employee.add', $data);
     }
 
@@ -108,6 +110,8 @@ class EmployeeController extends Controller
             'phone_one'    => 'required|string',
             'guard_number' => 'required|string',
             'issue_date'   => 'required|string',
+            'expiry_date'  => 'required|string',
+            'category_id'  => 'required|string',
             'pay_rate'     => 'required|string',
             'manager_name' => 'required|string',
             'notes'        => 'nullable|string',
@@ -123,12 +127,14 @@ class EmployeeController extends Controller
                 'guard_number'     => $request->guard_number,
                 'issue_date'       => $request->issue_date,
                 'pay_rate'         => $request->pay_rate,
+                'expiry_date'      => $request->expiry_date,
+                'category_id'      => $request->category_id,
                 'manager_name'     => $request->manager_name,
                 'user_id'          => $request->user()['id'],
                 'phone_two'        => !empty($request->phone_two) ? $request->phone_two : '',
                 'notes'            => !empty($request->notes) ? $request->notes : '',
                 'is_active'        => 0,
-                'is_regular_guard' => $request['is_regular_guard'] == 1 ? 1 : 0,
+
             ];
             $data = Employee::create($data);
             return redirect()->route('employee.index')->with('msg', $data->code . ' Employee Added Successfully!');
@@ -141,9 +147,9 @@ class EmployeeController extends Controller
     public function show(string $id)
     {
 
-        $data['activeMenu']='Employee';
-        $data['data']=Employee::find($id);
-        return view('admin.employee.detail',$data);
+        $data['activeMenu'] = 'Employee';
+        $data['data']       = Employee::find($id);
+        return view('admin.employee.detail', $data);
     }
 
     /**
@@ -152,6 +158,7 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         $data['title']  = 'Employee';
+        $data['categories'] = EmployeeCategory::all();
         $data['record'] = Employee::find($id);
         return view('admin.employee.edit', $data);
     }
@@ -168,6 +175,12 @@ class EmployeeController extends Controller
         if (!empty($request->id_number)) {
             $data->id_number = $request->id_number;
         }
+        if (!empty($request->category_id)) {
+            $data->category_id = $request->category_id;
+        }
+        if (!empty($request->expiry_date)) {
+            $data->expiry_date = $request->expiry_date;
+        }
         if (!empty($request->phone_one)) {
             $data->phone_one = $request->phone_one;
         }
@@ -177,9 +190,8 @@ class EmployeeController extends Controller
         if (!empty($request->notes)) {
             $data->notes = $request->notes;
         }
-        if (!empty($request->is_regular_guard)) {
-            $data->is_regular_guard = (int)$request->is_regular_guard;
-        }
+            $data->is_active = (int)$request->is_active;
+
         $data->save();
 
         Session::flash('message', 'Employee Updated successfully');

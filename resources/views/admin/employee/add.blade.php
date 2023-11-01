@@ -50,36 +50,47 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" maxlength="11" id="floatingphone_two"
-                               placeholder="Phone Number 2" name="phone_two">
-                        <label for="floatingphone_one">Phone Number(Optional)</label>
+                        <select name="category_id" class="form-select"
+                                id="state_id">
+                            <option disabled selected>Employee Category list</option>
+                            @foreach($categories as $user)
+                                <option value="{{ $user->id }}">{{$user->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingguard_number"
-                               placeholder="Guard Card Number" name="guard_number">
+                               placeholder="Guard Card Number" name="guard_number" required>
                         <label for="floatingguard_number">Guard Card Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="date" class="form-control" id="floatingissue_date" placeholder="Issue Date"
-                               name="issue_date">
+                               name="issue_date" required>
                         <label for="floatingissue_date">Issue Date</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
+                        <input type="date" class="form-control"  id="floatingexpiry_date"
+                               placeholder="Phone Number 2" name="expiry_date" required>
+                        <label for="floatingexpiry_date">Expiry Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
                         <input type="number" class="form-control" id="floatingpay_rate" placeholder="Pay Rate"
-                               name="pay_rate">
+                               name="pay_rate" required>
                         <label for="floatingpay_rate">Pay Rate</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingmanager_name" placeholder="Manager Name"
-                               name="manager_name">
+                               name="manager_name" required>
                         <label for="floatingmanager_name">Manager Name</label>
                     </div>
                 </div>
@@ -89,16 +100,15 @@
                         <label for="floatingphone_one">Notes(Optional)</label>
                     </div>
                 </div>
-                <div class="col-md-6">
-                </div>
-                <div class="col-md-6">
-                    <div class="form-check form-switch">
-                        <input type="checkbox" class="form-check-input" name="is_regular_guard"
-                               id="flexSwitchCheckChecked"
-                               value="1" checked>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Is Regular Guard</label>
-                    </div>
-                </div>
+
+{{--                <div class="col-md-12">--}}
+{{--                    <div class="form-check form-switch">--}}
+{{--                        <input type="checkbox" class="form-check-input" name="is_regular_guard"--}}
+{{--                               id="flexSwitchCheckChecked"--}}
+{{--                               value="1" checked>--}}
+{{--                        <label class="form-check-label" for="flexSwitchCheckChecked">Is Regular Guard</label>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>

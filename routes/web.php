@@ -89,7 +89,6 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('listData', [RoleController::class, 'tableData'])->name('role.listData');
 
     /*Users*/
-
     Route::resource('users', UserController::class);
     Route::get('user-list', [UserController::class, 'tableData'])->name('user.tableData');
 

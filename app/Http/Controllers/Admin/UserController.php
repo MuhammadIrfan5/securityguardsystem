@@ -81,7 +81,7 @@ class UserController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
+                $record->id,
                 $record->role->name,
                 $record->city->name,
                 $record->first_name,

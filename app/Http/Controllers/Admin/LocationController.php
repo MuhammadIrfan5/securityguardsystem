@@ -79,9 +79,8 @@ class LocationController extends Controller
                 $mainCategory = LocationType::find($record->maintype->parent_id)['type'];
             }
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
+                $record->id,
                 view('Admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show',$record->id), "username" => $record->name ])->render(),
-
                 $record->address,
                 $record->timezone,
                 "<li>$record->coverage_start_time</li>" . "<li>$record->coverage_end_time</li>",

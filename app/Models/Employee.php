@@ -13,6 +13,8 @@ class Employee extends Model
         'name',
         'id_number',
         'phone_one',
+        'expiry_date',
+        'category_id',
         'user_id',
         'phone_two',
         'guard_number',
