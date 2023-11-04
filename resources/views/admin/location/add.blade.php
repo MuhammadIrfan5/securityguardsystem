@@ -83,14 +83,14 @@
                         Add Client Details
                     </h4>
 
-                    <div class="form-check">
-                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"
-                               id="clientDetails"
-                               onclick="showbox(this)">
+{{--                    <div class="form-check">--}}
+{{--                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"--}}
+{{--                               id="clientDetails"--}}
+{{--                               onclick="showbox(this)">--}}
 
-                    </div>
+{{--                    </div>--}}
                 </div>
-                <div id="cc_box" class="row g-3">
+                <div id="cc_baox" class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" class="form-control" maxlength="16" name="client[client_name]"
