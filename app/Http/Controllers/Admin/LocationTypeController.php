@@ -70,11 +70,11 @@ class LocationTypeController extends Controller
             $data = $data->skip($request->start)->take($request->length)->get();
             foreach ($data as $record) {
                 $response['data'][] = [
-                    '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
+                    $record->id,
                     $record->parent_id != '0' ? $record->maintype->type : '',
                     $record->type,
-                    view('Admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
-                    view('Admin.layout.defaultComponent.editButton', [
+                    view('admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
+                    view('admin.layout.defaultComponent.editButton', [
                         'editUrl' => route('locationType.edit', $record->id)
                     ])->render(),
                 ];

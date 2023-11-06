@@ -27,20 +27,18 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">User list</h5>
+                        <h5 class="card-title"></h5>
                         <!-- Table with stripped rows -->
                         <table id="dataTable" class="table cell-border display compact">
                             <thead>
                             <tr>
-                                <th>
-                                    <input type="checkbox" onclick="handleCheck(this)" class="checkbox check-all">
-                                </th>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>ID Number</th>
                                 <th>Phone Number</th>
-                                <th>Secondary Phone</th>
-                                <th>Is Regular Guard</th>
-                                <th>Notes</th>
+                                <th>Expiry Date</th>
+{{--                                <th>Is Regular Guard</th>--}}
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>

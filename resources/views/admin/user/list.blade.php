@@ -32,9 +32,7 @@
                     <table id="dataTable" class="table cell-border display compact">
                         <thead>
                         <tr>
-                            <th>
-                                <input type="checkbox" onclick="handleCheck(this)" class="checkbox check-all">
-                            </th>
+                            <th>ID</th>
                             <th>Role</th>
                             <th>City Name</th>
                             <th>First Name</th>
@@ -44,7 +42,6 @@
                             <th>Address</th>
                             <th>DOB</th>
                             <th>Image</th>
-                            <th>Date</th>
                             <th>Actions</th>
                         </tr>
                         </thead>

@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('coverage_end_time');
             $table->string('location_type');
             $table->string('location_sub_type');
+            $table->string('license_number')->nullable();
+            $table->boolean('is_monitoring')->default(0);
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }
