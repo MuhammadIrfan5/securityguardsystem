@@ -73,7 +73,31 @@
                 <li>
                     <a href="{{route('assign-job.index')}}"
                        class="{{ request()->is('assign-job') ? ' active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Job list</span>
+                        <i class="bi bi-circle"></i><span>Scheduling</span>
+                    </a>
+                </li>
+            </ul>
+            <ul id="sales-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('assign-job.index')}}"
+                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Time Sheet</span>
+                    </a>
+                </li>
+            </ul>
+            <ul id="sales-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('assign-job.index')}}"
+                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Confirmation Cell</span>
+                    </a>
+                </li>
+            </ul>
+            <ul id="sales-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{{route('assign-job.index')}}"
+                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
+                        <i class="bi bi-circle"></i><span>Monitoring</span>
                     </a>
                 </li>
             </ul>
