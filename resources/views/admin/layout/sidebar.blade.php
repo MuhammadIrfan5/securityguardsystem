@@ -77,7 +77,7 @@
                     </a>
                 </li>
             </ul>
-            <ul id="sales-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('assign-job.index')}}"
                        class="{{ request()->is('assign-job') ? ' active' : '' }}">
@@ -85,7 +85,7 @@
                     </a>
                 </li>
             </ul>
-            <ul id="sales-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('assign-job.index')}}"
                        class="{{ request()->is('assign-job') ? ' active' : '' }}">
@@ -93,7 +93,7 @@
                     </a>
                 </li>
             </ul>
-            <ul id="sales-nav5" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('assign-job.index')}}"
                        class="{{ request()->is('assign-job') ? ' active' : '' }}">
