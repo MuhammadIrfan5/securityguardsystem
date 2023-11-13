@@ -86,7 +86,7 @@
 {{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
                     " href="{{route('assign-job.index')}}">
                 <i class="bi bi-check"></i>
-                <span>Confirmation Cell</span>
+                <span>Confirmation Call</span>
             </a>
         </li>
         <!-- End Components Nav -->
