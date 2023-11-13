@@ -69,16 +69,16 @@
             <a class="nav-link
 {{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
                     " href="{{route('assign-job.index')}}">
-                <i class="bi bi-laptop"></i>
-                <span>Monitoring</span>
+                <i class="bi bi-clock"></i>
+                <span>Verify Records</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link
 {{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
                     " href="{{route('assign-job.index')}}">
-                <i class="bi bi-clock"></i>
-                <span>Time Sheet</span>
+                <i class="bi bi-laptop"></i>
+                <span>Monitoring</span>
             </a>
         </li>
         <li class="nav-item">
