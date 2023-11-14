@@ -60,7 +60,7 @@
                             @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
                                 @if($key==0)
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="gridRadios" id="gridRadios{{ $day }}"
+                                        <input class="form-check-input" type="checkbox" name="days[]" id="gridRadios{{ $day }}"
                                                value="{{ $day }}" checked="">
                                         <label class="form-check-label" for="gridRadios{{ $day }}">
                                             {{ $day }}
@@ -71,7 +71,7 @@
                                     <br>
                                 @else
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="gridRadios" id="gridRadios{{ $day }}"
+                                        <input class="form-check-input" type="checkbox" name="days[]" id="gridRadios{{ $day }}"
                                                value="{{ $day }}">
                                         <label class="form-check-label" for="gridRadios{{ $day }}">
                                             {{ $day }}
@@ -91,7 +91,7 @@
                                             Check In Time
                                         </label>
                                         <input type="time" class="form-control" id="floatingName" placeholder="Check-In"
-                                               name="check_in">
+                                               name="check_in[]">
                                     </div>
                             @endforeach
                         </div>
@@ -101,8 +101,8 @@
                                         <label class="form-check-label" for="gridRadios1">
                                             Check Out Time
                                         </label>
-                                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In"
-                                               name="check_out">
+                                        <input type="time" class="form-control" id="floatingName" placeholder="Check-Out"
+                                               name="check_out[]">
                                     </div>
 
                             @endforeach

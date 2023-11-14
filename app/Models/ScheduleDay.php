@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduleDay extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "day",
+        "start_time",
+        "end_time",
+    ];
 }

@@ -22,13 +22,13 @@ class ScheduleController extends Controller
 
     public function tableData(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Schedule();
+        $country                  = new Schedule();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -85,6 +85,7 @@ class ScheduleController extends Controller
         }
         return response($response, 201);
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -102,7 +103,34 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'location_id' => 'required',
+            'employee_id' => 'required',
+        ]);
+
+        $days     = $request->days;
+        $checkIn  = $request->check_in;
+        $checkOut = $request->check_out;
+
+        $data              = new Schedule();
+        $data->location_id = $request->location_id;
+        $data->employee_id = $request->employee_id;
+        $data->comments    = $request->comments??"";
+        $data->save();
+
+        $scheduleDays = [];
+        foreach ($days as $key => $v) {
+            $scheduleDays[] = [
+                "day"        => $v,
+                "start_time" => $checkOut[$key],
+                "end_time"   => $checkIn[$key],
+            ];
+            $data->scheduleDays()->createMany($scheduleDays);
+
+        }
+        return redirect()->route('schedule.index')->with('msg', 'Schedule created Successfully!');
+
     }
 
     /**

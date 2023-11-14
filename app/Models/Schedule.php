@@ -16,4 +16,8 @@ class Schedule extends Model
     {
         return $this->belongsTo(Location::class,'location_id');
     }
+    public function scheduleDays()
+    {
+        return $this->hasMany(ScheduleDay::class,'schedule_id');
+    }
 }
