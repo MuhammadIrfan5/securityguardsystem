@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CityController;
@@ -107,6 +108,10 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     /*Location type*/
     Route::resource('assign-job', JobController::class);
     Route::get('assign-job-list', [JobController::class, 'tableData'])->name('assign.job.tableData');
+
+    /*Scheduling*/
+    Route::resource('schedule', ScheduleController::class);
+    Route::get('schedule-list', [ScheduleController::class, 'tableData'])->name('schedule.tableData');
 
 
 });

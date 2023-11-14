@@ -59,15 +59,13 @@
         </li>
         <li class="nav-item">
             <a class="nav-link
-{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
-                    " href="{{route('location.index')}}">
+                    " href="{{route('schedule.index')}}">
                 <i class="bi bi-calendar"></i>
                 <span>Scheduling</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link
-{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
                     " href="{{route('assign-job.index')}}">
                 <i class="bi bi-clock"></i>
                 <span>Verify Records</span>
