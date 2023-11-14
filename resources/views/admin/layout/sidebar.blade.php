@@ -14,7 +14,7 @@
                 <i class="bi bi-person-add"></i><span>User list</span><i
                         class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="sales-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="sales-nav1" class="nav-content collapse {{ request()->is('users') ? ' show' : 'hide' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('users.index')}}"
                        class="{{ request()->is('users') ? ' active' : '' }}">
@@ -28,7 +28,7 @@
                 <i class="bi bi-person"></i><span>Employee list</span><i
                         class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="sales-nav2" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="sales-nav2" class="nav-content collapse {{ request()->is('employee') ? ' show' : 'hide' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('employee.index')}}"
                        class="{{ request()->is('employee') ? ' active' : '' }}">
@@ -42,7 +42,7 @@
                 <i class="bi bi-map-fill"></i><span>Location list</span><i
                         class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="sales-nav3" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <ul id="sales-nav3" class="nav-content collapse {{ request()->is('location') ? ' show' : 'hide' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{{route('location.index')}}"
                        class="{{ request()->is('location') ? ' active' : '' }}">
