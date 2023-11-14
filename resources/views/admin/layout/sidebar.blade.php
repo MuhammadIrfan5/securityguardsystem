@@ -11,7 +11,7 @@
         </li><!-- End Dashboard Nav -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#sales-nav1" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>User list</span><i
+                <i class="bi bi-person-add"></i><span>User list</span><i
                         class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="sales-nav1" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -21,18 +21,11 @@
                         <i class="bi bi-circle"></i><span>Users</span>
                     </a>
                 </li>
-{{--                <li>--}}
-{{--                    <a href="{{route('role.index')}}"--}}
-{{--                       class="{{ request()->is('role') ? ' active' : '' }}">--}}
-{{--                        <i class="bi bi-circle"></i><span>Roles</span>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-
             </ul>
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>Employee list</span><i
+                <i class="bi bi-person"></i><span>Employee list</span><i
                         class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="sales-nav2" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -46,7 +39,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>Location list</span><i
+                <i class="bi bi-map-fill"></i><span>Location list</span><i
                         class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="sales-nav3" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -65,44 +58,37 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#sales-nav4" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>Job list</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
+            <a class="nav-link
+{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
+                    " href="{{route('location.index')}}">
+                <i class="bi bi-calendar"></i>
+                <span>Scheduling</span>
             </a>
-            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{route('assign-job.index')}}"
-                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Scheduling</span>
-                    </a>
-                </li>
-            </ul>
-            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{route('assign-job.index')}}"
-                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Time Sheet</span>
-                    </a>
-                </li>
-            </ul>
-            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{route('assign-job.index')}}"
-                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Confirmation Cell</span>
-                    </a>
-                </li>
-            </ul>
-            <ul id="sales-nav4" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{route('assign-job.index')}}"
-                       class="{{ request()->is('assign-job') ? ' active' : '' }}">
-                        <i class="bi bi-circle"></i><span>Monitoring</span>
-                    </a>
-                </li>
-            </ul>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link
+{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
+                    " href="{{route('assign-job.index')}}">
+                <i class="bi bi-clock"></i>
+                <span>Verify Records</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link
+{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
+                    " href="{{route('assign-job.index')}}">
+                <i class="bi bi-laptop"></i>
+                <span>Monitoring</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link
+{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
+                    " href="{{route('assign-job.index')}}">
+                <i class="bi bi-check"></i>
+                <span>Confirmation Call</span>
+            </a>
+        </li>
         <!-- End Components Nav -->
     </ul>
 

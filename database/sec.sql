@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2023 at 08:29 AM
+-- Generation Time: Nov 13, 2023 at 07:11 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -876,7 +876,8 @@ CREATE TABLE `user_two_factors` (
 --
 
 INSERT INTO `user_two_factors` (`id`, `user_id`, `opt_number`, `ip_address`, `browser`, `version`, `platform`, `is_mobile`, `is_desktop`, `is_verified`, `created_at`, `updated_at`) VALUES
-(1, 1, '1234', '::1', 'Chrome', '118.0.0.0', 'Windows', 0, 1, 0, '2023-10-31 04:44:36', '2023-10-31 04:44:36');
+(1, 1, '1234', '::1', 'Chrome', '118.0.0.0', 'Windows', 0, 1, 0, '2023-10-31 04:44:36', '2023-10-31 04:44:36'),
+(2, 1, '1234', '::1', 'Chrome', '119.0.0.0', 'Windows', 0, 1, 0, '2023-11-06 07:32:29', '2023-11-06 07:32:29');
 
 --
 -- Indexes for dumped tables
@@ -1115,7 +1116,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_two_factors`
 --
 ALTER TABLE `user_two_factors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

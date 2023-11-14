@@ -27,7 +27,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{$title}}</h5>
+                        <h5 class="card-title">{{$title}} list</h5>
                         <!-- Table with stripped rows -->
                         <table id="dataTable" class="table cell-border display compact">
                             <thead>
