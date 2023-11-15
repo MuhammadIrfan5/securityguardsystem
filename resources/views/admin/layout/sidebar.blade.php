@@ -72,9 +72,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link
-{{--{{ request()->is('assign-job') ? ' collapsed' : '' }}--}}
-                    " href="{{route('assign-job.index')}}">
+            <a class="nav-link {{ request()->is('monitoring') ? ' collapsed' : '' }}
+                    " href="{{route('monitoring.index')}}">
                 <i class="bi bi-laptop"></i>
                 <span>Monitoring</span>
             </a>

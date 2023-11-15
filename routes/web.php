@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
+use App\Http\Controllers\Admin\MonitoringController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\StateController;
@@ -113,5 +114,6 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('schedule', ScheduleController::class);
     Route::get('schedule-list', [ScheduleController::class, 'tableData'])->name('schedule.tableData');
 
-
+    Route::resource('monitoring', MonitoringController::class);
+    Route::get('monitoring-list', [MonitoringController::class, 'tableData'])->name('monitoring.tableData');
 });
