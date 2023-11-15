@@ -73,12 +73,17 @@ class ScheduleController extends Controller
 //        }
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
+            $dates=$record->scheduleDays;
+            $days=implode(',',$dates->pluck('day')->toArray());
             $response['data'][] = [
                 $record->id,
                 $record->employee->name,
                 $record->location->name,
-                $record->scheduleDays,
-                $record->comments,
+                view('admin.layout.defaultComponent.dateTime', [
+                    'first_value' => $dates[0]->start_time,
+                    'second_value' => $dates[0]->end_time,
+                    'days' => $days,
+                ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('role.edit', $record->id)
                 ])->render(),

@@ -35,7 +35,7 @@
                                 <th>ID</th>
                                 <th>Employee</th>
                                 <th>Location</th>
-                                <th>Comments</th>
+                                <th>Time/Date</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
