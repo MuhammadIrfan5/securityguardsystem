@@ -1,5 +1,8 @@
 @extends('admin.layout.main')
+@section('page-css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
+@endsection
 @section('content')
     <div class="pagetitle">
         <h1>Add {{$title}}</h1>
@@ -55,84 +58,52 @@
                 <div class="col-md-12">
                 </div>
                 <fieldset class="row mb-3">
-                        <div class="col-md-1">
+                    <div class="col-md-1">
 
-                            @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
-                                @if($key==0)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="days[]" id="gridRadios{{ $day }}"
-                                               value="{{ $day }}" checked="">
-                                        <label class="form-check-label" for="gridRadios{{ $day }}">
-                                            {{ $day }}
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                    </div>
-                                    <br>
-                                @else
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="days[]" id="gridRadios{{ $day }}"
-                                               value="{{ $day }}">
-                                        <label class="form-check-label" for="gridRadios{{ $day }}">
-                                            {{ $day }}
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                    </div>
-                                    <br>
-                                @endif
+                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
+                            @if($key==0)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="days[]"
+                                           id="gridRadios{{ $day }}"
+                                           value="{{ $day }}" checked="">
+                                    <label class="form-check-label" for="gridRadios{{ $day }}">
+                                        {{ $day }}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                </div>
+                                <br>
+                            @else
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="days[]"
+                                           id="gridRadios{{ $day }}"
+                                           value="{{ $day }}">
+                                    <label class="form-check-label" for="gridRadios{{ $day }}">
+                                        {{ $day }}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                </div>
+                                <br>
+                            @endif
 
-                            @endforeach
-                        </div>
-                        <div class="col-md-1">
-                            @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="gridRadios1">
-                                            Check In Time
-                                        </label>
-                                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In"
-                                               name="check_in[]">
-                                    </div>
-                            @endforeach
-                        </div>
-                        <div class="col-md-1">
-                            @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="gridRadios1">
-                                            Check Out Time
-                                        </label>
-                                        <input type="time" class="form-control" id="floatingName" placeholder="Check-Out"
-                                               name="check_out[]">
-                                    </div>
+                        @endforeach
+                    </div>
+                    <div class="col-md-2">
 
-                            @endforeach
-                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
+                            <div class="form-check">
+                                <label class="form-check-label" for="gridRadios1">
+                                </label>
+                                <input type="text" class="dateTImes" name="datetimes[]" id="date_{{$key}}" />
+                            </div>
+                            <div class="form-check">
+                            </div>
+                        @endforeach
+                    </div>
                 </fieldset>
-                {{--                <div class="col-md-12">--}}
-                {{--                    <input class="form-check-input" value="WhatsApp" type="radio" name="calling_number"--}}
-                {{--                           id="WhatsApp"--}}
-                {{--                           checked="">--}}
-                {{--                    <label class="form-check-label" for="WhatsApp">--}}
-                {{--                        WhatsApp--}}
-                {{--                    </label>--}}
-
-
-                {{--                    <input class="form-check-input" value="Dispatch" type="radio" name="calling_number" id="Dispatch">--}}
-                {{--                    <label class="form-check-label" for="Dispatch">--}}
-                {{--                        Dispatch--}}
-                {{--                    </label>--}}
-
-                {{--                    <input class="form-check-input" value="Construction" type="radio" name="calling_number" id="Construction">--}}
-                {{--                    <label class="form-check-label" for="Construction">--}}
-                {{--                        Construction--}}
-                {{--                    </label>--}}
-
-                {{--                    <input class="form-check-input" value="Timesheet" type="radio" name="calling_number" id="Timesheet">--}}
-                {{--                    <label class="form-check-label" for="Timesheet">--}}
-                {{--                        Timesheet--}}
-                {{--                    </label>--}}
-                {{--                </div>--}}
-
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
@@ -142,4 +113,21 @@
         </div>
     </div>
 
+@endsection
+@section('page-js')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        $(function() {
+            $(".dateTImes").daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().add(1, 'weeks'),
+                locale: {
+                    format: 'MM-DD-YYYY h:mm A'
+                }
+            });
+        });
+    </script>
 @endsection

@@ -103,7 +103,6 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'location_id' => 'required',
             'employee_id' => 'required',
@@ -120,15 +119,17 @@ class ScheduleController extends Controller
         $data->save();
 
         $scheduleDays = [];
+
         foreach ($days as $key => $v) {
+            $dateTime = explode(' - ', $request->input('datetimes')[$key]);
             $scheduleDays[] = [
                 "day"        => $v,
-                "start_time" => $checkOut[$key],
-                "end_time"   => $checkIn[$key],
+                "start_time" => $dateTime[0],
+                "end_time"   => $dateTime[1],
             ];
-            $data->scheduleDays()->createMany($scheduleDays);
-
         }
+        $data->scheduleDays()->createMany($scheduleDays);
+
         return redirect()->route('schedule.index')->with('msg', 'Schedule created Successfully!');
 
     }
