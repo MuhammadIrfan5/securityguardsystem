@@ -16,7 +16,7 @@ class MonitoringController extends Controller
      */
     public function index()
     {
-        $data['title'] = "Assign Job";
+        $data['title'] = "Monitoring";
         return view('admin.job.list', $data);
     }
 
@@ -93,7 +93,7 @@ class MonitoringController extends Controller
      */
     public function create()
     {
-        $data['title']    = 'Assign Job';
+        $data['title']    = 'Monitoring';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
         return view('admin.job.add', $data);

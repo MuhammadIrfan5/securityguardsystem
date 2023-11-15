@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -116,4 +117,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
     Route::resource('monitoring', MonitoringController::class);
     Route::get('monitoring-list', [MonitoringController::class, 'tableData'])->name('monitoring.tableData');
+
+    Route::resource('time-sheet', TimeSheetController::class);
+    Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
+
 });

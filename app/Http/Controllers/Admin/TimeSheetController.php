@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\Job;
 use App\Models\Location;
-use App\Models\Schedule;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class ScheduleController extends Controller
+class TimeSheetController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
     public function index()
     {
-        $data['title'] = "Schedule";
-        return view('admin.schedule.list', $data);
+        $data['title'] = "Monitoring";
+        return view('admin.job.list', $data);
     }
 
     public function tableData(Request $request)
@@ -28,7 +28,7 @@ class ScheduleController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Schedule();
+        $country                  = new Job();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -77,10 +77,11 @@ class ScheduleController extends Controller
                 $record->id,
                 $record->employee->name,
                 $record->location->name,
-                $record->scheduleDays,
-                $record->comments,
+                $record->check_in,
+                $record->calling_number,
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('role.edit', $record->id)
+                    'editUrl' => route('assign-job.edit', $record->id)
                 ])->render(),
             ];
         }
@@ -92,11 +93,10 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        $data['title'] = "Schedule";
-
+        $data['title']    = 'Monitoring';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
-        return view('admin.schedule.add', $data);
+        return view('admin.job.add', $data);
     }
 
     /**
@@ -105,33 +105,20 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'location_id' => 'required',
-            'employee_id' => 'required',
+            'location_id'    => 'required',
+            'employee_id'    => 'required',
+            'check_in'       => 'required',
+            'calling_number' => 'required',
         ]);
 
-        $days     = $request->days;
-        $checkIn  = $request->check_in;
-        $checkOut = $request->check_out;
-
-        $data              = new Schedule();
-        $data->location_id = $request->location_id;
-        $data->employee_id = $request->employee_id;
-        $data->comments    = $request->comments??"";
+        $data                 = new Job();
+        $data->location_id    = $request->location_id;
+        $data->employee_id    = $request->employee_id;
+        $data->check_in       = $request->check_in;
+        $data->calling_number = $request->calling_number;
         $data->save();
 
-        $scheduleDays = [];
-
-        foreach ($days as $key => $v) {
-            $dateTime = explode(' - ', $request->input('datetimes')[$key]);
-            $scheduleDays[] = [
-                "day"        => $v,
-                "start_time" => $dateTime[0],
-                "end_time"   => $dateTime[1],
-            ];
-        }
-        $data->scheduleDays()->createMany($scheduleDays);
-
-        return redirect()->route('schedule.index')->with('msg', 'Schedule created Successfully!');
+        return redirect()->route('assign-job.index')->with('msg', 'Job Assign Successfully!');
 
     }
 
@@ -148,7 +135,13 @@ class ScheduleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['title']    = 'Assign Job';
+        $data['location'] = Location::all();
+        $data['employee'] = Employee::all();
+        $data['data']     = Job::find($id);
+
+        return view('admin.job.edit', $data);
+
     }
 
     /**
@@ -156,7 +149,26 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Job::find($id);
+        if (!empty($data)) {
+            if (!empty($request->location_id)) {
+                $data->location_id = $request->location_id;
+            }
+            if (!empty($request->employee_id)) {
+                $data->employee_id = $request->employee_id;
+            }
+            if (!empty($request->check_in)) {
+                $data->check_in = $request->check_in;
+            }
+            if (!empty($request->calling_number)) {
+                $data->calling_number = $request->calling_number;
+            }
+            if (!empty($request->is_approved)) {
+                $data->is_approved = (int)$request->is_approved;
+            }
+            $data->update();
+        }
+        return redirect()->route('assign-job.index')->with('msg', 'Assign Job Updated Successfully!');
     }
 
     /**
