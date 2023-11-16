@@ -147,14 +147,13 @@
                 </div>
                 {{--License Number--}}
                 <div class="col-md-12">
-                    <h4 class="form-check-label" for="clientLicenseNumber">
-                        Trailer On Site
-                    </h4>
                     <div class="form-check">
                         <input class="form-check-input" value="licenseNumber" type="checkbox" name="clientLicenseNumber"
                                id="clientLicenseNumber"
                                onclick="checkOnsite(this)">
-
+                        <h4 class="form-check-label" for="clientLicenseNumber">
+                            Trailer On Site
+                        </h4>
                     </div>
                 </div>
                 <div id="licenseNumber" class="row g-3">
