@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ScheduleController extends Controller
 {
@@ -73,19 +74,24 @@ class ScheduleController extends Controller
 //        }
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
-            $dates=$record->scheduleDays;
-            $days=implode(',',$dates->pluck('day')->toArray());
+            $dates              = $record->scheduleDays;
+            $days               = implode(',', $dates->pluck('day')->toArray());
             $response['data'][] = [
                 $record->id,
-                $record->employee->name,
-                $record->location->name,
-                view('admin.layout.defaultComponent.dateTime', [
-                    'first_value' => $dates[0]->start_time,
-                    'second_value' => $dates[0]->end_time,
-                    'days' => $days,
+                view('admin.layout.defaultComponent.locationDetail', [
+                    'name'    => $record->location->name,
+                    'address' => $record->location->address,
                 ])->render(),
+                $record->employee->name,
+                view('admin.layout.defaultComponent.dateTime', [
+                    'first_value'  => $dates[0]->start_time,
+                    'second_value' => $dates[0]->end_time,
+                    'days'         => $days,
+                ])->render(),
+                $record->employee->phone_one,
+
                 view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('role.edit', $record->id)
+                    'editUrl' => route('schedule.edit', $record->id)
                 ])->render(),
             ];
         }
@@ -115,19 +121,17 @@ class ScheduleController extends Controller
         ]);
 
         $days     = $request->days;
-        $checkIn  = $request->check_in;
-        $checkOut = $request->check_out;
 
         $data              = new Schedule();
         $data->location_id = $request->location_id;
         $data->employee_id = $request->employee_id;
-        $data->comments    = $request->comments??"";
+        $data->comments    = $request->comments ?? "";
         $data->save();
 
         $scheduleDays = [];
 
         foreach ($days as $key => $v) {
-            $dateTime = explode(' - ', $request->input('datetimes')[$key]);
+            $dateTime       = explode(' - ', $request->input('datetimes')[$key]);
             $scheduleDays[] = [
                 "day"        => $v,
                 "start_time" => $dateTime[0],
@@ -153,7 +157,12 @@ class ScheduleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
+        $data['record'] = Schedule::find($id);
+        $data['title'] = "Schedule";
+        $data['location'] = Location::all();
+        $data['employee'] = Employee::all();
+        return view('admin.schedule.edit', $data);
     }
 
     /**
@@ -161,7 +170,23 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'location_id' => 'nullable',
+            'employee_id' => 'nullable',
+            'notes' => 'nullable',
+        ]);
+        $data = Schedule::find($id);
+        if (!empty($request->location_id)) {
+            $data->location_id = $request->location_id;
+        }
+        if (!empty($request->employee_id)) {
+            $data->employee_id = $request->employee_id;
+        }
+
+        $data->save();
+
+        Session::flash('message', 'Schedule Updated successfully');
+        return redirect(route('schedule.index'));
     }
 
     /**

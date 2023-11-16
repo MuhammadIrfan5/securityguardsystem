@@ -33,9 +33,10 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Employee</th>
                                 <th>Location</th>
+                                <th>Employee</th>
                                 <th>Time/Date</th>
+                                <th>Phone</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>

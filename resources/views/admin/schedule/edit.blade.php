@@ -1,5 +1,8 @@
 @extends('admin.layout.main')
+@section('page-css')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
+@endsection
 @section('content')
     <div class="pagetitle">
         <h1>Edit {{$title}}</h1>
@@ -21,15 +24,18 @@
                 </div>
         @endif
         <!-- Floating Labels Form -->
-            <form class="row g-3" method="post" action="{{route('assign-job.update',$data->id)}}">
+            <form class="row g-3" method="post" action="{{route('schedule.update',$record->id)}}">
                 @csrf
                 @method('PUT')
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="location_id" class="form-select"
                                 id="parent_id">
+                            <option disabled selected>Location</option>
                             @foreach($location as $user)
-                                <option {{$data->location_id==$user->id? 'checked':''}} value="{{ $user->id }}">{{$user->name}}</option>
+                                <option value="{{ $user->id }}"
+                                        {{($user->id==$record->location_id)   ? 'selected' : ''}}
+                                >{{$user->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -38,54 +44,57 @@
                     <div class="form-floating">
                         <select name="employee_id" class="form-select"
                                 id="employee_id">
+                            <option disabled selected>Employee list</option>
                             @foreach($employee as $user)
-                                <option {{$data->employee_id==$user->id? 'checked':''}} value="{{ $user->id }}">{{$user->name}}</option>
+                                <option value="{{ $user->id }}"
+                                        {{($user->id==$record->employee_id)   ? 'selected' : ''}}
+
+                                >{{$user->name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In" name="check_in" value="{{$data->check_in}}">
-                        <label for="floatingName">Check-In</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <select name="is_approved" class="form-select"
-                                id="is_approved">
-                                <option {{$data->is_approved==1? 'selected':''}} value="1">Approved</option>
-                                <option {{$data->is_approved==0? 'selected':''}} value="0">Not Approved</option>
-                        </select>
+                        <textarea class="form-control" style="height: 100px" name="notes">{{$record->notes}}</textarea>
+                        <label for="floatingphone_one">Notes(Optional)</label>
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <input class="form-check-input" value="WhatsApp" type="radio" name="calling_number"
-                           id="WhatsApp"
-                            {{$data->calling_number=="WhatsApp"? 'checked':''}}>
-                    <label class="form-check-label" for="WhatsApp">
-                        WhatsApp
-                    </label>
-
-
-                    <input class="form-check-input" value="Dispatch" type="radio" name="calling_number" id="Dispatch"
-                            {{$data->calling_number=="Dispatch"? 'checked':''}}>
-                    <label class="form-check-label" for="Dispatch">
-                        Dispatch
-                    </label>
-
-                    <input class="form-check-input" value="Construction" type="radio" name="calling_number" id="Construction"
-                            {{$data->calling_number=="Construction"? 'checked':''}}>
-                    <label class="form-check-label" for="Construction">
-                        Construction
-                    </label>
-
-                    <input class="form-check-input" value="Timesheet" type="radio" name="calling_number" id="Timesheet"
-                            {{$data->calling_number=="Timesheet"? 'checked':''}}>
-                    <label class="form-check-label" for="Timesheet">
-                        Timesheet
-                    </label>
                 </div>
+                <fieldset class="row mb-3">
+                    <div class="col-md-1">
+
+                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="days[]"
+                                           id="gridRadios{{ $day }}"
+                                           value="{{ $day }}"
+                                            {{(in_array($day,$record->scheduleDays->pluck('day')->toArray()))   ? 'checked' : ''}}
+                                    >
+                                    <label class="form-check-label" for="gridRadios{{ $day }}">
+                                        {{ $day }}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                </div>
+                        @endforeach
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-2">
+                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
+                            <div class="form-check">
+                                <label class="form-check-label" for="gridRadios1">
+                                </label>
+                                <input type="text" class="dateTImes" name="datetimes[]" id="date_{{$key}}" value="{{in_array($day,$record->scheduleDays->pluck('day')->toArray())   ? $record->scheduleDays[$key]->start_time.'-'.$record->scheduleDays[$key]->end_time : ''}}"/>
+                            </div>
+                            <div class="form-check">
+                            </div>
+                        @endforeach
+                    </div>
+                </fieldset>
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -96,4 +105,21 @@
         </div>
     </div>
 
+@endsection
+@section('page-js')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        $(function() {
+            $(".dateTImes").daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().add(1, 'weeks'),
+                locale: {
+                    format: 'MM-DD-YYYY h:mm A'
+                }
+            });
+        });
+    </script>
 @endsection
