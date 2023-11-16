@@ -15,7 +15,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        $data['title'] = "Assign Job";
+        $data['title'] = "Verify Records";
         return view('admin.job.list', $data);
     }
 
@@ -77,7 +77,7 @@ class JobController extends Controller
                 $record->employee->name,
                 $record->location->name,
                 $record->check_in,
-                $record->calling_number,
+//                $record->calling_number,
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('assign-job.edit', $record->id)

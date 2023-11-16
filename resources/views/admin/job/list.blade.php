@@ -36,7 +36,7 @@
                                 <th>Employee</th>
                                 <th>Location</th>
                                 <th>Check-In</th>
-                                <th>Calling Number</th>
+{{--                                <th>Calling Number</th>--}}
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
