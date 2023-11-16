@@ -58,27 +58,34 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->is('schedule') ? 'active' : '' }}" href="{{route('schedule.index')}}">
+            <a class="nav-link
+{{ request()->is('schedule') ? '' : 'collapsed' }}
+                    " href="{{route('schedule.index')}}">
                 <i class="bi bi-calendar"></i>
                 <span>Scheduling</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" {{ request()->is('time-sheet') ? 'active' : '' }}
+            <a class="nav-link  {{ request()->is('time-sheet') ? '' : 'collapsed' }}"
+
                href="{{route('time-sheet.index')}}">
                 <i class="bi bi-clock"></i>
                 <span>Verify Records</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ request()->is('monitoring') ? 'active' : '' }}"
+            <a class="nav-link
+{{ request()->is('monitoring') ? '' : 'collapsed' }}
+                    "
                href="{{route('monitoring.index')}}">
                 <i class="bi bi-laptop"></i>
                 <span>Monitoring</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{route('assign-job.index')}}">
+            <a class="nav-link collapsed
+{{--{{ request()->is('monitoring') ? '' : 'collapsed' }}--}}
+                    " href="{{route('assign-job.index')}}">
                 <i class="bi bi-check"></i>
                 <span>Confirmation Call</span>
             </a>
