@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('location_id')->constrained('locations');
+            $table->string('start_date');
+            $table->string('end_date');
             $table->longText('comments');
             $table->timestamps();
             $table->softDeletes();

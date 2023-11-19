@@ -23,13 +23,13 @@ class ScheduleController extends Controller
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Schedule();
+        $country = new Schedule();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -74,8 +74,8 @@ class ScheduleController extends Controller
 //        }
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
-            $dates              = $record->scheduleDays;
-            $days               = implode(',', $dates->pluck('day')->toArray());
+            $dates = $record->scheduleDays;
+            $days = implode(',', $dates->pluck('day')->toArray());
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.locationDetail', [
@@ -120,22 +120,27 @@ class ScheduleController extends Controller
             'employee_id' => 'required',
         ]);
 
-        $days     = $request->days;
+        $days = $request->days;
+        $start_time = $request->start_time;
+        $end_time = $request->end_time;
 
-        $data              = new Schedule();
+        $dateTime = explode(' - ', $request->input('dateRange'));
+
+        $data = new Schedule();
         $data->location_id = $request->location_id;
         $data->employee_id = $request->employee_id;
-        $data->comments    = $request->comments ?? "";
+        $data->start_date = $dateTime[0];
+        $data->end_date = $dateTime[1];
+        $data->comments = $request->comments ?? "";
         $data->save();
 
         $scheduleDays = [];
 
         foreach ($days as $key => $v) {
-            $dateTime       = explode(' - ', $request->input('datetimes')[$key]);
             $scheduleDays[] = [
                 "day"        => $v,
-                "start_time" => $dateTime[0],
-                "end_time"   => $dateTime[1],
+                "start_time" => date('h:i a', strtotime($start_time[$key])),
+                "end_time"   => date('h:i a', strtotime($end_time[$key])),
             ];
         }
         $data->scheduleDays()->createMany($scheduleDays);
@@ -173,7 +178,7 @@ class ScheduleController extends Controller
         $request->validate([
             'location_id' => 'nullable',
             'employee_id' => 'nullable',
-            'notes' => 'nullable',
+            'notes'       => 'nullable',
         ]);
         $data = Schedule::find($id);
         if (!empty($request->location_id)) {

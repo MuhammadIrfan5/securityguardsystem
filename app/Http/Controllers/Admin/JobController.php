@@ -77,7 +77,6 @@ class JobController extends Controller
                 $record->employee->name,
                 $record->location->name,
                 $record->check_in,
-//                $record->calling_number,
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('assign-job.edit', $record->id)
@@ -117,7 +116,7 @@ class JobController extends Controller
         $data->calling_number = $request->calling_number;
         $data->save();
 
-        return redirect()->route('assign-job.index')->with('msg', 'Job Assign Successfully!');
+        return redirect()->route('assign-job.index')->with('msg', 'Record created Successfully!');
 
     }
 
