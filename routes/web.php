@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\MonitoringController;
+use App\Http\Controllers\Admin\RescheduleController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\StateController;
@@ -121,4 +122,5 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('time-sheet', TimeSheetController::class);
     Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
 
+    Route::resource('reschedule', RescheduleController::class);
 });
