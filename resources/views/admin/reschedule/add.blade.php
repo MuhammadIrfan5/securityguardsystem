@@ -28,10 +28,11 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
+
                         <select name="location_id[]" class="form-select select2Location"
                                 id="parent_id" multiple="multiple">
-                            @foreach($locations as $user)
-                                <option value="{{ $user->id }}">{{$user->location->name}}</option>
+                            @foreach($locations as $location)
+                                <option value="{{$location->id}}">{{$location->location->name}}</option>
                             @endforeach
                         </select>
                     </div>

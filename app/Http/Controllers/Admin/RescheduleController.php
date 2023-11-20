@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class RescheduleController extends Controller
 {
@@ -22,8 +23,12 @@ class RescheduleController extends Controller
      */
     public function create()
     {
-        $data['title'] = "Reschedule";
-        $data['locations'] = Schedule::select('location_id')->get();
+        $startOfWeek          = Carbon::now();
+        $endOfWeek            = Carbon::now();
+        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
+        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
+        $data['locations']    = Schedule::whereNotBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ]);
+        $data['title']        = "Reschedule";
 
         return view('admin.reschedule.add', $data);
     }
@@ -33,35 +38,37 @@ class RescheduleController extends Controller
      */
     public function store(Request $request)
     {
-        $records=Schedule::with('scheduleDays')->whereIn('id',$request->location_id)->get();
-        dd($records);
-        $days = $request->days;
-        $start_time = $request->start_time;
-        $end_time = $request->end_time;
+        $type    = $request->previous_date;
+        $records = Schedule::whereIn('id', $request->location_id)->get();
+        foreach ($records as $record) {
+            $data = $this->getLastWeekScheduled($record, $type);
+            if (!empty($data['item'])) {
+                $start_time           = date('d-m-Y', strtotime($data['startDate']));
+                $end_time             = date('d-m-Y', strtotime($data['endDate']));
+                $newdata              = new Schedule();
+                $newdata->location_id = $data['item']->location_id;
+                $newdata->employee_id = $data['item']->employee_id;
+                $newdata->start_date  = $start_time;
+                $newdata->end_date    = $end_time;
+                $newdata->comments    = !empty($data['item']) ? $data['item']->comments : "";
+                $newdata->save();
+                $days = $data['item']->scheduleDays;
 
-        $dateTime = explode(' - ', $request->input('dateRange'));
+                $scheduleDays = [];
 
-        $data = new Schedule();
-        $data->location_id = $request->location_id;
-        $data->employee_id = $request->employee_id;
-        $data->start_date = $dateTime[0];
-        $data->end_date = $dateTime[1];
-        $data->comments = $request->comments ?? "";
-        $data->save();
-
-        $scheduleDays = [];
-
-        foreach ($days as $key => $v) {
-            $scheduleDays[] = [
-                "day"        => $v,
-                "start_time" => $start_time[$key],
-                "end_time"   => $end_time[$key],
-            ];
+                foreach ($days as $v) {
+                    $scheduleDays[] = [
+                        "day"        => $v->day,
+                        "start_time" => $v->start_time,
+                        "end_time"   => $v->end_time,
+                    ];
+                }
+                $newdata->scheduleDays()->createMany($scheduleDays);
+            }
         }
-        $data->scheduleDays()->createMany($scheduleDays);
-
-        return redirect()->route('schedule.index')->with('msg', 'Schedule created Successfully!');
+        return redirect()->route('schedule.index')->with('msg', 'Reschedule  Successfully!');
     }
+
 
     /**
      * Display the specified resource.
@@ -94,4 +101,22 @@ class RescheduleController extends Controller
     {
         //
     }
+    private function getLastWeekScheduled($scheduleObj, $type)
+    {
+        $startOfWeek          = Carbon::now();
+        $endOfWeek            = Carbon::now();
+        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY)->subWeek(); // Set the week start day to Sunday
+        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY)->subWeek();   // Set the week end day to Saturday
+        $data['item']         = Schedule::where('location_id', $scheduleObj->location_id)->whereBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])
+            ->first();
+        $startOfWeeks         = Carbon::now();
+        $endOfWeeks           = Carbon::now();
+        $currentWeekStartDate = $startOfWeeks->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
+        $currentWeekEndDate   = $endOfWeeks->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
+        $data['startDate']    = $currentWeekStartDate->startOfWeek(Carbon::SUNDAY);
+        $data['endDate']      = $currentWeekEndDate->endOfWeek(Carbon::SATURDAY);
+        // You can now use $orders as the collection of orders for the current week
+        return $data;
+    }
+
 }
