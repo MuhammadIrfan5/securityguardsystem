@@ -29,23 +29,23 @@ class ScheduleController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Schedule();
-        $response["recordsTotal"] = $country->count();
+        $records = new Schedule();
+        $response["recordsTotal"] = $records->count();
 
         /*Sorting*/
         switch ('id') {
             case 'id':
-                $country = $country->orderBy('id', 'desc');
+                $records = $records->orderBy('id', 'desc');
                 break;
             default:
                 break;
         }
         /*Search function*/
         if (!empty($request->search["value"])) {
-            $country = $country->where("id", "like", "%" . $request->search["value"] . "%");
-            $country = $country->orWhere("name", "like", "%" . $request->search["value"] . "%");
+            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
+            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
-        $response["recordsFiltered"] = $country->count();
+        $response["recordsFiltered"] = $records->count();
         /*ordering*/
 //        $order = $request["order"][0]["column"]??0;
 //        $orderDir = $request["order"][0]["dir"]??"desc";
@@ -72,9 +72,9 @@ class ScheduleController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $country = $country->skip($request->start)->take($request->length)->get();
-        foreach ($country as $record) {
-            $dates = $record->scheduleDays;
+        $records = $records->skip($request->start)->take($request->length)->get();
+        foreach ($records as $record) {
+                $dates = $record->scheduleDays;
             $days = implode(',', $dates->pluck('day')->toArray());
             $response['data'][] = [
                 $record->id,
@@ -84,6 +84,7 @@ class ScheduleController extends Controller
                 ])->render(),
                 $record->employee->name,
                 view('admin.layout.defaultComponent.dateTime', [
+                    'date'         =>$record->start_date .' to '.$record->end_date,
                     'first_value'  => $dates[0]->start_time,
                     'second_value' => $dates[0]->end_time,
                     'days'         => $days,
@@ -139,8 +140,8 @@ class ScheduleController extends Controller
         foreach ($days as $key => $v) {
             $scheduleDays[] = [
                 "day"        => $v,
-                "start_time" => date('h:i a', strtotime($start_time[$key])),
-                "end_time"   => date('h:i a', strtotime($end_time[$key])),
+                "start_time" => $start_time[$key],
+                "end_time"   => $end_time[$key],
             ];
         }
         $data->scheduleDays()->createMany($scheduleDays);

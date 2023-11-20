@@ -56,45 +56,63 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
+                        <input type="text" class="form-control dateTImes" name="dateRange" id="date"/>
+                        <label for="gridRadios1">Date Range</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
                         <textarea class="form-control" style="height: 100px" name="notes">{{$record->notes}}</textarea>
                         <label for="floatingphone_one">Notes(Optional)</label>
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$title}} list</h5>
+                            <!-- Table with stripped rows -->
+                            <table id="dataTable" class="table cell-border display compact">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Days</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
+                                    <?php
+                                    $data = new \stdClass();
+                                    if (!empty($record->scheduleDays[$key])) {
+                                        $data = $record->scheduleDays[$key];
+                                    } else {
+                                        $data->day = '';
+                                        $data->start_time = '';
+                                        $data->end_time = '';
+                                    }
+
+                                    ?>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input day-checkbox"
+                                                   name="days[]"
+                                                   {{$data->day ==$day?'checked':''}}
+                                                   value="{{$day}}"></td>
+                                        <td>{{$day}}</td>
+                                        <td><input type="time" class="form-control time-input" name="start_time[]"
+                                                   value="{{$data->start_time}}"></td>
+                                        <td><input type="time" class="form-control time-input" name="end_time[]"
+                                                   value="{{$data->end_time}}"></td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                        </div>
+                    </div>
+
                 </div>
-                <fieldset class="row mb-3">
-                    <div class="col-md-1">
-
-                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="days[]"
-                                           id="gridRadios{{ $day }}"
-                                           value="{{ $day }}"
-                                            {{(in_array($day,$record->scheduleDays->pluck('day')->toArray()))   ? 'checked' : ''}}
-                                    >
-                                    <label class="form-check-label" for="gridRadios{{ $day }}">
-                                        {{ $day }}
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                </div>
-                        @endforeach
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-                    <div class="col-md-2">
-                        @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
-                            <div class="form-check">
-                                <label class="form-check-label" for="gridRadios1">
-                                </label>
-                                <input type="text" class="dateTImes" name="datetimes[]" id="date_{{$key}}" value="{{in_array($day,$record->scheduleDays->pluck('day')->toArray())   ? $record->scheduleDays[$key]->start_time.'-'.$record->scheduleDays[$key]->end_time : ''}}"/>
-                            </div>
-                            <div class="form-check">
-                            </div>
-                        @endforeach
-                    </div>
-                </fieldset>
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -111,7 +129,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
-        $(function() {
+        $(function () {
             $(".dateTImes").daterangepicker({
                 timePicker: true,
                 startDate: moment().startOf('hour'),
