@@ -80,15 +80,15 @@
                 {{--client detail--}}
                 <div class="col-md-12">
                     <h4 class="form-check-label" for="clientDetails">
-                        Add Client Details
+                        <u> Add Client Details</u>
                     </h4>
 
-{{--                    <div class="form-check">--}}
-{{--                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"--}}
-{{--                               id="clientDetails"--}}
-{{--                               onclick="showbox(this)">--}}
+                    {{--                    <div class="form-check">--}}
+                    {{--                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"--}}
+                    {{--                               id="clientDetails"--}}
+                    {{--                               onclick="showbox(this)">--}}
 
-{{--                    </div>--}}
+                    {{--                    </div>--}}
                 </div>
                 <div id="cc_baox" class="row g-3">
                     <div class="col-md-6">
@@ -152,7 +152,7 @@
                                id="clientLicenseNumber"
                                onclick="checkOnsite(this)">
                         <h4 class="form-check-label" for="clientLicenseNumber">
-                            Trailer On Site
+                            <u> Trailer On Site</u>
                         </h4>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                                id="monitoring"
                                onclick="isMonitoring(this)">
                         <h4 class="form-check-label" for="monitoring">
-                            Monitoring
+                            <u> Monitoring</u>
                         </h4>
                     </div>
 
