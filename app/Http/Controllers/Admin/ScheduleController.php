@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
 
 class ScheduleController extends Controller
@@ -23,13 +24,13 @@ class ScheduleController extends Controller
 
     public function tableData(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $records = new Schedule();
+        $records                  = new location();
         $response["recordsTotal"] = $records->count();
 
         /*Sorting*/
@@ -74,29 +75,49 @@ class ScheduleController extends Controller
 //        }
         $records = $records->skip($request->start)->take($request->length)->get();
         foreach ($records as $record) {
-                $dates = $record->scheduleDays;
-            $days = implode(',', $dates->pluck('day')->toArray());
-            $response['data'][] = [
-                $record->id,
-                view('admin.layout.defaultComponent.locationDetail', [
-                    'name'    => $record->location->name,
-                    'address' => $record->location->address,
-                ])->render(),
-                $record->employee->name,
-                view('admin.layout.defaultComponent.dateTime', [
-                    'date'         =>$record->start_date .' to '.$record->end_date,
+            $timeDate      = '';
+            $employeePhone = '';
+            $employeeName = '';
+            $scheduled     = $this->getCurrentWeekScheduled($record->id);
+            if (!empty($scheduled)) {
+                $employeePhone = $scheduled->employee->phone_one;
+                $employeeName = $scheduled->employee->name;
+                $dates         = $scheduled->scheduleDays;
+                $days          = implode(',', $dates->pluck('day')->toArray());
+                $timeDate      = view('admin.layout.defaultComponent.dateTime', [
+                    'date'         => $record->start_date . ' to ' . $record->end_date,
                     'first_value'  => $dates[0]->start_time,
                     'second_value' => $dates[0]->end_time,
                     'days'         => $days,
+                ])->render();
+            }
+            $response['data'][] = [
+                $record->id,
+                view('admin.layout.defaultComponent.locationDetail', [
+                    'name'    => $record->name,
+                    'address' => $record->address,
                 ])->render(),
-                $record->employee->phone_one,
-
+                $employeeName,
+                $timeDate,
+                $employeePhone,
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('schedule.edit', $record->id)
                 ])->render(),
             ];
         }
         return response($response, 201);
+    }
+
+    private function getCurrentWeekScheduled($locationId)
+    {
+        $startOfWeek          = Carbon::now();
+        $endOfWeek            = Carbon::now();
+        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
+        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
+        $item                 = Schedule::where('location_id', $locationId)->whereBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])
+            ->first();
+        // You can now use $orders as the collection of orders for the current week
+        return $item;
     }
 
     /**
@@ -121,18 +142,18 @@ class ScheduleController extends Controller
             'employee_id' => 'required',
         ]);
 
-        $days = $request->days;
+        $days       = $request->days;
         $start_time = $request->start_time;
-        $end_time = $request->end_time;
+        $end_time   = $request->end_time;
 
         $dateTime = explode(' - ', $request->input('dateRange'));
 
-        $data = new Schedule();
+        $data              = new Schedule();
         $data->location_id = $request->location_id;
         $data->employee_id = $request->employee_id;
-        $data->start_date = $dateTime[0];
-        $data->end_date = $dateTime[1];
-        $data->comments = $request->comments ?? "";
+        $data->start_date  = $dateTime[0];
+        $data->end_date    = $dateTime[1];
+        $data->comments    = $request->comments ?? "";
         $data->save();
 
         $scheduleDays = [];
@@ -164,8 +185,8 @@ class ScheduleController extends Controller
     public function edit(string $id)
     {
 
-        $data['record'] = Schedule::find($id);
-        $data['title'] = "Schedule";
+        $data['record']   = Schedule::find($id);
+        $data['title']    = "Schedule";
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
         return view('admin.schedule.edit', $data);
