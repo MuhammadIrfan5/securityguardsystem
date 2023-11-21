@@ -91,7 +91,7 @@ class ScheduleController extends Controller
                     'second_value' => $dates[0]->end_time,
                     'days'         => $days,
                 ])->render();
-                $button             = view('admin.layout.defaultComponent.editButton', [
+                $button        = view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('schedule.edit', $scheduled->id)
                 ])->render();
             }
@@ -145,8 +145,10 @@ class ScheduleController extends Controller
         ]);
 
         $days       = $request->days;
-        $start_time = $request->start_time;
-        $end_time   = $request->end_time;
+        $request->start_time=array_filter($request->start_time);
+        $start_time =collect($request->start_time)->values()->all();
+        $request->end_time=array_filter($request->end_time);
+        $end_time   = collect($request->end_time)->values()->all();
 
         $dateTime = explode(' - ', $request->input('dateRange'));
 
@@ -156,6 +158,7 @@ class ScheduleController extends Controller
         $data->start_date  = $dateTime[0];
         $data->end_date    = $dateTime[1];
         $data->comments    = $request->comments ?? "";
+        $data->created_by  = $request->user()['id'];
         $data->save();
 
         $scheduleDays = [];
