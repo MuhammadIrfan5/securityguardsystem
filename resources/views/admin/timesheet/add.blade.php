@@ -27,9 +27,9 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="location_id" class="form-select"
-                                id="parent_id">
+                                id="location_id">
                             <option disabled selected>Location</option>
-                            @foreach($location as $user)
+                            @foreach($locations as $user)
                                 <option value="{{ $user->id }}">{{$user->name}}</option>
                             @endforeach
                         </select>
@@ -39,16 +39,13 @@
                     <div class="form-floating">
                         <select name="employee_id" class="form-select"
                                 id="employee_id">
-                            <option disabled selected>Employee list</option>
-                            @foreach($employee as $user)
-                                <option value="{{ $user->id }}">{{$user->name}}</option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In" name="check_in">
+                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In"
+                               name="check_in">
                         <label for="floatingName">Check-In</label>
                     </div>
                 </div>
@@ -66,7 +63,8 @@
                         Dispatch
                     </label>
 
-                    <input class="form-check-input" value="Construction" type="radio" name="calling_number" id="Construction">
+                    <input class="form-check-input" value="Construction" type="radio" name="calling_number"
+                           id="Construction">
                     <label class="form-check-label" for="Construction">
                         Construction
                     </label>
@@ -86,4 +84,35 @@
         </div>
     </div>
 
+@endsection
+@section('page-js')
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $("#location_id").on('click', function () {
+                    var id = $(this).val();
+                    console.log(id);
+                    var employeeId = $('#employee_id');
+                    employeeId.empty();
+                    if (id != null){
+                    $.ajax({
+                        url: "{{url('get-employees?location_id=')}}" + id,
+                        type: 'GET',
+                        success: function (result) {
+                            console.log(result);
+                            $.each(result, function (index, value) {
+                                employeeId.append(
+                                    $('<option></option>').val(value.id).html(value.name)
+                                );
+                            });
+                        },
+                        error: function (error) {
+                            console.log(error.status)
+                        }
+                    });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -123,4 +123,10 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
 
     Route::resource('reschedule', RescheduleController::class);
+
+
+    /*AJAX API*/
+    Route::get('get-employees', [TimeSheetController::class, 'getEmployees'])->name('time.sheet.tableData');
+
+
 });

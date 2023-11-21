@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -93,9 +94,8 @@ class TimeSheetController extends Controller
      */
     public function create()
     {
-        $data['title']    = 'Time Sheet';
-        $data['location'] = Location::all();
-        $data['employee'] = Employee::all();
+        $data['title']     = 'Time Sheet';
+        $data['locations'] = Location::all();
         return view('admin.timesheet.add', $data);
     }
 
@@ -177,5 +177,21 @@ class TimeSheetController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getEmployees(Request $request)
+    {
+        $list     = array();
+        $id       = $request->location_id;
+        $employee = Schedule::where('location_id', $id)->get();
+        if (count($employee) > 0) {
+            foreach ($employee as $item) {
+                $list[] = [
+                    'id'   => $item->employee->id,
+                    'name' => $item->employee->name,
+                ];
+            }
+        }
+        return $list;
     }
 }
