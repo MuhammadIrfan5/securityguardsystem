@@ -91,10 +91,10 @@ class ScheduleController extends Controller
                     'second_value' => $dates[0]->end_time,
                     'days'         => $days,
                 ])->render();
+                $button             = view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('schedule.edit', $scheduled->id)
+                ])->render();
             }
-            $button             = view('admin.layout.defaultComponent.editButton', [
-                'editUrl' => route('schedule.edit', $scheduled->id)
-            ])->render();
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.locationDetail', [
