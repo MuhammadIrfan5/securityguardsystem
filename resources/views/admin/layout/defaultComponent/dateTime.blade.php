@@ -1,5 +1,6 @@
 <ul>
     <li>{{$date}}</li>
-    <li>{{$days}}</li>
-    <li>{{($first_value).' to '.($second_value)}}</li>
+    @foreach($list as $item)
+        <li>{{$item->day. ' - '.($item->start_time).' to '.($item->end_time)}}</li>
+    @endforeach
 </ul>

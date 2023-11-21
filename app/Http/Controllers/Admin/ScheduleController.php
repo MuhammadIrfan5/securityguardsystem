@@ -84,12 +84,9 @@ class ScheduleController extends Controller
                 $employeePhone = $scheduled->employee->phone_one;
                 $employeeName  = $scheduled->employee->name;
                 $dates         = $scheduled->scheduleDays;
-                $days          = implode(',', $dates->pluck('day')->toArray());
                 $timeDate      = view('admin.layout.defaultComponent.dateTime', [
-                    'date'         => $scheduled->start_date . ' to ' . $scheduled->end_date,
-                    'first_value'  => $dates[0]->start_time,
-                    'second_value' => $dates[0]->end_time,
-                    'days'         => $days,
+                    'date' => $scheduled->start_date . ' to ' . $scheduled->end_date,
+                    'list' => $dates,
                 ])->render();
                 $button        = view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('schedule.edit', $scheduled->id)
@@ -144,11 +141,11 @@ class ScheduleController extends Controller
             'employee_id' => 'required',
         ]);
 
-        $days       = $request->days;
-        $request->start_time=array_filter($request->start_time);
-        $start_time =collect($request->start_time)->values()->all();
-        $request->end_time=array_filter($request->end_time);
-        $end_time   = collect($request->end_time)->values()->all();
+        $days                = $request->days;
+        $request->start_time = array_filter($request->start_time);
+        $start_time          = collect($request->start_time)->values()->all();
+        $request->end_time   = array_filter($request->end_time);
+        $end_time            = collect($request->end_time)->values()->all();
 
         $dateTime = explode(' - ', $request->input('dateRange'));
 
