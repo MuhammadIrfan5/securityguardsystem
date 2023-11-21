@@ -16,8 +16,8 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
-        $data['title'] = "Monitoring";
-        return view('admin.job.list', $data);
+        $data['title'] = "Time Sheet";
+        return view('admin.timesheet.list', $data);
     }
 
     public function tableData(Request $request)
@@ -93,10 +93,10 @@ class TimeSheetController extends Controller
      */
     public function create()
     {
-        $data['title']    = 'Monitoring';
+        $data['title']    = 'Time Sheet';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
-        return view('admin.job.add', $data);
+        return view('admin.timesheet.add', $data);
     }
 
     /**
@@ -118,7 +118,7 @@ class TimeSheetController extends Controller
         $data->calling_number = $request->calling_number;
         $data->save();
 
-        return redirect()->route('assign-job.index')->with('msg', 'Job Assign Successfully!');
+        return redirect()->route('time-sheet.index')->with('msg', 'Time-Sheet Successfully!');
 
     }
 
@@ -140,7 +140,7 @@ class TimeSheetController extends Controller
         $data['employee'] = Employee::all();
         $data['data']     = Job::find($id);
 
-        return view('admin.job.edit', $data);
+        return view('admin.timesheet.edit', $data);
 
     }
 
@@ -168,7 +168,7 @@ class TimeSheetController extends Controller
             }
             $data->update();
         }
-        return redirect()->route('assign-job.index')->with('msg', 'Assign Job Updated Successfully!');
+        return redirect()->route('time-sheet.index')->with('msg', 'Assign Job Updated Successfully!');
     }
 
     /**
