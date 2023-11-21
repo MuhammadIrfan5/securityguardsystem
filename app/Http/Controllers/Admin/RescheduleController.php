@@ -27,7 +27,7 @@ class RescheduleController extends Controller
         $endOfWeek            = Carbon::now();
         $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
         $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
-        $data['locations']    = Schedule::whereNotBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ]);
+        $data['locations']    = Schedule::whereNotBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])->get();
         $data['title']        = "Reschedule";
 
         return view('admin.reschedule.add', $data);
@@ -111,10 +111,8 @@ class RescheduleController extends Controller
             ->first();
         $startOfWeeks         = Carbon::now();
         $endOfWeeks           = Carbon::now();
-        $currentWeekStartDate = $startOfWeeks->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
-        $currentWeekEndDate   = $endOfWeeks->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
-        $data['startDate']    = $currentWeekStartDate->startOfWeek(Carbon::SUNDAY);
-        $data['endDate']      = $currentWeekEndDate->endOfWeek(Carbon::SATURDAY);
+        $data['startDate'] = $startOfWeeks->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
+        $data['endDate']   = $endOfWeeks->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
         // You can now use $orders as the collection of orders for the current week
         return $data;
     }
