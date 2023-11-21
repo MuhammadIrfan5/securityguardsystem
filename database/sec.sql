@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2023 at 07:11 AM
+-- Generation Time: Nov 21, 2023 at 06:41 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sec`
+-- Database: `secu2`
 --
 
 -- --------------------------------------------------------
@@ -205,7 +205,7 @@ CREATE TABLE `locations` (
 --
 
 INSERT INTO `locations` (`id`, `user_id`, `name`, `address`, `timezone_id`, `timezone`, `coverage_start_time`, `coverage_end_time`, `location_type`, `location_sub_type`, `license_number`, `is_monitoring`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Sohail Ali', 'xwww', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09');
+(1, 1, 'Sohail Ali', 'Nazimabad', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09');
 
 -- --------------------------------------------------------
 
@@ -268,7 +268,22 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (19, '2023_10_17_073224_create_locations_table', 3),
 (20, '2023_10_30_172736_create_client_locations_table', 3),
 (21, '2023_10_30_173059_create_monitor_locations_table', 3),
-(22, '2023_10_17_072545_create_employees_table', 4);
+(22, '2023_10_17_072545_create_employees_table', 4),
+(23, '2023_11_14_055601_create_schedules_table', 5),
+(24, '2023_11_14_055816_create_schedule_days_table', 5),
+(25, '2023_11_15_063754_create_monitorings_table', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `monitorings`
+--
+
+CREATE TABLE `monitorings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -339,6 +354,59 @@ INSERT INTO `roles` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALU
 (1, 'SuperAdmin', 1, NULL, NULL),
 (2, 'Admin', 1, NULL, NULL),
 (3, 'User', 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schedules`
+--
+
+CREATE TABLE `schedules` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `location_id` bigint(20) UNSIGNED NOT NULL,
+  `start_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `end_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comments` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `comments`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, '11-21-2023', '11-28-2023', '', '2023-11-17 00:33:04', '2023-11-21 00:33:04', NULL),
+(2, 1, 1, '19-11-2023', '25-11-2023', '', '2023-11-21 00:40:11', '2023-11-21 00:40:11', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schedule_days`
+--
+
+CREATE TABLE `schedule_days` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `schedule_id` bigint(20) UNSIGNED NOT NULL,
+  `day` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `start_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `end_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `schedule_days`
+--
+
+INSERT INTO `schedule_days` (`id`, `schedule_id`, `day`, `start_time`, `end_time`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'Monday', '10:32', '22:32', '2023-11-21 00:33:04', '2023-11-21 00:33:04', NULL),
+(2, 1, 'Tuesday', '10:32', '22:32', '2023-11-21 00:33:04', '2023-11-21 00:33:04', NULL),
+(3, 2, 'Monday', '10:32', '22:32', '2023-11-21 00:40:11', '2023-11-21 00:40:11', NULL),
+(4, 2, 'Tuesday', '10:32', '22:32', '2023-11-21 00:40:11', '2023-11-21 00:40:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -954,6 +1022,12 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `monitorings`
+--
+ALTER TABLE `monitorings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `monitor_locations`
 --
 ALTER TABLE `monitor_locations`
@@ -979,6 +1053,21 @@ ALTER TABLE `personal_access_tokens`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `schedules`
+--
+ALTER TABLE `schedules`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `schedules_employee_id_foreign` (`employee_id`),
+  ADD KEY `schedules_location_id_foreign` (`location_id`);
+
+--
+-- Indexes for table `schedule_days`
+--
+ALTER TABLE `schedule_days`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `schedule_days_schedule_id_foreign` (`schedule_id`);
 
 --
 -- Indexes for table `states`
@@ -1074,7 +1163,13 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `monitorings`
+--
+ALTER TABLE `monitorings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `monitor_locations`
@@ -1093,6 +1188,18 @@ ALTER TABLE `personal_access_tokens`
 --
 ALTER TABLE `roles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `schedules`
+--
+ALTER TABLE `schedules`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `schedule_days`
+--
+ALTER TABLE `schedule_days`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `states`
@@ -1161,6 +1268,19 @@ ALTER TABLE `locations`
 --
 ALTER TABLE `monitor_locations`
   ADD CONSTRAINT `monitor_locations_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Constraints for table `schedules`
+--
+ALTER TABLE `schedules`
+  ADD CONSTRAINT `schedules_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
+  ADD CONSTRAINT `schedules_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Constraints for table `schedule_days`
+--
+ALTER TABLE `schedule_days`
+  ADD CONSTRAINT `schedule_days_schedule_id_foreign` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`);
 
 --
 -- Constraints for table `states`
