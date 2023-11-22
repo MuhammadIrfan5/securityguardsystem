@@ -66,12 +66,12 @@ class TimeSheetController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $records=$records->select('location_id')
-        ->groupBy('location_id');
+        $records = $records->select('location_id')
+            ->groupBy('location_id');
         $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
-        $i=1;
+        $i       = 1;
         foreach ($records as $record) {
-            $attendace     = $this->getDailyAttendance($record->location_id,'','');
+            $attendace          = $this->getDailyAttendance($record->location_id, '', '');
             $response['data'][] = [
                 $i,
                 $record->location->name,
@@ -85,6 +85,20 @@ class TimeSheetController extends Controller
             $i++;
         }
         return response($response);
+    }
+
+    private function getDailyAttendance($locationId, $startTime, $endTime)
+    {
+        $currentDateTime = new \DateTime();
+
+        $startTime = !empty($startTime) ? $startTime : $currentDateTime->format('H:i');
+        $endTime   = !empty($endTime) ? $endTime : $currentDateTime->format('H:i');
+
+        $item = Job::where('location_id', $locationId)->whereBetween('time', [ $startTime, $endTime ])
+            ->get();
+        dd($item);
+        // You can now use $orders as the collection of orders for the current week
+        return $item;
     }
 
     /**
@@ -181,18 +195,8 @@ class TimeSheetController extends Controller
         //
     }
 
-    private function getDailyAttendance($locationId,$startDate,$endDate)
-    {
-        $startOfWeek          = Carbon::now();
-        $endOfWeek            = Carbon::now();
-        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
-        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
-        $item                 = Job::where('location_id', $locationId)->whereBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])
-            ->first();
-        // You can now use $orders as the collection of orders for the current week
-        return $item;
-    }
     /*AJAX API*/
+
     public function getEmployees(Request $request)
     {
         $list     = array();
