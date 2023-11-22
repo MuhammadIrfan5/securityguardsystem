@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2023 at 08:46 AM
+-- Generation Time: Nov 22, 2023 at 02:46 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -126,7 +126,9 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`id`, `user_id`, `category_id`, `name`, `id_number`, `phone_one`, `phone_two`, `guard_number`, `issue_date`, `expiry_date`, `pay_rate`, `manager_name`, `notes`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Sohail Ali', 'b123', '21212121212', '', 'ssa1234', '2023-11-01', '2023-12-01', '123', 'Allah Rahi', '', 0, '2023-11-01 01:50:11', '2023-11-01 01:58:44');
+(1, 1, 1, 'Sohail Ali', 'b123', '21212121212', '', 'ssa1234', '2023-11-01', '2023-12-01', '123', 'Allah Rahi', '', 1, '2023-11-01 01:50:11', '2023-11-22 05:53:19'),
+(2, 1, 1, 'SQ', 'b1234', '21212121212', '', 'sa1', '2023-11-22', '2023-11-25', '1233', 'Allah Rahi', '', 1, '2023-11-22 05:53:03', '2023-11-22 05:53:11'),
+(3, 1, 1, 'Bilal', 'b12345', '21212121212', '', 'sa1', '2023-11-22', '2023-12-07', '1234', 'Allah Rahi', '', 1, '2023-11-22 05:54:03', '2023-11-22 05:54:18');
 
 -- --------------------------------------------------------
 
@@ -404,7 +406,8 @@ CREATE TABLE `schedules` (
 
 INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 1, 1, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
-(2, 1, 2, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL);
+(2, 1, 2, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
+(3, 3, 2, '11-22-2023', '11-29-2023', '', '1', '2023-11-22 05:55:12', '2023-11-22 05:55:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -433,7 +436,9 @@ INSERT INTO `schedule_days` (`id`, `schedule_id`, `day`, `start_time`, `end_time
 (3, 1, 'Sunday', '22:47', '10:47', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
 (4, 2, 'Monday', '11:07', '23:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
 (5, 2, 'Tuesday', '11:07', '23:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
-(6, 2, 'Sunday', '13:07', '11:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL);
+(6, 2, 'Sunday', '13:07', '11:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
+(7, 3, 'Monday', '15:55', '03:55', '2023-11-22 05:55:12', '2023-11-22 05:55:12', NULL),
+(8, 3, 'Tuesday', '15:55', '03:55', '2023-11-22 05:55:12', '2023-11-22 05:55:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -1154,7 +1159,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `employee_categories`
@@ -1220,13 +1225,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
 --
 ALTER TABLE `schedule_days`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `states`
