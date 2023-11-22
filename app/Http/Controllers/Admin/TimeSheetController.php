@@ -71,7 +71,8 @@ class TimeSheetController extends Controller
         $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         $i       = 1;
         foreach ($records as $record) {
-            $attendace          = $this->getDailyAttendance($record->location_id, '', '');
+
+            $attendace          = $this->getDailyAttendance($record->location_id, $request->startTime,$request->endTime);
             $response['data'][] = [
                 $i,
                 $record->location->name,
@@ -96,7 +97,6 @@ class TimeSheetController extends Controller
 
         $item = Job::where('location_id', $locationId)->whereBetween('time', [ $startTime, $endTime ])
             ->get();
-        dd($item);
         // You can now use $orders as the collection of orders for the current week
         return $item;
     }

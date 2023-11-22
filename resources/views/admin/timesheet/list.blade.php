@@ -10,10 +10,10 @@
         <form action="#" method="get" id="filterForm">
             <div class="row">
                 <div class="col-5">
-                    <input type="time" class="form-control">
+                    <input type="time" name="startTime" class="form-control">
                 </div>
                 <div class="col-5">
-                    <input type="time" class="form-control">
+                    <input type="time" name="endTime" class="form-control">
                 </div>
                 <div class="col-2">
                     <input id="filter" type="submit" class="btn btn-outline-primary " value="Filter">

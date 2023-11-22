@@ -5,8 +5,10 @@
 
     let table = new DataTable('#dataTable', {
         responsive: true,
+        searching: false,
         searchable: false,
-        paging: true,
+        lengthChange: true,
+        ordering: false,
         autoWidth: true,
         processing: true,
         serverSide: true,
@@ -23,6 +25,10 @@
         },
 
     });
+    $("#filterForm").on("submit", function (e) {
+        e.preventDefault();
+        table.ajax.reload()
+    })
 
     function handleCheck(cb) {
         if ($(cb).hasClass("check-all")) {
