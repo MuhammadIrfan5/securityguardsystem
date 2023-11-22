@@ -44,35 +44,19 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In"
-                               name="check_in">
-                        <label for="floatingName">Check-In</label>
+                        <select name="type" class="form-select"
+                                id="type">
+                            <option disabled selected>Type</option>
+                                <option value="check-in">Check-In</option>
+                                <option value="check-out">Check-Out</option>
+                        </select>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <input class="form-check-input" value="WhatsApp" type="radio" name="calling_number"
-                           id="WhatsApp"
-                           checked="">
-                    <label class="form-check-label" for="WhatsApp">
-                        WhatsApp
-                    </label>
-
-
-                    <input class="form-check-input" value="Dispatch" type="radio" name="calling_number" id="Dispatch">
-                    <label class="form-check-label" for="Dispatch">
-                        Dispatch
-                    </label>
-
-                    <input class="form-check-input" value="Construction" type="radio" name="calling_number"
-                           id="Construction">
-                    <label class="form-check-label" for="Construction">
-                        Construction
-                    </label>
-
-                    <input class="form-check-input" value="Timesheet" type="radio" name="calling_number" id="Timesheet">
-                    <label class="form-check-label" for="Timesheet">
-                        Timesheet
-                    </label>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" id="floatingName" placeholder="Time" name="time">
+                        <label for="floatingName">Time</label>
+                    </div>
                 </div>
 
                 <div class="text-end">

@@ -107,18 +107,6 @@ class ScheduleController extends Controller
         return response($response, 201);
     }
 
-    private function getCurrentWeekScheduled($locationId)
-    {
-        $startOfWeek          = Carbon::now();
-        $endOfWeek            = Carbon::now();
-        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
-        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
-        $item                 = Schedule::where('location_id', $locationId)->whereBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])
-            ->first();
-        // You can now use $orders as the collection of orders for the current week
-        return $item;
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -226,4 +214,15 @@ class ScheduleController extends Controller
         //
     }
 
+    private function getCurrentWeekScheduled($locationId)
+    {
+        $startOfWeek          = Carbon::now();
+        $endOfWeek            = Carbon::now();
+        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
+        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
+        $item                 = Schedule::where('location_id', $locationId)->whereBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])
+            ->first();
+        // You can now use $orders as the collection of orders for the current week
+        return $item;
+    }
 }

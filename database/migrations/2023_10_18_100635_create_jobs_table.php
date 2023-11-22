@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('location_id')->constrained('locations');
-            $table->string('check_in');
+            $table->enum('type',['check-in','check-out']);
+            $table->string('time');
             $table->string('calling_number');
+            $table->longText('notes')->nullable();
             $table->boolean('is_approved')->default(0);
             $table->timestamps();
         });

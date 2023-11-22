@@ -9,6 +9,8 @@ use App\Models\Location;
 use App\Models\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TimeSheetController extends Controller
 {
@@ -23,29 +25,21 @@ class TimeSheetController extends Controller
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response                    = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Job();
-        $response["recordsTotal"] = $country->count();
+        $records                     = new Job();
+        $response["recordsTotal"]    = $records->count();
+        $response["recordsFiltered"] = $records->count();
 
-        /*Sorting*/
-        switch ('id') {
-            case 'id':
-                $country = $country->orderBy('id', 'desc');
-                break;
-            default:
-                break;
-        }
         /*Search function*/
         if (!empty($request->search["value"])) {
-            $country = $country->where("id", "like", "%" . $request->search["value"] . "%");
-            $country = $country->orWhere("name", "like", "%" . $request->search["value"] . "%");
+            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
+            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
-        $response["recordsFiltered"] = $country->count();
         /*ordering*/
 //        $order = $request["order"][0]["column"]??0;
 //        $orderDir = $request["order"][0]["dir"]??"desc";
@@ -72,21 +66,25 @@ class TimeSheetController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $country = $country->skip($request->start)->take($request->length)->get();
-        foreach ($country as $record) {
+        $records=$records->select('location_id')
+        ->groupBy('location_id');
+        $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
+        $i=1;
+        foreach ($records as $record) {
+            $attendace     = $this->getDailyAttendance($record->location_id,'','');
             $response['data'][] = [
-                $record->id,
-                $record->employee->name,
+                $i,
                 $record->location->name,
-                $record->check_in,
-                $record->calling_number,
+                '',
+                '',
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('assign-job.edit', $record->id)
+                    'editUrl' => route('assign-job.edit', 1)
                 ])->render(),
             ];
+            $i++;
         }
-        return response($response, 201);
+        return response($response);
     }
 
     /**
@@ -105,17 +103,21 @@ class TimeSheetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'location_id'    => 'required',
-            'employee_id'    => 'required',
-            'check_in'       => 'required',
-            'calling_number' => 'required',
+            'location_id' => 'required',
+            'employee_id' => 'required',
+            'time'        => 'required',
+            'type'        => 'required',
         ]);
+
+        /*GET EMPLOYEE*/
+        $record = Employee::find($request->employee_id);
 
         $data                 = new Job();
         $data->location_id    = $request->location_id;
         $data->employee_id    = $request->employee_id;
-        $data->check_in       = $request->check_in;
-        $data->calling_number = $request->calling_number;
+        $data->time           = $request->time;
+        $data->type           = $request->type;
+        $data->calling_number = $record->phone_one;
         $data->save();
 
         return redirect()->route('time-sheet.index')->with('msg', 'Time-Sheet Successfully!');
@@ -179,6 +181,18 @@ class TimeSheetController extends Controller
         //
     }
 
+    private function getDailyAttendance($locationId,$startDate,$endDate)
+    {
+        $startOfWeek          = Carbon::now();
+        $endOfWeek            = Carbon::now();
+        $currentWeekStartDate = $startOfWeek->startOfWeek(Carbon::SUNDAY); // Set the week start day to Sunday
+        $currentWeekEndDate   = $endOfWeek->endOfWeek(Carbon::SATURDAY);   // Set the week end day to Saturday
+        $item                 = Job::where('location_id', $locationId)->whereBetween('created_at', [ $currentWeekStartDate, $currentWeekEndDate ])
+            ->first();
+        // You can now use $orders as the collection of orders for the current week
+        return $item;
+    }
+    /*AJAX API*/
     public function getEmployees(Request $request)
     {
         $list     = array();
@@ -194,4 +208,5 @@ class TimeSheetController extends Controller
         }
         return $list;
     }
+
 }

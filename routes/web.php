@@ -126,7 +126,7 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
 
     /*AJAX API*/
-    Route::get('get-employees', [TimeSheetController::class, 'getEmployees'])->name('time.sheet.tableData');
+    Route::get('get-employees', [TimeSheetController::class, 'getEmployees']);
 
 
 });
