@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2023 at 06:41 AM
+-- Generation Time: Nov 22, 2023 at 08:46 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -60,6 +60,13 @@ CREATE TABLE `client_locations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `client_locations`
+--
+
+INSERT INTO `client_locations` (`id`, `location_id`, `client_name`, `client_designation`, `client_email`, `client_phone`, `created_at`, `updated_at`) VALUES
+(1, 2, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-11-21 01:07:09', '2023-11-21 01:07:09');
 
 -- --------------------------------------------------------
 
@@ -169,12 +176,21 @@ CREATE TABLE `jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `employee_id` bigint(20) UNSIGNED NOT NULL,
   `location_id` bigint(20) UNSIGNED NOT NULL,
-  `check_in` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('check-in','check-out') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `calling_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_approved` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`id`, `employee_id`, `location_id`, `type`, `time`, `calling_number`, `notes`, `is_approved`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'check-in', '11:09', '21212121212', NULL, 0, '2023-11-22 01:09:26', '2023-11-22 01:09:26');
 
 -- --------------------------------------------------------
 
@@ -205,7 +221,8 @@ CREATE TABLE `locations` (
 --
 
 INSERT INTO `locations` (`id`, `user_id`, `name`, `address`, `timezone_id`, `timezone`, `coverage_start_time`, `coverage_end_time`, `location_type`, `location_sub_type`, `license_number`, `is_monitoring`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Sohail Ali', 'Nazimabad', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09');
+(1, 1, 'Sohail Ali', 'Nazimabad', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09'),
+(2, 1, 'around', 'nazimabad 2', 248, 'Asia/Karachi', '11:06:00', '11:06:00', '1', '', 'sasasa1234', 1, NULL, '2023-11-21 01:07:09', '2023-11-21 01:07:09');
 
 -- --------------------------------------------------------
 
@@ -263,15 +280,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2023_10_04_181753_create_user_two_factors_table', 1),
 (10, '2023_10_17_063524_create_time_zones_table', 1),
 (12, '2023_10_17_073040_create_location_types_table', 1),
-(14, '2023_10_18_100635_create_jobs_table', 1),
 (17, '2023_11_01_061712_create_employee_categories_table', 2),
 (19, '2023_10_17_073224_create_locations_table', 3),
 (20, '2023_10_30_172736_create_client_locations_table', 3),
 (21, '2023_10_30_173059_create_monitor_locations_table', 3),
 (22, '2023_10_17_072545_create_employees_table', 4),
-(23, '2023_11_14_055601_create_schedules_table', 5),
 (24, '2023_11_14_055816_create_schedule_days_table', 5),
-(25, '2023_11_15_063754_create_monitorings_table', 5);
+(25, '2023_11_15_063754_create_monitorings_table', 5),
+(26, '2023_11_14_055601_create_schedules_table', 6),
+(29, '2023_10_18_100635_create_jobs_table', 7);
 
 -- --------------------------------------------------------
 
@@ -300,6 +317,13 @@ CREATE TABLE `monitor_locations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `monitor_locations`
+--
+
+INSERT INTO `monitor_locations` (`id`, `location_id`, `number_of_camera`, `camera_tower_number`, `nvr`, `created_at`, `updated_at`) VALUES
+(1, 2, '12', '12', '12', '2023-11-21 01:07:09', '2023-11-21 01:07:09');
 
 -- --------------------------------------------------------
 
@@ -368,6 +392,7 @@ CREATE TABLE `schedules` (
   `start_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `end_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `comments` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -377,9 +402,9 @@ CREATE TABLE `schedules` (
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `comments`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, '11-21-2023', '11-28-2023', '', '2023-11-17 00:33:04', '2023-11-21 00:33:04', NULL),
-(2, 1, 1, '19-11-2023', '25-11-2023', '', '2023-11-21 00:40:11', '2023-11-21 00:40:11', NULL);
+INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 1, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
+(2, 1, 2, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -403,10 +428,12 @@ CREATE TABLE `schedule_days` (
 --
 
 INSERT INTO `schedule_days` (`id`, `schedule_id`, `day`, `start_time`, `end_time`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Monday', '10:32', '22:32', '2023-11-21 00:33:04', '2023-11-21 00:33:04', NULL),
-(2, 1, 'Tuesday', '10:32', '22:32', '2023-11-21 00:33:04', '2023-11-21 00:33:04', NULL),
-(3, 2, 'Monday', '10:32', '22:32', '2023-11-21 00:40:11', '2023-11-21 00:40:11', NULL),
-(4, 2, 'Tuesday', '10:32', '22:32', '2023-11-21 00:40:11', '2023-11-21 00:40:11', NULL);
+(1, 1, 'Monday', '22:46', '10:46', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
+(2, 1, 'Tuesday', '10:46', '22:46', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
+(3, 1, 'Sunday', '22:47', '10:47', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
+(4, 2, 'Monday', '11:07', '23:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
+(5, 2, 'Tuesday', '11:07', '23:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
+(6, 2, 'Sunday', '13:07', '11:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -1115,7 +1142,7 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `client_locations`
 --
 ALTER TABLE `client_locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -1151,7 +1178,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `location_types`
@@ -1163,7 +1190,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1175,7 +1202,7 @@ ALTER TABLE `monitorings`
 -- AUTO_INCREMENT for table `monitor_locations`
 --
 ALTER TABLE `monitor_locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1199,7 +1226,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `schedule_days`
 --
 ALTER TABLE `schedule_days`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `states`
