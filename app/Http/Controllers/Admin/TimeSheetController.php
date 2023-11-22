@@ -72,7 +72,10 @@ class TimeSheetController extends Controller
         $i       = 1;
         foreach ($records as $record) {
 
-            $attendace          = $this->getDailyAttendance($record->location_id, $request->startTime,$request->endTime);
+            $attendances          = $this->getDailyAttendance($record->location_id, $request->startTime,$request->endTime);
+            foreach ($attendances as $item) {
+                dd($item);
+            }
             $response['data'][] = [
                 $i,
                 $record->location->name,
