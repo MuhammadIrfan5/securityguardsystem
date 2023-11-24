@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
@@ -128,5 +129,9 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     /*AJAX API*/
     Route::get('get-employees', [TimeSheetController::class, 'getEmployees']);
 
-
+    Route::get('/calendar', [CalendarController::class, 'index']);
+    Route::get('/events', [CalendarController::class, 'getEvents']);
+    Route::post('/event/add', [CalendarController::class, 'addEvent']);
+    Route::post('/event/update', [CalendarController::class, 'updateEvent']);
+    Route::post('/event/delete', [CalendarController::class, 'deleteEvent']);
 });
