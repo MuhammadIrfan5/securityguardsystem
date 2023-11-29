@@ -130,8 +130,9 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('get-employees', [TimeSheetController::class, 'getEmployees']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
-    Route::get('/events', [CalendarController::class, 'getEvents']);
-    Route::post('/event/add', [CalendarController::class, 'addEvent']);
+    Route::get('/fullcalender', [CalendarController::class, 'getEvents'])->name('getEvents');
+    Route::post('/event/add', [CalendarController::class, 'addEvent'])->name('CRUD.Event');
     Route::post('/event/update', [CalendarController::class, 'updateEvent']);
     Route::post('/event/delete', [CalendarController::class, 'deleteEvent']);
+    Route::get('get-locations', [CalendarController::class, 'getLocations']);
 });

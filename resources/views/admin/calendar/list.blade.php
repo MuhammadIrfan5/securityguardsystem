@@ -4,22 +4,8 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>
+            <a href="{{route('assign-job.create')}}" class="btn btn-primary">Create</a>
         </div>
-        <form action="#" method="get" id="filterForm">
-            <div class="row">
-                <div class="col-5">
-                    <input type="time" name="startTime" class="form-control">
-                </div>
-                <div class="col-5">
-                    <input type="time" name="endTime" class="form-control">
-                </div>
-                <div class="col-2">
-                    <input id="filter" type="submit" class="btn btn-outline-primary " value="Filter">
-                </div>
-            </div>
-        </form>
-
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
@@ -27,8 +13,6 @@
             </ol>
         </nav>
     </div>
-    <!-- End Page Title -->
-    <!-- End Page Title -->
 
     <section class="section">
         <div class="row">
@@ -38,64 +22,62 @@
                         {{ session('msg') }}
                     </div>
                 @endif
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{$title}} list</h5>
-                        <!-- Table with stripped rows -->
-                        <div class="container">
+            </div>
+        </div>
+        <div class="container">
+            <div id='calendar'></div>
 
-                            <div class="page-header text-center">
-                                <h1>Example of Calendar</h1>
+        </div>
+    </section>
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="locationId" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="eventTitle">Location list:</label>
+                            <select name="location_id" class="form-select"
+                                    id="location_id">
+                                <option disabled selected>Location</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="eventTitle">Employee list:</label>
+                            <select name="employee_id" class="form-select"
+                                    id="employee_id">
+                                <option disabled selected>Employee list</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="eventPhone">Start Time:</label>
+                                <input type="time" class="form-control" id="startTime" required>
                             </div>
-
-                            <hr>
-
-                            <form>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="fromDate">Event Name:</label>
-                                            <input type="text" class="form-control" placeholder="Enter event" id="eventName">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="fromDate">From:</label>
-                                            <input type="date" class="form-control" placeholder="Enter from date" id="fromDate">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="toDate">To:</label>
-                                            <input type="date" class="form-control" id="toDate">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <button type="button" class="btn btn-primary" id="addEvent">Add Event</button>
-
-                            </form>
-
-                            <hr>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div id="calendar"></div>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="eventPhone">End Time:</label>
+                                <input type="time" class="form-control" id="endTime" required>
                             </div>
-
-                        </div>                        <!-- End Table with stripped rows -->
-                    </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveEvent">Save</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEvent" data-dismiss="modal">Cancel
+                    </button>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
 @endsection
 @section('page-js')
     @include('admin.calendar.pageJs')
