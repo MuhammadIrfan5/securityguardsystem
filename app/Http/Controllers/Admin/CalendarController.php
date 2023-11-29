@@ -14,7 +14,7 @@ class CalendarController extends Controller
     {
         $data['title'] = "Scheduling";
 
-        return view('Admin.calendar.list', $data);
+        return view('admin.calendar.list', $data);
     }
 
     public function getEvents()
