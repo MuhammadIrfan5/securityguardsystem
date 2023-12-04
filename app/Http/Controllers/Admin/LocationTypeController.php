@@ -90,7 +90,7 @@ class LocationTypeController extends Controller
     {
         $data['title'] = 'Location Type';
         $data['type']  = LocationType::where('parent_id', 0)->get();
-        return view('Admin.locationType.add', $data);
+        return view('admin.locationType.add', $data);
     }
 
     /**
