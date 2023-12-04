@@ -14,7 +14,7 @@ class LocationTypeController extends Controller
     public function index()
     {
         $data['title'] = 'Location Type list';
-        return view('Admin.locationType.list', $data);
+        return view('admin.locationType.list', $data);
     }
 
     public function tableData(Request $request)
