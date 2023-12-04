@@ -75,6 +75,8 @@
                         type: "POST",
                         success: function (response) {
                             displayMessage("Event Updated Successfully");
+                            $('#calendar').fullCalendar('refetchEvents');
+
                         }
                     });
                 },
