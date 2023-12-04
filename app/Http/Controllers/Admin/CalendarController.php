@@ -13,26 +13,27 @@ class CalendarController extends Controller
     public function index()
     {
         $data['title'] = "Scheduling";
-
+        $data['locations'] =Location::all();
         return view('admin.calendar.list', $data);
     }
 
     public function getEvents()
     {
         if (request()->ajax()) {
-            $data = Schedule::whereDate('created_at', '>=', request()->start)
+            $data = Schedule::where('location_id',\request()->locationId)->whereDate('created_at', '>=', request()->start)
                 ->whereDate('created_at', '<=', request()->end)
                 ->get();
-            foreach ($data as $key => $item) {
+            $list=array();
+            foreach ($data as $item) {
                 $list[] =
                     [ 'id'    => $item->id,
-                      'title' => 'SOHAIL' . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)),
+                      'title' => $item->employee->name . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)),
                       'start' => $item->start_date,
                       'end'   => $item->end_date
                     ];
             }
 
-            return response()->json($list);
+            return response($list);
         }
 
     }

@@ -3,9 +3,9 @@
 
     <div class="pagetitle">
         <h1>{{$title}}</h1>
-        <div class="text-end">
-            <a href="{{route('assign-job.create')}}" class="btn btn-primary">Create</a>
-        </div>
+{{--        <div class="text-end">--}}
+{{--            <a href="{{route('assign-job.create')}}" class="btn btn-primary">Create</a>--}}
+{{--        </div>--}}
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
@@ -24,6 +24,13 @@
                 @endif
             </div>
         </div>
+        <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
+            <option value="#" selected>Select location</option>
+            @foreach($locations as $location)
+                <option value="{{$location->id}}">{{$location->name}}</option>
+
+            @endforeach
+        </select>
         <div class="container">
             <div id='calendar'></div>
 
@@ -41,13 +48,13 @@
                 </div>
                 <div class="modal-body">
                     <form id="locationId" class="row g-3">
-                        <div class="col-md-6">
-                            <label for="eventTitle">Location list:</label>
-                            <select name="location_id" class="form-select"
-                                    id="location_id">
-                                <option disabled selected>Location</option>
-                            </select>
-                        </div>
+{{--                        <div class="col-md-6">--}}
+{{--                            <label for="eventTitle">Location list:</label>--}}
+{{--                            <select name="location_id" class="form-select"--}}
+{{--                                    id="location_id">--}}
+{{--                                <option disabled selected>Location</option>--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                         <div class="col-md-6">
                             <label for="eventTitle">Employee list:</label>
                             <select name="employee_id" class="form-select"
