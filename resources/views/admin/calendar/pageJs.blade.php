@@ -25,9 +25,14 @@
         var startDate = "";
         var endDate = "";
         var calendar = $('#calendar').fullCalendar({
+            editable:true,
+            header:{
+                left:'prev,next today',
+                center:'title',
+                right:'month,agendaWeek,agendaDay'
+            },
             events: "{{route('getEvents')}}",
-            displayEventTime: false,
-            editable: true,
+            displayEventTime: true,
             eventRender: function (event, element, view) {
                 if (event.allDay === 'true') {
                     event.allDay = true;
