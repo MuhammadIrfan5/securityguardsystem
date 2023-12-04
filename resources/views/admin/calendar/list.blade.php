@@ -56,7 +56,7 @@
 {{--                            </select>--}}
 {{--                        </div>--}}
                         <div class="col-md-6">
-                            <label for="eventTitle">Employee list:</label>
+                            <label for="employee_id">Employee list:</label>
                             <select name="employee_id" class="form-select"
                                     id="employee_id">
                                 <option disabled selected>Employee list</option>
@@ -64,13 +64,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="eventPhone">Start Time:</label>
+                                <label for="startTime">Start Time:</label>
                                 <input type="time" class="form-control" id="startTime" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="eventPhone">End Time:</label>
+                                <label for="endTime">End Time:</label>
                                 <input type="time" class="form-control" id="endTime" required>
                             </div>
                         </div>
