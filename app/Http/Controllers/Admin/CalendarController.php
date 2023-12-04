@@ -12,24 +12,31 @@ class CalendarController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Scheduling";
-        $data['locations'] =Location::all();
+        $data['title']     = "Scheduling";
+        $data['locations'] = Location::all();
         return view('admin.calendar.list', $data);
     }
 
     public function getEvents()
     {
         if (request()->ajax()) {
-            $data = Schedule::where('location_id',\request()->locationId)->whereDate('created_at', '>=', request()->start)
+            $data = Schedule::where('location_id', \request()->locationId)->whereDate('created_at', '>=', request()->start)
                 ->whereDate('created_at', '<=', request()->end)
                 ->get();
-            $list=array();
+            $list = array();
             foreach ($data as $item) {
+                $color = null;
+                if ($item->title == 'Test') {
+                    $color = '#924ACE';
+                } else {
+                    $color = '#68B01A';
+                }
                 $list[] =
                     [ 'id'    => $item->id,
                       'title' => $item->employee->name . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)),
                       'start' => $item->start_date,
-                      'end'   => $item->end_date
+                      'end'   => $item->end_date,
+                      'color' => $color
                     ];
             }
 
