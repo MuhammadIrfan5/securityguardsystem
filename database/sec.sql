@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2023 at 02:46 PM
+-- Generation Time: Dec 04, 2023 at 07:54 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -289,8 +289,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2023_10_17_072545_create_employees_table', 4),
 (24, '2023_11_14_055816_create_schedule_days_table', 5),
 (25, '2023_11_15_063754_create_monitorings_table', 5),
-(26, '2023_11_14_055601_create_schedules_table', 6),
-(29, '2023_10_18_100635_create_jobs_table', 7);
+(29, '2023_10_18_100635_create_jobs_table', 7),
+(30, '2023_11_14_055601_create_schedules_table', 8);
 
 -- --------------------------------------------------------
 
@@ -393,6 +393,8 @@ CREATE TABLE `schedules` (
   `location_id` bigint(20) UNSIGNED NOT NULL,
   `start_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `end_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `start_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `end_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `comments` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -404,10 +406,10 @@ CREATE TABLE `schedules` (
 -- Dumping data for table `schedules`
 --
 
-INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
-(2, 1, 2, '11-21-2023', '11-28-2023', '', '1', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
-(3, 3, 2, '11-22-2023', '11-29-2023', '', '1', '2023-11-22 05:55:12', '2023-11-22 05:55:12', NULL);
+INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, 2, '2023-12-04', '2023-12-05', '10:57', '22:57', '', '1', '2023-12-04 00:57:24', '2023-12-04 00:57:24', NULL),
+(2, 1, 2, '2023-12-05', '2023-12-06', '23:39', '11:39', '', '1', '2023-12-04 01:39:34', '2023-12-04 01:39:34', NULL),
+(4, 1, 2, '2023-12-13', '2023-12-14', '23:39', '11:39', '', '1', '2023-12-04 01:44:21', '2023-12-04 01:44:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -425,20 +427,6 @@ CREATE TABLE `schedule_days` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `schedule_days`
---
-
-INSERT INTO `schedule_days` (`id`, `schedule_id`, `day`, `start_time`, `end_time`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Monday', '22:46', '10:46', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
-(2, 1, 'Tuesday', '10:46', '22:46', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
-(3, 1, 'Sunday', '22:47', '10:47', '2023-11-21 00:56:30', '2023-11-21 00:56:30', NULL),
-(4, 2, 'Monday', '11:07', '23:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
-(5, 2, 'Tuesday', '11:07', '23:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
-(6, 2, 'Sunday', '13:07', '11:07', '2023-11-21 01:07:58', '2023-11-21 01:07:58', NULL),
-(7, 3, 'Monday', '15:55', '03:55', '2023-11-22 05:55:12', '2023-11-22 05:55:12', NULL),
-(8, 3, 'Tuesday', '15:55', '03:55', '2023-11-22 05:55:12', '2023-11-22 05:55:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -1195,7 +1183,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1225,13 +1213,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
 --
 ALTER TABLE `schedule_days`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `states`
