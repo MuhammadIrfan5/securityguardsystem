@@ -55,16 +55,15 @@ class CalendarController extends Controller
 
                 return response()->json($event);
                 break;
-
             case 'update':
                 $events = Schedule::find($request->id);
                 $event  = Schedule::create([
                     'location_id' => $events->location_id,
                     'employee_id' => $events->employee_id,
-                    'start_date'  => $events->start_date,
-                    'end_date'    => $events->end_date,
-                    'start_time'  => $events->startTime,
-                    'end_time'    => $events->endTime,
+                    'start_date'  => $request->start,
+                    'end_date'    => $request->end,
+                    'start_time'  => $events->start_time,
+                    'end_time'    => $events->end_time,
                     'comments'    => $events->comments ?? "",
                     'created_by'  => $request->user()['id'],
                 ]);
