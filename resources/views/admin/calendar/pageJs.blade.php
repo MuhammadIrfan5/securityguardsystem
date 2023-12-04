@@ -128,18 +128,8 @@
                             $('#eventModal').modal('hide');
 
                             displayMessage("Event Created Successfully");
+                            calendar.fullCalendar('refetchEvents');
 
-                            // Render the event on the calendar
-                            calendar.fullCalendar('renderEvent', {
-                                id: data.id,
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
-                            }, true);
-
-                            // Close the modal and unselect the date range
-                            calendar.fullCalendar('unselect');
                         }
                     });
                 }
