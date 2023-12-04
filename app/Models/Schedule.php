@@ -14,6 +14,8 @@ class Schedule extends Model
         'employee_id',
         'start_date',
         'end_date',
+        'start_time',
+        'end_time',
         'comments',
         'created_by',
     ];
