@@ -12,9 +12,13 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
-        function loadCalendarEvents() {
+    var myDropDown=$("#locationDropdown");
+    var length = $('#locationDropdown> option').length;
+    //open dropdown
+    myDropDown.attr('size',length);
 
-            $.ajaxSetup({
+    function loadCalendarEvents(element) {
+        $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }

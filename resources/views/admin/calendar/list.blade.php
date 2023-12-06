@@ -23,18 +23,24 @@
                     </div>
                 @endif
             </div>
-        </div>
+            <div class="col-md-3">
         <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
-            <option value="#" selected>Select location</option>
+
+            <option value="#" disabled selected>Select location</option>
             @foreach($locations as $location)
                 <option value="{{$location->id}}">{{$location->name}}</option>
 
             @endforeach
         </select>
-        <div class="container">
-            <div id='calendar'></div>
-
         </div>
+            <div class="col-md-9">
+
+            <div class="container">
+            <div id='calendar'></div>
+        </div>
+        </div>
+        </div>
+
     </section>
     <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
          aria-hidden="true">
