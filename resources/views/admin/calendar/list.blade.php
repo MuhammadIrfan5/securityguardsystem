@@ -25,11 +25,9 @@
             </div>
             <div class="col-md-3">
         <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
-
             <option value="#" disabled selected>Select location</option>
             @foreach($locations as $location)
                 <option value="{{$location->id}}">{{$location->name}}</option>
-
             @endforeach
         </select>
         </div>
