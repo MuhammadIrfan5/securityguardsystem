@@ -21,7 +21,7 @@
                 </div>
         @endif
         <!-- Floating Labels Form -->
-            <form class="row g-3" method="post" action="{{route('monitoring.store')}}">
+            <form class="row g-3" method="post" action="{{route('monitoring.store')}}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="col-md-6">

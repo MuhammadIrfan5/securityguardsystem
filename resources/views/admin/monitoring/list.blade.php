@@ -36,7 +36,8 @@
                                 <th>Location</th>
                                 <th>Employee</th>
                                 <th>Images</th>
-                                <th>Actions</th>
+                                <th>Date</th>
+{{--                                <th>Actions</th>--}}
                             </tr>
                             </thead>
                         </table>

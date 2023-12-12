@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('monitorings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained('locations');
+            $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('monitor_location_id')->constrained('monitor_locations');
             $table->longText('images');
             $table->text('notes')->nullable();

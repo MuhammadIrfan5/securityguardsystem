@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Monitoring;
+use App\Models\MonitorLocation;
 use App\Models\Schedule;
 use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class MonitoringController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country  = new Schedule();
+        $country  = new Monitoring();
 
 
         /*Sorting*/
@@ -73,23 +75,24 @@ class MonitoringController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $country                  = $country->whereDate('start_date', '>=', date("Y-m-d"))
-            ->whereDate('end_date', '<=', date("Y-m-d"));
-        $response["recordsTotal"] = $country->count();
 
-        $country = $country->skip($request->start)->take($request->length)->get();
+        $response["recordsTotal"]    = $country->count();
+        $response["recordsFiltered"] = $country->count();
+        $country                     = $country->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
-//            if (!empty()) {
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show', $record->location_id), "username" => $record->location->name ])->render(),
                 $record->employee->name,
-                $record->images,
-                view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('assign-job.edit', $record->id)
+                view('admin.layout.defaultComponent.profileImage', [
+                    'url' => asset('/storage/') . '/' . $record->images,
                 ])->render(),
+                date('d F Y h:i', strtotime($record->created_at)),
+//                view('admin.layout.defaultComponent.editButton', [
+//                    'editUrl' => route('assign-job.edit', $record->id)
+//                ])->render(),
+
             ];
-//            }
         }
         return response($response, 201);
     }
@@ -115,10 +118,11 @@ class MonitoringController extends Controller
             'image'       => 'required|mimes:jpeg,png,jpg,gif',
             'notes'       => 'nullable|string',
         ]);
-
-        $data              = new Job();
-        $data->location_id = $request->location_id;
-        $data->employee_id = $request->employee_id;
+        $id                        = MonitorLocation::where('location_id', $request->location_id)->first('id');
+        $data                      = new Monitoring();
+        $data->location_id         = $request->location_id;
+        $data->employee_id         = $request->employee_id;
+        $data->monitor_location_id = $id->id;
         if (!empty($request->hasFile("image"))) {
             $this->removeImage($data->image);
             $data->images = $this->imageUpload($request->file('image'), $data->getTable());
