@@ -135,5 +135,6 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::post('/event/update', [CalendarController::class, 'updateEvent']);
     Route::post('/event/delete', [CalendarController::class, 'deleteEvent']);
     Route::get('get-locations', [CalendarController::class, 'getLocations']);
+    Route::get('get-edit', [CalendarController::class, 'getEdit']);
     Route::get('get-locations-list', [CalendarController::class, 'getLocationlist'])->name('location.list');
 });

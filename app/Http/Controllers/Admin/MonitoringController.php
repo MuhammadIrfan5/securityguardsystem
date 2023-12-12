@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\MonitorLocation;
+use App\Models\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -17,19 +19,19 @@ class MonitoringController extends Controller
     public function index()
     {
         $data['title'] = "Monitoring";
-        return view('admin.job.list', $data);
+        return view('admin.monitoring.list', $data);
     }
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Job();
-        $response["recordsTotal"] = $country->count();
+        $country  = new Schedule();
+
 
         /*Sorting*/
         switch ('id') {
@@ -44,7 +46,6 @@ class MonitoringController extends Controller
             $country = $country->where("id", "like", "%" . $request->search["value"] . "%");
             $country = $country->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
-        $response["recordsFiltered"] = $country->count();
         /*ordering*/
 //        $order = $request["order"][0]["column"]??0;
 //        $orderDir = $request["order"][0]["dir"]??"desc";
@@ -71,19 +72,23 @@ class MonitoringController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
+        $country                  = $country->whereDate('start_date', '>=', date("Y-m-d"))
+            ->whereDate('end_date', '<=', date("Y-m-d"));
+        $response["recordsTotal"] = $country->count();
+
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
+//            if (!empty()) {
             $response['data'][] = [
                 $record->id,
+                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show', $record->location_id), "username" => $record->location->name ])->render(),
                 $record->employee->name,
-                $record->location->name,
-                $record->check_in,
-                $record->calling_number,
-                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
+                $record->images,
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('assign-job.edit', $record->id)
                 ])->render(),
             ];
+//            }
         }
         return response($response, 201);
     }
@@ -94,9 +99,8 @@ class MonitoringController extends Controller
     public function create()
     {
         $data['title']    = 'Monitoring';
-        $data['location'] = Location::all();
-        $data['employee'] = Employee::all();
-        return view('admin.job.add', $data);
+        $data['location'] = Location::has('monitoring')->get();
+        return view('admin.monitoring.add', $data);
     }
 
     /**

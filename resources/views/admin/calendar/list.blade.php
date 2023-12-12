@@ -89,6 +89,47 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Edit Event</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="locationId" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="employee_id">Employee list:</label>
+                            <select name="employee_id" class="form-select"
+                                    id="edit_employee_id">
+                                <option disabled selected>Employee list</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="startTime">Start Time:</label>
+                                <input type="time" class="form-control" id="edit_startTime" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="endTime">End Time:</label>
+                                <input type="time" class="form-control" id="edit_endTime" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveEditedEvent">Save</button>
+                    <button type="button" class="btn btn-secondary" id="EditcancelEvent" data-dismiss="modal">Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('page-js')
     @include('admin.calendar.pageJs')

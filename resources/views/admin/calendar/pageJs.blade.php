@@ -12,134 +12,205 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
-    var myDropDown=$("#locationDropdown");
+    var myDropDown = $("#locationDropdown");
     var length = $('#locationDropdown> option').length;
     //open dropdown
-    myDropDown.attr('size',length);
+    myDropDown.attr('size', length);
 
     function loadCalendarEvents(element) {
         $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#calendar').fullCalendar('destroy');
+
+        var locationId = $('#locationDropdown').val();
+        var startDate = "";
+        var endDate = "";
+
+        var calendar = $('#calendar').fullCalendar({
+            editable: true,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: {
+                url: "{{route('getEvents')}}", // Replace with your actual route
+                type: 'GET',
+                data: {
+                    locationId: locationId
+                },
+                error: function () {
+                    alert('There was an error while fetching events!');
                 }
-            });
-            $('#calendar').fullCalendar('destroy');
+            },
+            displayEventTime: true,
+            eventRender: function (event, element, view) {
+                if (event.allDay === 'true') {
+                    event.allDay = true;
+                } else {
+                    event.allDay = false;
+                }
+            },
+            selectable: true,
+            selectHelper: true,
+            select: function (start, end, allDay) {
+                // Open a modal or show a form to collect information
+                openModel();
+                startDate = $.fullCalendar.formatDate(start, "Y-MM-DD");
+                endDate = $.fullCalendar.formatDate(end, "Y-MM-DD");
+            },
 
-            var locationId = $('#locationDropdown').val();
-            var startDate = "";
-            var endDate = "";
+            eventDrop: function (event, delta) {
+                var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
+                var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
 
-            var calendar = $('#calendar').fullCalendar({
-                editable: true,
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                events: {
-                    url: "{{route('getEvents')}}", // Replace with your actual route
-                    type: 'GET',
+                $.ajax({
+                    url: "{{route('CRUD.Event')}}",
                     data: {
-                        locationId: locationId
+                        title: event.title,
+                        start: start,
+                        end: end,
+                        id: event.id,
+                        type: 'update'
                     },
-                    error: function () {
-                        alert('There was an error while fetching events!');
-                    }
-                },
-                displayEventTime: true,
-                eventRender: function (event, element, view) {
-                    if (event.allDay === 'true') {
-                        event.allDay = true;
-                    } else {
-                        event.allDay = false;
-                    }
-                },
-                selectable: true,
-                selectHelper: true,
-                select: function (start, end, allDay) {
-                    // Open a modal or show a form to collect information
-                    openModel();
-                    startDate = $.fullCalendar.formatDate(start, "Y-MM-DD");
-                    endDate = $.fullCalendar.formatDate(end, "Y-MM-DD");
-                },
-
-                eventDrop: function (event, delta) {
-                    var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-                    var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-
-                    $.ajax({
-                        url: "{{route('CRUD.Event')}}",
-                        data: {
-                            title: event.title,
-                            start: start,
-                            end: end,
-                            id: event.id,
-                            type: 'update'
-                        },
-                        type: "POST",
-                        success: function (response) {
+                    type: "POST",
+                    success: function (response) {
+                        if (response['success'] == false) {
+                            alert('Schedule Already exist!');
+                            calendar.fullCalendar('refetchEvents');
+                        } else {
                             displayMessage("Event Updated Successfully");
                             $('#calendar').fullCalendar('refetchEvents');
-
                         }
-                    });
-                },
-                eventClick: function (event) {
-                    var deleteMsg = confirm("Do you really want to delete?");
-                    if (deleteMsg) {
-                        $.ajax({
-                            type: "POST",
-                            url: "{{route('CRUD.Event')}}",
-                            data: {
-                                id: event.id,
-                                type: 'delete'
-                            },
-                            success: function (response) {
-                                calendar.fullCalendar('removeEvents', event.id);
-                                displayMessage("Event Deleted Successfully");
-                            }
-                        });
-                    }
-                }
 
+                    }
+                });
+            },
+            eventClick: function (event) {
+                openEditModal(event);
+            }
+
+        });
+
+
+        function openEditModal(event) {
+            // Code to open a modal or form and pre-fill it with event details
+
+            // Assuming you have a modal with id 'editEventModal'
+            $('#editEventModal').modal('show');
+
+            // Populate the form fields with the event details
+            $('#editEventTitle').val(event.title);
+            $('#editEventStart').val($.fullCalendar.formatDate(event.start, "Y-MM-DD"));
+            $('#editEventEnd').val($.fullCalendar.formatDate(event.end, "Y-MM-DD"));
+            // You can add more fields as needed
+            $(function () {
+                var employee = $('#edit_employee_id');
+                employee.empty();
+                $.ajax({
+                    url: "{{url('get-edit')}}",
+                    type: 'GET',
+                    data: {
+                        id: event.id,
+                    },
+                    success: function (result) {
+                        var obj = result['record'];
+                        $('#edit_startTime').val(obj.start_time);
+                        $('#edit_endTime').val(obj.end_time);
+                        var employeeList = result['employee'];
+                        $.each(employeeList, function (index, value) {
+                            var option = $('<option></option>').val(value.id).html(value.name);
+
+                            // Check if the current employee's ID matches obj.employee_id
+                            if (value.id == obj.employee_id) {
+                                option.attr('selected', 'selected');
+                            }
+
+                            employee.append(option);
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error.status)
+                    }
+                });
             });
 
-            calendar.fullCalendar('refetchEvents');
+            $('#saveEditedEvent').on('click', function () {
+                // Perform AJAX request to update the event
+                var updatedEmployeeId = $('#edit_employee_id').val();
+                var updatedStart = $('#edit_startTime').val();
+                var updatedEnd = $('#edit_endTime').val();
 
-            $('#saveEvent').on('click', function (event) {
-                var starts = startDate;
-                var ends = endDate;
-                console.log(ends, starts)
-                var location = locationId;
-                var employee = $('#employee_id').val();
-                var startTime = $('#startTime').val();
-                var endTime = $('#endTime').val();
-                if (location) {
-                    // Perform AJAX request to save event
-                    $.ajax({
-                        url: "{{route('CRUD.Event')}}",
-                        data: {
-                            location: location,
-                            employee: employee,
-                            startTime: startTime,
-                            endTime: endTime,
-                            start: starts,
-                            end: ends,
-                            type: 'add'
-                        },
-                        type: "POST",
-                        success: function (data) {
-                            $('#eventModal').modal('hide');
+                $.ajax({
+                    url: "{{ route('CRUD.Event') }}",
+                    data: {
+                        id: event.id,
+                        employee_id: updatedEmployeeId,
+                        start: updatedStart,
+                        end: updatedEnd,
+                        type: 'updateSingle'
+                    },
+                    type: "POST",
+                    success: function (response) {
+                        $('#editEventModal').modal('hide');
+                        displayMessage("Schedule Updated Successfully");
+                        // Refresh the calendar after success
+                        calendar.fullCalendar('refetchEvents');
+                    },
+                    error: function (error) {
+                        // Handle error, if needed
+                        console.error("Error updating event:", error);
+                    }
+                });
+            });
 
-                            displayMessage("Event Created Successfully");
-                            calendar.fullCalendar('refetchEvents');
-
-                        }
-                    });
-                }
+            // Optionally, you can handle cancel button click to close the modal without updating
+            $('#cancelEditEvent').on('click', function () {
+                // Close the edit modal without updating
+                $('#editEventModal').modal('hide');
             });
         }
-        // Save button click event
+
+        calendar.fullCalendar('refetchEvents');
+
+        $('#saveEvent').on('click', function (event) {
+            var starts = startDate;
+            var ends = endDate;
+            console.log(ends, starts)
+            var location = locationId;
+            var employee = $('#employee_id').val();
+            var startTime = $('#startTime').val();
+            var endTime = $('#endTime').val();
+            if (location) {
+                // Perform AJAX request to save event
+                $.ajax({
+                    url: "{{route('CRUD.Event')}}",
+                    data: {
+                        location: location,
+                        employee: employee,
+                        startTime: startTime,
+                        endTime: endTime,
+                        start: starts,
+                        end: ends,
+                        type: 'add'
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        $('#eventModal').modal('hide');
+
+                        displayMessage("Event Created Successfully");
+                        calendar.fullCalendar('refetchEvents');
+
+                    }
+                });
+            }
+        });
+    }
+
+    // Save button click event
     // });
 
     function openModel(e) {
@@ -183,9 +254,12 @@
     $('#cancelEvent').on('click', function () {
         $('#eventModal').modal('hide');
     });
+    $('#EditcancelEvent').on('click', function () {
+        $('#editEventModal').modal('hide');
+    });
 
     function displayMessage(message) {
-        toastr.success(message, 'Event');
+        toastr.failure(message, 'Event');
     }
 
 </script>

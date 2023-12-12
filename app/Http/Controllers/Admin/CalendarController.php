@@ -20,8 +20,9 @@ class CalendarController extends Controller
     public function getEvents()
     {
         if (request()->ajax()) {
-            $data = Schedule::where('location_id', \request()->locationId)->whereDate('created_at', '>=', request()->start)
-                ->whereDate('created_at', '<=', request()->end)
+            $data = Schedule::where('location_id', \request()->locationId)
+                ->whereDate('start_date', '>=', request()->start)
+                ->whereDate('end_date', '<=', request()->end)
                 ->get();
             $list = array();
             foreach ($data as $item) {
@@ -64,16 +65,38 @@ class CalendarController extends Controller
                 break;
             case 'update':
                 $events = Schedule::find($request->id);
-                $event  = Schedule::create([
-                    'location_id' => $events->location_id,
-                    'employee_id' => $events->employee_id,
-                    'start_date'  => $request->start,
-                    'end_date'    => $request->end,
-                    'start_time'  => $events->start_time,
-                    'end_time'    => $events->end_time,
-                    'comments'    => $events->comments ?? "",
-                    'created_by'  => $request->user()['id'],
-                ]);
+                $check  = Schedule::
+                where('start_date', $request->start)
+                    ->where('end_date', $request->end)
+                    ->where('employee_id', $events->employee_id)
+                    ->where('location_id', $events->location_id)
+                    ->first();
+                if (empty($check)) {
+                    $event            = Schedule::create([
+                        'location_id' => $events->location_id,
+                        'employee_id' => $events->employee_id,
+                        'start_date'  => $request->start,
+                        'end_date'    => $request->end,
+                        'start_time'  => $events->start_time,
+                        'end_time'    => $events->end_time,
+                        'comments'    => $events->comments ?? "",
+                        'created_by'  => $request->user()['id'],
+                    ]);
+                    $event['success'] = true;
+
+                } else {
+                    $event['success'] = false;
+                }
+                return response()->json($event);
+                break;
+            case 'updateSingle':
+                $event = Schedule::find($request->id);
+                if (!empty($event)) {
+                    $event->employee_id = $request->employee_id;
+                    $event->start_time  = $request->start;
+                    $event->end_time    = $request->end;
+                }
+                $event->update();
                 return response()->json($event);
                 break;
 
@@ -95,6 +118,14 @@ class CalendarController extends Controller
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
         $data['days']     = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
+        return response($data);
+    }
+
+    public function getEdit(Request $request)
+    {
+        $data['record']   = Schedule::find($request->id);
+        $data['employee'] = Employee::all();
+
         return response($data);
     }
 }

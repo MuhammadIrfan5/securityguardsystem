@@ -33,11 +33,9 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Employee</th>
                                 <th>Location</th>
-                                <th>Check-In</th>
-                                <th>Calling Number</th>
-                                <th>Status</th>
+                                <th>Employee</th>
+                                <th>Images</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>

@@ -40,9 +40,9 @@
                         <select name="employee_id" class="form-select"
                                 id="employee_id">
                             <option disabled selected>Employee list</option>
-                            @foreach($employee as $user)
-                                <option value="{{ $user->id }}">{{$user->name}}</option>
-                            @endforeach
+{{--                            @foreach($employee as $user)--}}
+{{--                                <option value="{{ $user->id }}">{{$user->name}}</option>--}}
+{{--                            @endforeach--}}
                         </select>
                     </div>
                 </div>
