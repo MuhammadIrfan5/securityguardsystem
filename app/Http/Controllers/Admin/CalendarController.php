@@ -30,11 +30,11 @@ class CalendarController extends Controller
                 if ($item->title == 'Test') {
                     $color = '#924ACE';
                 } else {
-                    $color = '#68B01A';
+                    $color = '#ffff00';
                 }
                 $list[] =
                     [ 'id'    => $item->id,
-                      'title' => $item->employee->name . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)),
+                      'title' => $item->employee->name . ' : ' . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)),
                       'start' => $item->start_date,
                       'end'   => $item->end_date,
                       'color' => $color
@@ -123,10 +123,10 @@ class CalendarController extends Controller
 
     public function getEmployee(Request $request)
     {
-        $data=array();
+        $data      = array();
         $employees = Schedule::where('location_id', $request->locationId)
-            ->whereDate('start_date', '>=',  date('Y-m-d'))
-            ->whereDate('end_date', '<=', date('Y-m-d',strtotime('tomorrow')))
+            ->whereDate('start_date', '>=', date('Y-m-d'))
+            ->whereDate('end_date', '<=', date('Y-m-d', strtotime('tomorrow')))
             ->get();
         foreach ($employees as $item) {
             $data['employee'][] = [
