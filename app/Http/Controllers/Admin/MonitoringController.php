@@ -108,18 +108,22 @@ class MonitoringController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
-            'location_id'    => 'required',
-            'employee_id'    => 'required',
-            'check_in'       => 'required',
-            'calling_number' => 'required',
+            'location_id' => 'required',
+            'employee_id' => 'required',
+            'image'       => 'required|mimes:jpeg,png,jpg,gif',
+            'notes'       => 'nullable|string',
         ]);
 
-        $data                 = new Job();
-        $data->location_id    = $request->location_id;
-        $data->employee_id    = $request->employee_id;
-        $data->check_in       = $request->check_in;
-        $data->calling_number = $request->calling_number;
+        $data              = new Job();
+        $data->location_id = $request->location_id;
+        $data->employee_id = $request->employee_id;
+        if (!empty($request->hasFile("image"))) {
+            $this->removeImage($data->image);
+            $data->image = $this->imageUpload($request->file('image'), $data->getTable());
+        }
+        $data->notes = $request->notes;
         $data->save();
 
         return redirect()->route('assign-job.index')->with('msg', 'Job Assign Successfully!');

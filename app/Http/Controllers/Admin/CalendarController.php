@@ -121,6 +121,22 @@ class CalendarController extends Controller
         return response($data);
     }
 
+    public function getEmployee(Request $request)
+    {
+        $data=array();
+        $employees = Schedule::where('location_id', $request->locationId)
+            ->whereDate('start_date', '>=',  date('Y-m-d'))
+            ->whereDate('end_date', '<=', date('Y-m-d',strtotime('tomorrow')))
+            ->get();
+        foreach ($employees as $item) {
+            $data['employee'][] = [
+                'id'   => $item->employee_id,
+                'name' => $item->employee->name,
+            ];
+        }
+        return response($data);
+    }
+
     public function getEdit(Request $request)
     {
         $data['record']   = Schedule::find($request->id);
