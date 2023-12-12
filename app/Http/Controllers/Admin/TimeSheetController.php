@@ -180,7 +180,9 @@ class TimeSheetController extends Controller
     {
         $list = array();
         $id = $request->location_id;
-        $employee = Schedule::where('location_id', $id)->get();
+        $employee = Schedule::select('employee_id')->where('location_id', $id)
+            ->distinct()
+            ->get();
         if (count($employee) > 0) {
             foreach ($employee as $item) {
                 $list[] = [

@@ -80,7 +80,7 @@
                     employeeId.empty();
                     if (id != null){
                     $.ajax({
-                        url: "{{url('get-employees?location_id=')}}" + id,
+                        url: "{{url('get-employee?location_id=')}}" + id,
                         type: 'GET',
                         success: function (result) {
                             console.log(result);
