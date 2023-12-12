@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
-use App\Models\MonitorLocation;
 use App\Models\Schedule;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
@@ -16,6 +15,8 @@ class MonitoringController extends Controller
     /**
      * Display a listing of the resource.
      */
+    use ImageTrait;
+
     public function index()
     {
         $data['title'] = "Monitoring";
@@ -108,7 +109,6 @@ class MonitoringController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $request->validate([
             'location_id' => 'required',
             'employee_id' => 'required',
@@ -121,12 +121,12 @@ class MonitoringController extends Controller
         $data->employee_id = $request->employee_id;
         if (!empty($request->hasFile("image"))) {
             $this->removeImage($data->image);
-            $data->image = $this->imageUpload($request->file('image'), $data->getTable());
+            $data->images = $this->imageUpload($request->file('image'), $data->getTable());
         }
         $data->notes = $request->notes;
         $data->save();
 
-        return redirect()->route('assign-job.index')->with('msg', 'Job Assign Successfully!');
+        return redirect()->route('monitoring.index')->with('msg', 'Images uploaded Successfully!');
 
     }
 
