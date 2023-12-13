@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2023 at 02:42 PM
+-- Generation Time: Dec 13, 2023 at 10:49 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `secu2`
+-- Database: `sec`
 --
 
 -- --------------------------------------------------------
@@ -68,6 +68,29 @@ CREATE TABLE `client_locations` (
 INSERT INTO `client_locations` (`id`, `location_id`, `client_name`, `client_designation`, `client_email`, `client_phone`, `created_at`, `updated_at`) VALUES
 (1, 2, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-11-21 01:07:09', '2023-11-21 01:07:09'),
 (2, 3, 'DK', 'MANAGER', 's@l.co', '03212342212', '2023-12-12 08:10:31', '2023-12-12 08:10:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `confirmation_calls`
+--
+
+CREATE TABLE `confirmation_calls` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `location_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notes` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `confirmation_calls`
+--
+
+INSERT INTO `confirmation_calls` (`id`, `location_id`, `employee_id`, `status`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 'approved', 'sa', '2023-12-13 04:48:32', '2023-12-13 04:48:32');
 
 -- --------------------------------------------------------
 
@@ -293,7 +316,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (24, '2023_11_14_055816_create_schedule_days_table', 5),
 (29, '2023_10_18_100635_create_jobs_table', 7),
 (30, '2023_11_14_055601_create_schedules_table', 8),
-(32, '2023_11_15_063754_create_monitorings_table', 9);
+(32, '2023_11_15_063754_create_monitorings_table', 9),
+(33, '2023_12_12_135546_create_confirmation_calls_table', 10);
 
 -- --------------------------------------------------------
 
@@ -988,7 +1012,8 @@ CREATE TABLE `user_two_factors` (
 
 INSERT INTO `user_two_factors` (`id`, `user_id`, `opt_number`, `ip_address`, `browser`, `version`, `platform`, `is_mobile`, `is_desktop`, `is_verified`, `created_at`, `updated_at`) VALUES
 (1, 1, '1234', '::1', 'Chrome', '118.0.0.0', 'Windows', 0, 1, 0, '2023-10-31 04:44:36', '2023-10-31 04:44:36'),
-(2, 1, '1234', '::1', 'Chrome', '119.0.0.0', 'Windows', 0, 1, 0, '2023-11-06 07:32:29', '2023-11-06 07:32:29');
+(2, 1, '1234', '::1', 'Chrome', '119.0.0.0', 'Windows', 0, 1, 0, '2023-11-06 07:32:29', '2023-11-06 07:32:29'),
+(3, 1, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2023-12-13 04:47:48', '2023-12-13 04:47:48');
 
 --
 -- Indexes for dumped tables
@@ -1008,6 +1033,14 @@ ALTER TABLE `cities`
 ALTER TABLE `client_locations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `client_locations_location_id_foreign` (`location_id`);
+
+--
+-- Indexes for table `confirmation_calls`
+--
+ALTER TABLE `confirmation_calls`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `confirmation_calls_location_id_foreign` (`location_id`),
+  ADD KEY `confirmation_calls_employee_id_foreign` (`employee_id`);
 
 --
 -- Indexes for table `countries`
@@ -1164,6 +1197,12 @@ ALTER TABLE `client_locations`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `confirmation_calls`
+--
+ALTER TABLE `confirmation_calls`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
@@ -1209,7 +1248,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1269,7 +1308,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_two_factors`
 --
 ALTER TABLE `user_two_factors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -1287,6 +1326,13 @@ ALTER TABLE `cities`
 --
 ALTER TABLE `client_locations`
   ADD CONSTRAINT `client_locations_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+
+--
+-- Constraints for table `confirmation_calls`
+--
+ALTER TABLE `confirmation_calls`
+  ADD CONSTRAINT `confirmation_calls_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
+  ADD CONSTRAINT `confirmation_calls_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
 
 --
 -- Constraints for table `employees`
