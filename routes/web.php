@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\ConfirmationCallController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
@@ -117,13 +118,20 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('schedule', ScheduleController::class);
     Route::get('schedule-list', [ScheduleController::class, 'tableData'])->name('schedule.tableData');
 
+    /*Monitoring*/
     Route::resource('monitoring', MonitoringController::class);
     Route::get('monitoring-list', [MonitoringController::class, 'tableData'])->name('monitoring.tableData');
 
+    /*Time Sheet*/
     Route::resource('time-sheet', TimeSheetController::class);
     Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
 
     Route::resource('reschedule', RescheduleController::class);
+
+    /*Confirmation Call*/
+    Route::resource('confirmation-call', ConfirmationCallController::class);
+    Route::get('confirmation-call-list', [ConfirmationCallController::class, 'tableData'])->name('confirmation.call.tableData');
+
 
 
     /*AJAX API*/

@@ -35,9 +35,10 @@
                                 <th>ID</th>
                                 <th>Location</th>
                                 <th>Employee</th>
-                                <th>Images</th>
+                                <th>Status</th>
+                                <th>Notes</th>
                                 <th>Date</th>
-{{--                                <th>Actions</th>--}}
+                                <th>Actions</th>
                             </tr>
                             </thead>
                         </table>
@@ -49,5 +50,5 @@
     </section>
 @endsection
 @section('page-js')
-    @include('admin.monitoring.pageJs')
+    @include('admin.confirmationCall.pageJs')
 @endsection

@@ -91,9 +91,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed
-{{--{{ request()->is('monitoring') ? '' : 'collapsed' }}--}}
-                    " href="{{route('assign-job.index')}}">
+            <a class="nav-link
+{{ request()->is('confirmation-call') ? '' : 'collapsed' }}
+                    " href="{{route('confirmation-call.index')}}">
                 <i class="bi bi-check"></i>
                 <span>Confirmation Call</span>
             </a>
