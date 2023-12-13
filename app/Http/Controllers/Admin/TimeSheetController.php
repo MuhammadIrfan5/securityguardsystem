@@ -31,53 +31,44 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        if (!empty($request->startTime)) {
-            $records = new Job();
-            $response["recordsTotal"] = $records->count();
-            $response["recordsFiltered"] = $records->count();
+//        if (!empty($request->startTime)) {
+        $records                     = new Job();
+        $response["recordsTotal"]    = $records->count();
+        $response["recordsFiltered"] = $records->count();
 
-            /*Search function*/
-            if (!empty($request->search["value"])) {
-                $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
-                $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
-            }
-
-            $records = $records->select('location_id')
-                ->groupBy('location_id');
-            $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
-            $i = 1;
-            foreach ($records as $record) {
-                $attendances = $this->getDailyAttendance($record->location_id, $request->startTime, $request->endTime);
-                foreach ($attendances as $item) {
-                    dd($item);
-                }
-                $response['data'][] = [
-                    $i,
-                    $record->location->name,
-                    '',
-                    '',
-                    view('admin.layout.defaultComponent.approved', ["boolean" => $record->is_approved])->render(),
-                    view('admin.layout.defaultComponent.editButton', [
-                        'editUrl' => route('assign-job.edit', 1)
-                    ])->render(),
-                ];
-                $i++;
-            }
+        /*Search function*/
+        if (!empty($request->search["value"])) {
+            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
+            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
+
+//            $records = $records->select('location_id')
+//                ->groupBy('location_id');
+            $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
+        $i = 1;
+        foreach ($records as $record) {
+//                $attendances = $this->getDailyAttendance($record->location_id, $request->startTime, $request->endTime);
+            $response['data'][] = [
+                $i,
+                view('admin.layout.defaultComponent.linkDetail',
+                    [ 'is_location' => 1,
+                      "url"         => route('location.show', $record->location_id),
+                      "username"    => $record->location->name
+                    ]
+                )->render(),
+                $record->employee->name,
+                $record->type.'-'.$record->time,
+//                    $record->time,
+                $record->notes,
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
+                view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('assign-job.edit', 1)
+                ])->render(),
+            ];
+            $i++;
+        }
+//        }
         return response($response);
-    }
-
-    private function getDailyAttendance($locationId, $startTime, $endTime)
-    {
-        $currentDateTime = new \DateTime();
-
-        $startTime = !empty($startTime) ? $startTime : $currentDateTime->format('H:i');
-        $endTime = !empty($endTime) ? $endTime : $currentDateTime->format('H:i');
-
-        $item = Job::where('location_id', $locationId)->whereBetween('time', [$startTime, $endTime])
-            ->get();
-        // You can now use $orders as the collection of orders for the current week
-        return $item;
     }
 
     /**
@@ -85,7 +76,7 @@ class TimeSheetController extends Controller
      */
     public function create()
     {
-        $data['title'] = 'Time Sheet';
+        $data['title']     = 'Time Sheet';
         $data['locations'] = Location::all();
         return view('admin.timesheet.add', $data);
     }
@@ -105,11 +96,11 @@ class TimeSheetController extends Controller
         /*GET EMPLOYEE*/
         $record = Employee::find($request->employee_id);
 
-        $data = new Job();
-        $data->location_id = $request->location_id;
-        $data->employee_id = $request->employee_id;
-        $data->time = $request->time;
-        $data->type = $request->type;
+        $data                 = new Job();
+        $data->location_id    = $request->location_id;
+        $data->employee_id    = $request->employee_id;
+        $data->time           = $request->time;
+        $data->type           = $request->type;
         $data->calling_number = $record->phone_one;
         $data->save();
 
@@ -130,10 +121,10 @@ class TimeSheetController extends Controller
      */
     public function edit(string $id)
     {
-        $data['title'] = 'Assign Job';
+        $data['title']    = 'Assign Job';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
-        $data['data'] = Job::find($id);
+        $data['data']     = Job::find($id);
 
         return view('admin.timesheet.edit', $data);
 
@@ -174,12 +165,10 @@ class TimeSheetController extends Controller
         //
     }
 
-    /*AJAX API*/
-
     public function getEmployees(Request $request)
     {
-        $list = array();
-        $id = $request->location_id;
+        $list     = array();
+        $id       = $request->location_id;
         $employee = Schedule::select('employee_id')->where('location_id', $id)
             ->distinct()
             ->get();
@@ -192,6 +181,25 @@ class TimeSheetController extends Controller
             }
         }
         return $list;
+    }
+
+    /*AJAX API*/
+
+    private function getDailyAttendance($locationId, $startTime, $endTime)
+    {
+        $currentDateTime = new \DateTime();
+
+        $startTime = !empty($startTime) ? $startTime : $currentDateTime->format('H:i');
+        $endTime   = !empty($endTime) ? $endTime : $currentDateTime->format('H:i');
+
+        $item = Schedule::where('location_id', $locationId)
+            ->whereTime('start_time', '>', $startTime)
+            ->whereTime('end_time', '<', $endTime)
+            ->whereDate('start_date', '>=', date('Y-m-d'))
+            ->whereDate('end_date', '<=', date('Y-m-d'))
+            ->get();
+        // You can now use $orders as the collection of orders for the current week
+        return $item;
     }
 
 }

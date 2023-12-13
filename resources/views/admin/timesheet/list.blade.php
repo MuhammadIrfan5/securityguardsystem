@@ -48,8 +48,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Location</th>
+                                <th>Employee</th>
                                 <th>Attendance</th>
-                                <th>Calling Number</th>
+                                <th>Notes</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
