@@ -58,7 +58,6 @@ class TimeSheetController extends Controller
                 )->render(),
                 $record->employee->name,
                 $record->type.'-'.$record->time,
-//                    $record->time,
                 $record->notes,
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
                 view('admin.layout.defaultComponent.editButton', [

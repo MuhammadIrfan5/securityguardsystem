@@ -77,7 +77,7 @@ class ConfirmationCallController extends Controller
                 $record->location->name,
                 $record->status,
                 $record->notes,
-                $record->created_at,
+                date('d F Y h:i', strtotime($record->created_at)),
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('confirmation-call.edit', $record->id)
                 ])->render(),
