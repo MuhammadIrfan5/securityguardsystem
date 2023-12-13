@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ConfirmationCall;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class ConfirmationCallController extends Controller
@@ -92,17 +93,29 @@ class ConfirmationCallController extends Controller
     {
         $data['title']    = 'Confirmation Call';
         $data['location'] = Location::all();
-        $data['employee'] = Employee::all();
-        return view('admin.job.add', $data);
+        return view('admin.confirmationCall.add', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
+
     {
-        $data['title'] = "Confirmation Call";
-        return view('admin.confirmationCall.add', $data);
+        $request->validate([
+            'location_id' => 'required',
+            'employee_id' => 'required',
+            'status'      => 'required|string',
+            'notes'       => 'nullable|string',
+        ]);
+        $data              = new ConfirmationCall();
+        $data->location_id = $request->location_id;
+        $data->employee_id = $request->employee_id;
+        $data->status      = $request->status;
+        $data->notes       = $request->notes;
+        $data->save();
+
+        return redirect()->route('confirmation-call.index')->with('msg', 'Confirmation call updated Successfully!');
     }
 
     /**

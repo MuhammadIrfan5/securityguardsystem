@@ -21,7 +21,7 @@
                 </div>
         @endif
         <!-- Floating Labels Form -->
-            <form class="row g-3" method="post" action="{{route('monitoring.store')}}" enctype="multipart/form-data">
+            <form class="row g-3" method="post" action="{{route('confirmation-call.store')}}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="col-md-6">
@@ -48,15 +48,18 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <textarea class="form-control" style="height: 100px" name="notes"></textarea>
-                        <label for="floatingphone_one">Notes(Optional)</label>
+                        <select name="status" class="form-select"
+                                id="status">
+                            <option disabled selected>Status list</option>
+                            <option value="approved">Approved</option>
+                            <option value="not approved">Not Approved</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="file" class="form-control" id="floatingName" placeholder="Images"
-                               name="image">
-                        <label for="floatingName">Image</label>
+                        <textarea class="form-control" style="height: 100px" name="notes"></textarea>
+                        <label for="floatingphone_one">Notes(Optional)</label>
                     </div>
                 </div>
 
@@ -83,7 +86,7 @@
                     },
                     url: '{{url('get-employees/')}}',
                     success: function (data) {
-                        data=data['employee'];
+                        data = data['employee'];
                         $('#employee_id').empty();
                         $.each(data, function (index, item) {
                             $('#employee_id').append('<option value="' + item.id + '">' + item.name + '</option>');
