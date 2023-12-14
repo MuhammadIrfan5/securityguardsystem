@@ -59,13 +59,13 @@
 {{--                                <option disabled selected>Location</option>--}}
 {{--                            </select>--}}
 {{--                        </div>--}}
-                        <div class="col-md-6">
-                            <label for="employee_id">Employee list:</label>
-                            <select name="employee_id" class="form-select"
-                                    id="employee_id">
-                                <option disabled selected>Employee list</option>
-                            </select>
-                        </div>
+{{--                        <div class="col-md-6">--}}
+{{--                            <label for="employee_id">Employee list:</label>--}}
+{{--                            <select name="employee_id" class="form-select"--}}
+{{--                                    id="employee_id">--}}
+{{--                                <option disabled selected>Employee list</option>--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="startTime">Start Time:</label>
@@ -108,18 +108,18 @@
                                 <option disabled selected>Employee list</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="startTime">Start Time:</label>
-                                <input type="time" class="form-control" id="edit_startTime" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="endTime">End Time:</label>
-                                <input type="time" class="form-control" id="edit_endTime" required>
-                            </div>
-                        </div>
+{{--                        <div class="col-md-6">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label for="startTime">Start Time:</label>--}}
+{{--                                <input type="time" class="form-control" id="edit_startTime" required>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-6">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label for="endTime">End Time:</label>--}}
+{{--                                <input type="time" class="form-control" id="edit_endTime" required>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </form>
                 </div>
                 <div class="modal-footer">

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees');
+            $table->string('employee_id');
             $table->foreignId('location_id')->constrained('locations');
             $table->string('start_date');
             $table->string('end_date');
