@@ -56,7 +56,6 @@
                 if (event.title === '') {
                     var alertIcon = $('<span>&#x26A0;</span>'); // Create a new span element
                     element.find('.fc-title').append(alertIcon); // Append the span to the existing title element
-                    console.log(element.html());
                 }
             },
             selectable: true,
