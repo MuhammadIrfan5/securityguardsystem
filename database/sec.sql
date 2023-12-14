@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2023 at 10:49 AM
+-- Generation Time: Dec 14, 2023 at 11:56 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -315,9 +315,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2023_10_17_072545_create_employees_table', 4),
 (24, '2023_11_14_055816_create_schedule_days_table', 5),
 (29, '2023_10_18_100635_create_jobs_table', 7),
-(30, '2023_11_14_055601_create_schedules_table', 8),
 (32, '2023_11_15_063754_create_monitorings_table', 9),
-(33, '2023_12_12_135546_create_confirmation_calls_table', 10);
+(33, '2023_12_12_135546_create_confirmation_calls_table', 10),
+(34, '2023_11_14_055601_create_schedules_table', 11);
 
 -- --------------------------------------------------------
 
@@ -429,7 +429,7 @@ INSERT INTO `roles` (`id`, `name`, `is_active`, `created_at`, `updated_at`) VALU
 
 CREATE TABLE `schedules` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `location_id` bigint(20) UNSIGNED NOT NULL,
   `start_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `end_date` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -447,16 +447,8 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 2, '2023-12-04', '2023-12-05', '10:57', '22:57', '', '1', '2023-12-04 00:57:24', '2023-12-04 00:57:24', NULL),
-(2, 1, 2, '2023-12-05', '2023-12-06', '23:39', '11:39', '', '1', '2023-12-04 01:39:34', '2023-12-04 01:39:34', NULL),
-(4, 1, 2, '2023-12-13', '2023-12-14', '23:39', '11:39', '', '1', '2023-12-04 01:44:21', '2023-12-04 01:44:21', NULL),
-(5, 1, 2, '2023-12-21', '2023-12-22', '23:39', '11:39', '', '1', '2023-12-04 01:59:45', '2023-12-04 01:59:45', NULL),
-(6, 3, 1, '2023-12-04', '2023-12-05', '00:04', '12:04', '', '1', '2023-12-04 02:04:37', '2023-12-04 02:04:37', NULL),
-(7, 1, 1, '2023-12-05', '2023-12-06', '13:06', '00:06', '', '1', '2023-12-04 02:06:16', '2023-12-12 02:36:11', NULL),
-(8, 2, 2, '2023-12-07', '2023-12-10', '17:46', '05:46', '', '1', '2023-12-04 07:46:15', '2023-12-04 07:46:15', NULL),
-(9, 2, 2, '2023-12-12', '2023-12-13', '17:46', '05:46', '', '1', '2023-12-04 07:46:37', '2023-12-04 07:46:37', NULL),
-(10, 1, 1, '2023-12-12', '2023-12-13', '12:06', '00:06', '', '1', '2023-12-12 00:32:39', '2023-12-12 00:32:39', NULL),
-(16, 2, 3, '2023-12-12', '2023-12-13', '18:11', '06:11', '', '1', '2023-12-12 08:11:27', '2023-12-12 08:11:27', NULL);
+(1, '2', 1, '2023-11-27', '2023-11-28', '15:26', '03:26', '', '1', '2023-12-14 05:28:17', '2023-12-14 05:29:56', NULL),
+(2, '1', 1, '2023-11-28', '2023-11-29', '17:31', '03:31', '', '1', '2023-12-14 05:31:38', '2023-12-14 05:55:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -1138,7 +1130,6 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `schedules_employee_id_foreign` (`employee_id`),
   ADD KEY `schedules_location_id_foreign` (`location_id`);
 
 --
@@ -1248,7 +1239,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1278,7 +1269,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
@@ -1373,7 +1364,6 @@ ALTER TABLE `monitor_locations`
 -- Constraints for table `schedules`
 --
 ALTER TABLE `schedules`
-  ADD CONSTRAINT `schedules_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
   ADD CONSTRAINT `schedules_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
 
 --
