@@ -34,7 +34,7 @@ class CalendarController extends Controller
                 }
                 $list[] =
                     [ 'id'    => $item->id,
-                      'title' => $item->employee->name . ' : ' . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)),
+                      'title' => !empty($item->employee) ? $item->employee->name . ' : ' . date('hA', strtotime($item->start_time)) . '-to-' . date('hA', strtotime($item->end_time)) : '',
                       'start' => $item->start_date,
                       'end'   => $item->end_date,
                       'color' => $color
@@ -52,7 +52,7 @@ class CalendarController extends Controller
             case 'add':
                 $event = Schedule::create([
                     'location_id' => $request->location,
-                    'employee_id' => $request->employee,
+                    'employee_id' => '',
                     'start_date'  => $request->start,
                     'end_date'    => $request->end,
                     'start_time'  => $request->startTime,
@@ -74,7 +74,7 @@ class CalendarController extends Controller
                 if (empty($check)) {
                     $event            = Schedule::create([
                         'location_id' => $events->location_id,
-                        'employee_id' => $events->employee_id,
+                        'employee_id' => $events->employee_id ?? '',
                         'start_date'  => $request->start,
                         'end_date'    => $request->end,
                         'start_time'  => $events->start_time,
@@ -93,8 +93,6 @@ class CalendarController extends Controller
                 $event = Schedule::find($request->id);
                 if (!empty($event)) {
                     $event->employee_id = $request->employee_id;
-                    $event->start_time  = $request->start;
-                    $event->end_time    = $request->end;
                 }
                 $event->update();
                 return response()->json($event);
