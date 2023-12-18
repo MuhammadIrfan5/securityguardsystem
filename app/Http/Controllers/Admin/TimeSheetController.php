@@ -168,8 +168,13 @@ class TimeSheetController extends Controller
     {
         $list     = array();
         $id       = $request->location_id;
-        $employee = Schedule::select('employee_id')->where('location_id', $id)
-            ->distinct()
+        $employee = Schedule::
+        select('id','employee_id')
+            ->
+            where('location_id', $id)
+            ->whereNotNull('employee_id')
+            ->whereDate('start_date', '>=', date('Y-m-d'))
+            ->whereDate('end_date', '<=', Carbon::tomorrow() )
             ->get();
         if (count($employee) > 0) {
             foreach ($employee as $item) {
