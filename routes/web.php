@@ -137,7 +137,7 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     /*AJAX API*/
     Route::get('get-employee', [TimeSheetController::class, 'getEmployees']);
 
-    Route::get('/calendar', [CalendarController::class, 'index']);
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
     Route::get('/fullcalender', [CalendarController::class, 'getEvents'])->name('getEvents');
     Route::post('/event/add', [CalendarController::class, 'addEvent'])->name('CRUD.Event');
     Route::post('/event/update', [CalendarController::class, 'updateEvent']);
