@@ -58,12 +58,12 @@
                         <label for="floatingName">Check-Out</label>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <textarea class="form-control" style="height: 100px" name="notes"></textarea>
-                        <label for="floatingphone_one">Notes(Optional)</label>
-                    </div>
-                </div>
+{{--                <div class="col-md-6">--}}
+{{--                    <div class="form-floating">--}}
+{{--                        <textarea class="form-control" style="height: 100px" name="notes"></textarea>--}}
+{{--                        <label for="floatingphone_one">Notes(Optional)</label>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
