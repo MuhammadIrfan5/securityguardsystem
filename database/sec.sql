@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2023 at 11:56 AM
+-- Generation Time: Dec 22, 2023 at 01:05 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -317,7 +317,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (29, '2023_10_18_100635_create_jobs_table', 7),
 (32, '2023_11_15_063754_create_monitorings_table', 9),
 (33, '2023_12_12_135546_create_confirmation_calls_table', 10),
-(34, '2023_11_14_055601_create_schedules_table', 11);
+(34, '2023_11_14_055601_create_schedules_table', 11),
+(35, '2023_12_22_103520_create_time_sheets_table', 12);
 
 -- --------------------------------------------------------
 
@@ -448,7 +449,10 @@ CREATE TABLE `schedules` (
 
 INSERT INTO `schedules` (`id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '2', 1, '2023-11-27', '2023-11-28', '15:26', '03:26', '', '1', '2023-12-14 05:28:17', '2023-12-14 05:29:56', NULL),
-(2, '1', 1, '2023-11-28', '2023-11-29', '17:31', '03:31', '', '1', '2023-12-14 05:31:38', '2023-12-14 05:55:32', NULL);
+(2, '1', 1, '2023-11-28', '2023-11-29', '17:31', '03:31', '', '1', '2023-12-14 05:31:38', '2023-12-14 05:55:32', NULL),
+(3, '2', 1, '2023-12-05', '2023-12-06', '18:31', '06:31', '', '1', '2023-12-20 08:31:42', '2023-12-20 08:32:00', NULL),
+(4, '2', 1, '2023-12-22', '2023-12-23', '15:23', '16:23', '', '1', '2023-12-22 05:23:53', '2023-12-22 05:23:58', NULL),
+(5, '', 1, '2023-12-22', '2023-12-23', '03:23', '16:23', '', '1', '2023-12-22 05:28:46', '2023-12-22 05:28:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -488,6 +492,32 @@ CREATE TABLE `states` (
 
 INSERT INTO `states` (`id`, `country_id`, `name`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, 1, 'SINDH', NULL, '2023-10-31 09:41:21', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `time_sheets`
+--
+
+CREATE TABLE `time_sheets` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `schedule_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `location_id` bigint(20) UNSIGNED NOT NULL,
+  `check_in_time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `check_out_time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_approved` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `time_sheets`
+--
+
+INSERT INTO `time_sheets` (`id`, `schedule_id`, `employee_id`, `location_id`, `check_in_time`, `check_out_time`, `notes`, `is_approved`, `created_at`, `updated_at`) VALUES
+(1, 4, 2, 1, '16:15', '18:26', 'sasa', 0, '2023-12-22 06:18:54', '2023-12-22 06:26:36');
 
 -- --------------------------------------------------------
 
@@ -1147,6 +1177,15 @@ ALTER TABLE `states`
   ADD KEY `states_country_id_foreign` (`country_id`);
 
 --
+-- Indexes for table `time_sheets`
+--
+ALTER TABLE `time_sheets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `time_sheets_schedule_id_foreign` (`schedule_id`),
+  ADD KEY `time_sheets_employee_id_foreign` (`employee_id`),
+  ADD KEY `time_sheets_location_id_foreign` (`location_id`);
+
+--
 -- Indexes for table `time_zones`
 --
 ALTER TABLE `time_zones`
@@ -1239,7 +1278,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1269,7 +1308,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
@@ -1281,6 +1320,12 @@ ALTER TABLE `schedule_days`
 -- AUTO_INCREMENT for table `states`
 --
 ALTER TABLE `states`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `time_sheets`
+--
+ALTER TABLE `time_sheets`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -1377,6 +1422,14 @@ ALTER TABLE `schedule_days`
 --
 ALTER TABLE `states`
   ADD CONSTRAINT `states_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
+
+--
+-- Constraints for table `time_sheets`
+--
+ALTER TABLE `time_sheets`
+  ADD CONSTRAINT `time_sheets_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
+  ADD CONSTRAINT `time_sheets_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
+  ADD CONSTRAINT `time_sheets_schedule_id_foreign` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`);
 
 --
 -- Constraints for table `users`
