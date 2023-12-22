@@ -7,10 +7,12 @@ use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
 use App\Models\Schedule;
+use App\Models\TimeSheet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Type\Time;
 
 class TimeSheetController extends Controller
 {
@@ -47,7 +49,18 @@ class TimeSheetController extends Controller
 
         $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         foreach ($records as $record) {
-
+            $item = TimeSheet::where('schedule_id', $record->id)->first();
+            if (!empty($item)) {
+                $time = '<ul>
+                    <li>Check-In:' . $item->check_in_time . '</li>
+                    <li>Check-Out:' . $item->check_out_time . '</li>
+                </ul>';
+            } else {
+                $time = '<ul>
+                    <li>Check-In:</li>
+                    <li>Check-Out:</li>
+                </ul>';
+            }
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.linkDetail',
@@ -57,11 +70,12 @@ class TimeSheetController extends Controller
                     ]
                 )->render(),
                 $record->employee->name,
-                $record->type . '-' . $record->time,
-                $record->notes ?? '',
-                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ?? 0 ])->render(),
-                view('admin.layout.defaultComponent.editButton', [
+                $time,
+                !empty($item)?$item->notes : '',
+                !empty($item) ? view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('time-sheet.edit', $record->id)
+                ])->render() : view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('time.sheet.create', [ 'id' => $record->id ])
                 ])->render(),
             ];
         }
@@ -74,6 +88,8 @@ class TimeSheetController extends Controller
     public function create()
     {
         $data['title']     = 'Time Sheet';
+        $data['data']      = Schedule::find(\request()->id);
+        $data['employee']  = Employee::all();
         $data['locations'] = Location::all();
         return view('admin.timesheet.add', $data);
     }
@@ -84,21 +100,22 @@ class TimeSheetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'location_id' => 'required',
-            'employee_id' => 'required',
-            'time'        => 'required',
-            'type'        => 'required',
+            'id'        => 'required',
+            'check_in'  => 'required',
+            'check_out' => 'nullable',
+            'notes'     => 'nullable',
         ]);
 
         /*GET EMPLOYEE*/
-        $record = Employee::find($request->employee_id);
+        $record = Schedule::find($request->id);
 
-        $data                 = new Job();
-        $data->location_id    = $request->location_id;
-        $data->employee_id    = $request->employee_id;
-        $data->time           = $request->time;
-        $data->type           = $request->type;
-        $data->calling_number = $record->phone_one;
+        $data                 = new TimeSheet();
+        $data->schedule_id    = $record->id;
+        $data->location_id    = $record->location_id;
+        $data->employee_id    = $record->employee_id;
+        $data->check_in_time  = $request->check_in;
+        $data->check_out_time = $request->check_out;
+        $data->notes          = $request->notes;
         $data->save();
 
         return redirect()->route('time-sheet.index')->with('msg', 'Time-Sheet Successfully!');
@@ -118,11 +135,11 @@ class TimeSheetController extends Controller
      */
     public function edit(string $id)
     {
-        $data['title']    = 'Assign Job';
+        $data['title']    = 'Time Sheet';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
         $data['data']     = Schedule::find($id);
-
+        $data['record']   = TimeSheet::where('schedule_id', $id)->first();
         return view('admin.timesheet.edit', $data);
 
     }
@@ -132,22 +149,16 @@ class TimeSheetController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = Job::find($id);
+        $data = TimeSheet::find($id);
         if (!empty($data)) {
-            if (!empty($request->location_id)) {
-                $data->location_id = $request->location_id;
-            }
-            if (!empty($request->employee_id)) {
-                $data->employee_id = $request->employee_id;
-            }
             if (!empty($request->check_in)) {
-                $data->check_in = $request->check_in;
+                $data->check_in_time = $request->check_in;
             }
-            if (!empty($request->calling_number)) {
-                $data->calling_number = $request->calling_number;
+            if (!empty($request->check_out)) {
+                $data->check_out_time = $request->check_out;
             }
-            if (!empty($request->is_approved)) {
-                $data->is_approved = (int)$request->is_approved;
+            if (!empty($request->notes)) {
+                $data->notes = $request->notes;
             }
             $data->update();
         }

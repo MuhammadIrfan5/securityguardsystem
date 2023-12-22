@@ -51,7 +51,7 @@
                                 <th>Employee</th>
                                 <th>Attendance</th>
                                 <th>Notes</th>
-                                <th>Status</th>
+{{--                                <th>Status</th>--}}
                                 <th>Actions</th>
                             </tr>
                             </thead>

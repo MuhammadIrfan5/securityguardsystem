@@ -23,11 +23,11 @@
         <!-- Floating Labels Form -->
             <form class="row g-3" method="post" action="{{route('time-sheet.store')}}">
                 @csrf
-
+                <input type="hidden" name="id" value="{{$data->id}}">
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="location_id" class="form-select"
-                                id="location_id">
+                                id="location_id" disabled>
                             <option disabled selected>Location</option>
                             @foreach($locations as $user)
                                 <option value="{{ $user->id }}">{{$user->name}}</option>
@@ -38,27 +38,32 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="employee_id" class="form-select"
-                                id="employee_id">
+                                id="employee_id" disabled>
+                            @foreach($employee as $user)
+                                <option {{$data->employee_id==$user->id? 'checked':''}} value="{{ $user->id }}">{{$user->name}}</option>
+                            @endforeach
                         </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <select name="type" class="form-select"
-                                id="type">
-                            <option disabled selected>Type</option>
-                                <option value="check-in">Check-In</option>
-                                <option value="check-out">Check-Out</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingName" placeholder="Time" name="time">
-                        <label for="floatingName">Time</label>
-                    </div>
-                </div>
 
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In" name="check_in" value="" required>
+                        <label for="floatingName">Check-In</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" id="floatingName" placeholder="Check-Out" name="check_out" value="" >
+                        <label for="floatingName">Check-Out</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <textarea class="form-control" style="height: 100px" name="notes"></textarea>
+                        <label for="floatingphone_one">Notes(Optional)</label>
+                    </div>
+                </div>
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>

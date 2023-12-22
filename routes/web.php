@@ -126,6 +126,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('time-sheet', TimeSheetController::class);
     Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
 
+    Route::get('time-sheet-create', [TimeSheetController::class, 'create'])->name('time.sheet.create');
+
     Route::resource('reschedule', RescheduleController::class);
 
     /*Confirmation Call*/
