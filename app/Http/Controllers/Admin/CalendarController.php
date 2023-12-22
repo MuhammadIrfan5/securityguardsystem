@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Schedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
@@ -48,19 +49,34 @@ class CalendarController extends Controller
 
     public function addEvent(Request $request)
     {
-        switch ($request->type) {
-            case 'add':
-                $event = Schedule::create([
-                    'location_id' => $request->location,
-                    'employee_id' => '',
-                    'start_date'  => $request->start,
-                    'end_date'    => $request->end,
-                    'start_time'  => $request->startTime,
-                    'end_time'    => $request->endTime,
-                    'comments'    => $request->comments ?? "",
-                    'created_by'  => $request->user()['id'],
-                ]);
+        $startDate = Carbon::parse($request->input('start'));
+        $endDate = Carbon::parse($request->input('end'));
 
+        $dates = [];
+        $lastIndex = $endDate->diffInDays($startDate);
+
+        while ($startDate->lte($endDate)) {
+            $dates[] = $startDate->toDateString();
+            $startDate->addDay();
+        }
+        switch ($request->type) {
+
+            case 'add':
+                foreach ($dates as $key=> $item) {
+                    $nextDate=date('Y-m-d', strtotime("+1 day", strtotime($item)));
+                    if($lastIndex!=$key){
+                        $event = Schedule::create([
+                            'location_id' => $request->location,
+                            'employee_id' => '',
+                            'start_date'  => $item,
+                            'end_date'    => $nextDate,
+                            'start_time'  => $request->startTime,
+                            'end_time'    => $request->endTime,
+                            'comments'    => $request->comments ?? "",
+                            'created_by'  => $request->user()['id'],
+                        ]);
+                    }
+                }
                 return response()->json($event);
                 break;
             case 'update':
