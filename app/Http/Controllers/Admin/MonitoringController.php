@@ -103,7 +103,7 @@ class MonitoringController extends Controller
     public function create()
     {
         $data['title']    = 'Monitoring';
-        $data['location'] = Location::has('monitoring')->get();
+        $data['location'] = Location::all();
         return view('admin.monitoring.add', $data);
     }
 
