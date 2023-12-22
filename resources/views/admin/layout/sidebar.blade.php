@@ -65,14 +65,6 @@
                 <span>Scheduling</span>
             </a>
         </li>
-{{--        <li class="nav-item">--}}
-{{--            <a class="nav-link--}}
-{{--{{ request()->is('reschedule') ? '' : 'collapsed' }}--}}
-{{--                    " href="{{route('reschedule.create')}}">--}}
-{{--                <i class="bi bi-calendar"></i>--}}
-{{--                <span>Re-Scheduling</span>--}}
-{{--            </a>--}}
-{{--        </li>--}}
         <li class="nav-item">
             <a class="nav-link  {{ request()->is('time-sheet') ? '' : 'collapsed' }}"
 

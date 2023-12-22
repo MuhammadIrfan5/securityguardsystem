@@ -31,25 +31,25 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-//        if (!empty($request->startTime)) {
-        $records                     = new Job();
-        $response["recordsTotal"]    = $records->count();
-        $response["recordsFiltered"] = $records->count();
+        $records  = new Schedule();
 
         /*Search function*/
         if (!empty($request->search["value"])) {
             $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
             $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
+        $records = $records->where('employee_id', '!=', '')
+            ->whereDate('start_date', '>=', Carbon::today())
+            ->whereDate('end_date', '<=', Carbon::tomorrow());
 
-//            $records = $records->select('location_id')
-//                ->groupBy('location_id');
-            $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
-        $i = 1;
+        $response["recordsTotal"]    = $records->count();
+        $response["recordsFiltered"] = $records->count();
+
+        $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         foreach ($records as $record) {
-//                $attendances = $this->getDailyAttendance($record->location_id, $request->startTime, $request->endTime);
+
             $response['data'][] = [
-                $i,
+                $record->id,
                 view('admin.layout.defaultComponent.linkDetail',
                     [ 'is_location' => 1,
                       "url"         => route('location.show', $record->location_id),
@@ -57,16 +57,14 @@ class TimeSheetController extends Controller
                     ]
                 )->render(),
                 $record->employee->name,
-                $record->type.'-'.$record->time,
-                $record->notes,
-                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
+                $record->type . '-' . $record->time,
+                $record->notes ?? '',
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ?? 0 ])->render(),
                 view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('assign-job.edit', 1)
+                    'editUrl' => route('time-sheet.edit', $record->id)
                 ])->render(),
             ];
-            $i++;
         }
-//        }
         return response($response);
     }
 
@@ -123,7 +121,7 @@ class TimeSheetController extends Controller
         $data['title']    = 'Assign Job';
         $data['location'] = Location::all();
         $data['employee'] = Employee::all();
-        $data['data']     = Job::find($id);
+        $data['data']     = Schedule::find($id);
 
         return view('admin.timesheet.edit', $data);
 
@@ -169,12 +167,12 @@ class TimeSheetController extends Controller
         $list     = array();
         $id       = $request->location_id;
         $employee = Schedule::
-        select('id','employee_id')
+        select('id', 'employee_id')
             ->
             where('location_id', $id)
             ->whereNotNull('employee_id')
             ->whereDate('start_date', '>=', date('Y-m-d'))
-            ->whereDate('end_date', '<=', Carbon::tomorrow() )
+            ->whereDate('end_date', '<=', Carbon::tomorrow())
             ->get();
         if (count($employee) > 0) {
             foreach ($employee as $item) {
