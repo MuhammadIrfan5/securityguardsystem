@@ -14,7 +14,7 @@ class LocationTypeController extends Controller
     public function index()
     {
         $data['title'] = 'Location Type list';
-        return view('Admin.locationType.list', $data);
+        return view('admin.locationType.list', $data);
     }
 
     public function tableData(Request $request)
@@ -90,7 +90,7 @@ class LocationTypeController extends Controller
     {
         $data['title'] = 'Location Type';
         $data['type']  = LocationType::where('parent_id', 0)->get();
-        return view('Admin.locationType.add', $data);
+        return view('admin.locationType.add', $data);
     }
 
     /**

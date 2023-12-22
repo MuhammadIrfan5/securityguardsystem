@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Job extends Model
+class Schedule extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'location_id',
         'employee_id',
-        'time',
-        'type',
-        'calling_number',
+        'start_date',
+        'end_date',
+        'start_time',
+        'end_time',
+        'comments',
+        'created_by',
     ];
 
     public function employee()
@@ -25,5 +28,10 @@ class Job extends Model
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id');
+    }
+
+    public function scheduleDays()
+    {
+        return $this->hasMany(ScheduleDay::class, 'schedule_id');
     }
 }

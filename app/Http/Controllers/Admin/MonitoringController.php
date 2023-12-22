@@ -6,29 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Monitoring;
+use App\Models\MonitorLocation;
+use App\Models\Schedule;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
-class JobController extends Controller
+class MonitoringController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use ImageTrait;
+
     public function index()
     {
-        $data['title'] = "Verify Records";
-        return view('admin.job.list', $data);
+        $data['title'] = "Monitoring";
+        return view('admin.monitoring.list', $data);
     }
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Job();
-        $response["recordsTotal"] = $country->count();
+        $country  = new Monitoring();
+
 
         /*Sorting*/
         switch ('id') {
@@ -43,7 +49,6 @@ class JobController extends Controller
             $country = $country->where("id", "like", "%" . $request->search["value"] . "%");
             $country = $country->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
-        $response["recordsFiltered"] = $country->count();
         /*ordering*/
 //        $order = $request["order"][0]["column"]??0;
 //        $orderDir = $request["order"][0]["dir"]??"desc";
@@ -70,17 +75,23 @@ class JobController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $country = $country->skip($request->start)->take($request->length)->get();
+
+        $response["recordsTotal"]    = $country->count();
+        $response["recordsFiltered"] = $country->count();
+        $country                     = $country->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
                 $record->id,
+                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show', $record->location_id), "username" => $record->location->name ])->render(),
                 $record->employee->name,
-                $record->location->name,
-                $record->check_in,
-                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
-                view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('assign-job.edit', $record->id)
+                view('admin.layout.defaultComponent.profileImage', [
+                    'url' => asset('/storage/') . '/' . $record->images,
                 ])->render(),
+                date('d F Y h:i', strtotime($record->created_at)),
+//                view('admin.layout.defaultComponent.editButton', [
+//                    'editUrl' => route('assign-job.edit', $record->id)
+//                ])->render(),
+
             ];
         }
         return response($response, 201);
@@ -91,10 +102,9 @@ class JobController extends Controller
      */
     public function create()
     {
-        $data['title']    = 'Assign Job';
-        $data['location'] = Location::all();
-        $data['employee'] = Employee::all();
-        return view('admin.job.add', $data);
+        $data['title']    = 'Monitoring';
+        $data['location'] = Location::has('monitoring')->get();
+        return view('admin.monitoring.add', $data);
     }
 
     /**
@@ -103,20 +113,24 @@ class JobController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'location_id'    => 'required',
-            'employee_id'    => 'required',
-            'check_in'       => 'required',
-            'calling_number' => 'required',
+            'location_id' => 'required',
+            'employee_id' => 'required',
+            'image'       => 'required|mimes:jpeg,png,jpg,gif',
+            'notes'       => 'nullable|string',
         ]);
-
-        $data                 = new Job();
-        $data->location_id    = $request->location_id;
-        $data->employee_id    = $request->employee_id;
-        $data->check_in       = $request->check_in;
-        $data->calling_number = $request->calling_number;
+        $id                        = MonitorLocation::where('location_id', $request->location_id)->first('id');
+        $data                      = new Monitoring();
+        $data->location_id         = $request->location_id;
+        $data->employee_id         = $request->employee_id;
+        $data->monitor_location_id = $id->id;
+        if (!empty($request->hasFile("image"))) {
+            $this->removeImage($data->image);
+            $data->images = $this->imageUpload($request->file('image'), $data->getTable());
+        }
+        $data->notes = $request->notes;
         $data->save();
 
-        return redirect()->route('assign-job.index')->with('msg', 'Record created Successfully!');
+        return redirect()->route('monitoring.index')->with('msg', 'Images uploaded Successfully!');
 
     }
 

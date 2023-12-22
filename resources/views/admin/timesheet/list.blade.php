@@ -5,8 +5,22 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('assign-job.create')}}" class="btn btn-primary">Create</a>
+            <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>
         </div>
+        <form action="#" method="get" id="filterForm">
+            <div class="row">
+                <div class="col-5">
+                    <input type="time" name="startTime" class="form-control">
+                </div>
+                <div class="col-5">
+                    <input type="time" name="endTime" class="form-control">
+                </div>
+                <div class="col-2">
+                    <input id="filter" type="submit" class="btn btn-outline-primary " value="Filter">
+                </div>
+            </div>
+        </form>
+
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
@@ -33,11 +47,11 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Employee</th>
                                 <th>Location</th>
-                                <th>Check-In</th>
-{{--                                <th>Calling Number</th>--}}
-                                <th>Status</th>
+                                <th>Employee</th>
+                                <th>Attendance</th>
+                                <th>Notes</th>
+{{--                                <th>Status</th>--}}
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -50,5 +64,5 @@
     </section>
 @endsection
 @section('page-js')
-    @include('admin.job.pageJs')
+    @include('admin.timesheet.pageJs')
 @endsection

@@ -3,30 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\ConfirmationCall;
+use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-class RoleController extends Controller
+class ConfirmationCallController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['title'] = "Role";
-        return view('admin.role.list', $data);
+        $data['title'] = "Confirmation Call";
+        return view('admin.confirmationCall.list', $data);
     }
 
     public function tableData(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Role();
+        $country                  = new ConfirmationCall();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -72,12 +72,15 @@ class RoleController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->name,
-                view('admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
-                  view('admin.layout.defaultComponent.editButton', [
-                      'editUrl' => route('role.edit', $record->id)
-                  ])->render(),
+                $record->id,
+                $record->employee->name,
+                $record->location->name,
+                $record->status,
+                $record->notes,
+                date('d F Y h:i', strtotime($record->created_at)),
+                view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('confirmation-call.edit', $record->id)
+                ])->render(),
             ];
         }
         return response($response, 201);
@@ -88,15 +91,31 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $data['title']    = 'Confirmation Call';
+        $data['location'] = Location::all();
+        return view('admin.confirmationCall.add', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
+
     {
-        //
+        $request->validate([
+            'location_id' => 'required',
+            'employee_id' => 'required',
+            'status'      => 'required|string',
+            'notes'       => 'nullable|string',
+        ]);
+        $data              = new ConfirmationCall();
+        $data->location_id = $request->location_id;
+        $data->employee_id = $request->employee_id;
+        $data->status      = $request->status;
+        $data->notes       = $request->notes;
+        $data->save();
+
+        return redirect()->route('confirmation-call.index')->with('msg', 'Confirmation call updated Successfully!');
     }
 
     /**
@@ -112,31 +131,22 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        $data['title'] = "Role";
-        $data['role'] = Role::find($id);
-        $data['activeMenu'] = "Role";
-        return view('admin.role.edit', $data);
-
+        //
     }
 
-        /**
-         * Update the specified resource in storage.
-         */
-        public function update(Request $request, string $id)
-        {
-            $data =  Role::find($id);
-            $data['is_active'] = (int)$request->is_active;
-            $data->save();
-            Session::flash('message', 'Role Updated successfully');
-            return redirect(route('role.index'));
-        }
-
-        /**
-         * Remove the specified resource from storage.
-         */
-        public
-        function destroy(string $id)
-        {
-            //
-        }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

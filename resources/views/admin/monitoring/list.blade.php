@@ -5,7 +5,7 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('assign-job.create')}}" class="btn btn-primary">Create</a>
+            <a href="{{route('monitoring.create')}}" class="btn btn-primary">Create</a>
         </div>
         <nav>
             <ol class="breadcrumb">
@@ -33,12 +33,11 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Employee</th>
                                 <th>Location</th>
-                                <th>Check-In</th>
-{{--                                <th>Calling Number</th>--}}
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>Employee</th>
+                                <th>Images</th>
+                                <th>Date</th>
+{{--                                <th>Actions</th>--}}
                             </tr>
                             </thead>
                         </table>
@@ -50,5 +49,5 @@
     </section>
 @endsection
 @section('page-js')
-    @include('admin.job.pageJs')
+    @include('admin.monitoring.pageJs')
 @endsection

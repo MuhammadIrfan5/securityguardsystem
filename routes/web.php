@@ -1,16 +1,22 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\ConfirmationCallController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
+use App\Http\Controllers\Admin\MonitoringController;
+use App\Http\Controllers\Admin\RescheduleController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\StateController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -108,5 +114,38 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('assign-job', JobController::class);
     Route::get('assign-job-list', [JobController::class, 'tableData'])->name('assign.job.tableData');
 
+    /*Scheduling*/
+    Route::resource('schedule', ScheduleController::class);
+    Route::get('schedule-list', [ScheduleController::class, 'tableData'])->name('schedule.tableData');
 
+    /*Monitoring*/
+    Route::resource('monitoring', MonitoringController::class);
+    Route::get('monitoring-list', [MonitoringController::class, 'tableData'])->name('monitoring.tableData');
+
+    /*Time Sheet*/
+    Route::resource('time-sheet', TimeSheetController::class);
+    Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
+
+    Route::get('time-sheet-create', [TimeSheetController::class, 'create'])->name('time.sheet.create');
+
+    Route::resource('reschedule', RescheduleController::class);
+
+    /*Confirmation Call*/
+    Route::resource('confirmation-call', ConfirmationCallController::class);
+    Route::get('confirmation-call-list', [ConfirmationCallController::class, 'tableData'])->name('confirmation.call.tableData');
+
+
+
+    /*AJAX API*/
+    Route::get('get-employee', [TimeSheetController::class, 'getEmployees']);
+
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::get('/fullcalender', [CalendarController::class, 'getEvents'])->name('getEvents');
+    Route::post('/event/add', [CalendarController::class, 'addEvent'])->name('CRUD.Event');
+    Route::post('/event/update', [CalendarController::class, 'updateEvent']);
+    Route::post('/event/delete', [CalendarController::class, 'deleteEvent']);
+    Route::get('get-locations', [CalendarController::class, 'getLocations']);
+    Route::get('get-employees', [CalendarController::class, 'getEmployee']);
+    Route::get('get-edit', [CalendarController::class, 'getEdit']);
+    Route::get('get-locations-list', [CalendarController::class, 'getLocationlist'])->name('location.list');
 });
