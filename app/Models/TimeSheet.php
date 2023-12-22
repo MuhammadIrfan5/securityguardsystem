@@ -18,4 +18,16 @@ class TimeSheet extends Model
         'notes',
         'is_approved',
     ];
+    public function getSchedule(){
+        return $this->belongsTo(Schedule::class,'schedule_id');
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 }

@@ -35,9 +35,9 @@
                                 <th>ID</th>
                                 <th>Location</th>
                                 <th>Employee</th>
-                                <th>Status</th>
+                                <th>Attendance</th>
                                 <th>Notes</th>
-                                <th>Date</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
