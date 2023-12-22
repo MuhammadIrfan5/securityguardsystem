@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ConfirmationCall;
 use App\Models\Location;
+use App\Models\TimeSheet;
 use Illuminate\Http\Request;
 
 class ConfirmationCallController extends Controller
@@ -26,23 +27,23 @@ class ConfirmationCallController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new ConfirmationCall();
-        $response["recordsTotal"] = $country->count();
+        $records                  = new TimeSheet();
+        $response["recordsTotal"] = $records->count();
 
         /*Sorting*/
         switch ('id') {
             case 'id':
-                $country = $country->orderBy('id', 'desc');
+                $records = $records->orderBy('id', 'desc');
                 break;
             default:
                 break;
         }
         /*Search function*/
         if (!empty($request->search["value"])) {
-            $country = $country->where("id", "like", "%" . $request->search["value"] . "%");
-            $country = $country->orWhere("name", "like", "%" . $request->search["value"] . "%");
+            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
+            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
-        $response["recordsFiltered"] = $country->count();
+        $response["recordsFiltered"] = $records->count();
         /*ordering*/
 //        $order = $request["order"][0]["column"]??0;
 //        $orderDir = $request["order"][0]["dir"]??"desc";
@@ -69,17 +70,28 @@ class ConfirmationCallController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $country = $country->skip($request->start)->take($request->length)->get();
-        foreach ($country as $record) {
+        $records = $records->whereNotNull(['check_in_time','check_out_time']);
+        $records = $records->skip($request->start)->take($request->length)->get();
+        foreach ($records as $record) {
+                $time = '<ul>
+                    <li>Check-In:' . $record->check_in_time . '</li>
+                    <li>Check-Out:' . $record->check_out_time . '</li>
+                </ul>';
             $response['data'][] = [
                 $record->id,
+                view('admin.layout.defaultComponent.linkDetail',
+                    [ 'is_location' => 1,
+                      "url"         => route('location.show', $record->location_id),
+                      "username"    => $record->location->name
+                    ]
+                )->render(),
                 $record->employee->name,
-                $record->location->name,
-                $record->status,
-                $record->notes,
-                date('d F Y h:i', strtotime($record->created_at)),
-                view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('confirmation-call.edit', $record->id)
+                $time,
+                !empty($item)?$item->notes : '',
+                !empty($item) ? view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('time-sheet.edit', $record->id)
+                ])->render() : view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('time.sheet.create', [ 'id' => $record->id ])
                 ])->render(),
             ];
         }
