@@ -70,10 +70,10 @@ class ConfirmationCallController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
-        $records = $records->whereNotNull(['check_in_time','check_out_time']);
+        $records = $records->whereNotNull([ 'check_in_time', 'check_out_time' ]);
         $records = $records->skip($request->start)->take($request->length)->get();
         foreach ($records as $record) {
-                $time = '<ul>
+            $time               = '<ul>
                     <li>Check-In:' . $record->check_in_time . '</li>
                     <li>Check-Out:' . $record->check_out_time . '</li>
                 </ul>';
@@ -87,11 +87,10 @@ class ConfirmationCallController extends Controller
                 )->render(),
                 $record->employee->name,
                 $time,
-                !empty($item)?$item->notes : '',
-                !empty($item) ? view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('time-sheet.edit', $record->id)
-                ])->render() : view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('time.sheet.create', [ 'id' => $record->id ])
+                !empty($item) ? $item->notes : '',
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
+                view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('confirmation-call.edit', $record->id)
                 ])->render(),
             ];
         }
@@ -143,7 +142,9 @@ class ConfirmationCallController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['title'] = 'Confirmation Call';
+        $data['data']  = TimeSheet::find($id);
+        return view('admin.confirmationCall.edit', $data);
     }
 
     /**
@@ -151,7 +152,16 @@ class ConfirmationCallController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = TimeSheet::find($id);
+        if (!empty($data)) {
+            $data->is_approved = $request->is_approved;
+
+            if (!empty($request->notes)) {
+                $data->notes = $request->notes;
+            }
+            $data->update();
+        }
+        return redirect()->route('confirmation-call.index')->with('msg', 'Status Updated Successfully!');
     }
 
     /**
