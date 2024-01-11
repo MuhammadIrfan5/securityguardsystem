@@ -118,7 +118,7 @@ class PrivilegeController extends Controller
             }
         }
         $users = UserPrivilege::insert($user);
-        Session::flash('message', 'Permissions Given Successfully!');
+        Session::flash('msg', 'Permissions Given Successfully!');
         return redirect()->route('privilege.index');
     }
 
@@ -151,6 +151,10 @@ class PrivilegeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $UserPrivilege = UserPrivilege::find($id);
+        $UserPrivilege->delete();
+        Session::flash('msg', 'Permissions Deleted Successfully!');
+        return redirect()->route('privilege.index');
+
     }
 }

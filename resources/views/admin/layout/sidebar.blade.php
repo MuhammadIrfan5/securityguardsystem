@@ -116,31 +116,22 @@
             </li>
         @endif
         @if(auth()->user()->role_id == 1)
-            <li class="nav-item">
-                <a href={{route('add_privilege')}} class="nav-link
-                   @if(!empty($activeMenu) && $activeMenu=='FeaturedPackage') active @endif">
-                <i class="nav-icon fas fa-plus-square"></i>
-                <p>
-                    Privilege
-                    <span class="right badge badge-danger"></span>
-                    <i class="fas fa-angle-left right"></i>
-                <ul class="nav nav-treeview" style="display: none;">
-                    <li class="nav-item">
-                        <a href={{route('listPrivilege')}} class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Privilege List</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href={{route('add_privilege')}} class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Assign Privilege</p>
-                        </a>
-                    </li>
-                </ul>
-                </p>
-                </a>
-            </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-map-fill"></i><span>Location list</span><i
+                                class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="sales-nav3" class="nav-content collapse {{ request()->is('location') ? ' show' : 'hide' }}"
+                        data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="{{route('privilege.index')}}"
+                               class="{{ request()->is('privilege') ? ' active' : '' }}">
+                                <i class="bi bi-circle"></i><span>Privilege list</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
     @endif
 
     {{--        <li class="nav-item">--}}

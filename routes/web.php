@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\MonitoringController;
+use App\Http\Controllers\Admin\PrivilegeController;
 use App\Http\Controllers\Admin\RescheduleController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ScheduleController;
@@ -109,10 +110,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('confirmation-call-list', [ConfirmationCallController::class, 'tableData'])->name('confirmation.call.tableData');
 
     /*Privileges*/
-    Route::get('admin/add_privilege',[PrivilegeController::class, 'index'])->name('add_privilege');
-    Route::post('admin/added_privilege',[PrivilegeController::class, 'addPrivilege']);
-    Route::get('admin/list-privilege',[PrivilegeController::class, 'listPrivilege'])->name('listPrivilege');
-    Route::get('admin/user-Privilege-Delete/{id}',[PrivilegeController::class, 'userPrivilegeDelete']);
+    Route::resource('privilege', PrivilegeController::class);
+    Route::get('privilege-list', [PrivilegeController::class, 'tableData'])->name('privilege.tableData');
 
 
     /*AJAX API*/
