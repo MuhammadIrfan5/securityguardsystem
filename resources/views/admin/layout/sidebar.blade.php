@@ -2,15 +2,13 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
             <li class="nav-item">
                 <a class="nav-link " href="{{route('dashboard')}}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-        @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('users')) == true)
 
         <!-- End Dashboard Nav -->
             <li class="nav-item">
@@ -29,7 +27,7 @@
                 </ul>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('employee')) == true)
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
@@ -47,7 +45,7 @@
                 </ul>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('location')) == true)
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
@@ -62,12 +60,15 @@
                             <i class="bi bi-circle"></i><span>Location list</span>
                         </a>
                     </li>
+                    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
                     <li>
                         <a href="{{route('locationType.index')}}"
                            class="{{ request()->is('locationType') ? ' active' : '' }}">
                             <i class="bi bi-circle"></i><span>Location type list</span>
                         </a>
                     </li>
+                    @endif
+
                 </ul>
             </li>
         @endif
@@ -105,7 +106,6 @@
             </li>
         @endif
         @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
-
             <li class="nav-item">
                 <a class="nav-link
 {{ request()->is('confirmation-call') ? '' : 'collapsed' }}
