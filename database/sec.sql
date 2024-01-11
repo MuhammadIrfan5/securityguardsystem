@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 11, 2024 at 11:28 AM
+-- Generation Time: Jan 11, 2024 at 12:22 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -326,7 +326,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (34, '2023_11_14_055601_create_schedules_table', 11),
 (35, '2023_12_22_103520_create_time_sheets_table', 12),
 (36, '2024_01_11_063203_create_privileges_table', 13),
-(37, '2024_01_11_063544_create_user_privileges_table', 13);
+(38, '2024_01_11_063544_create_user_privileges_table', 14);
 
 -- --------------------------------------------------------
 
@@ -1075,10 +1075,18 @@ CREATE TABLE `user_privileges` (
   `privilege_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `role_id` bigint(20) UNSIGNED NOT NULL,
-  `assign_by` bigint(20) UNSIGNED NOT NULL,
+  `assign_by` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_privileges`
+--
+
+INSERT INTO `user_privileges` (`id`, `privilege_id`, `user_id`, `role_id`, `assign_by`, `created_at`, `updated_at`) VALUES
+(1, 3, 2, 2, 'admin', NULL, NULL),
+(2, 4, 2, 2, 'admin', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1289,8 +1297,7 @@ ALTER TABLE `user_privileges`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_privileges_privilege_id_foreign` (`privilege_id`),
   ADD KEY `user_privileges_user_id_foreign` (`user_id`),
-  ADD KEY `user_privileges_role_id_foreign` (`role_id`),
-  ADD KEY `user_privileges_assign_by_foreign` (`assign_by`);
+  ADD KEY `user_privileges_role_id_foreign` (`role_id`);
 
 --
 -- Indexes for table `user_two_factors`
@@ -1367,7 +1374,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1439,7 +1446,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_privileges`
 --
 ALTER TABLE `user_privileges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_two_factors`
@@ -1545,7 +1552,6 @@ ALTER TABLE `users`
 -- Constraints for table `user_privileges`
 --
 ALTER TABLE `user_privileges`
-  ADD CONSTRAINT `user_privileges_assign_by_foreign` FOREIGN KEY (`assign_by`) REFERENCES `roles` (`id`),
   ADD CONSTRAINT `user_privileges_privilege_id_foreign` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`id`),
   ADD CONSTRAINT `user_privileges_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   ADD CONSTRAINT `user_privileges_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
