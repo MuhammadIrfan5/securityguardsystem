@@ -117,19 +117,12 @@
         @endif
         @if(auth()->user()->role_id == 1)
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-map-fill"></i><span>Privilege list</span><i
-                            class="bi bi-chevron-down ms-auto"></i>
+                <a class="nav-link
+{{ request()->is('privilege') ? '' : 'collapsed' }}
+                        " href="{{route('privilege.index')}}">
+                    <i class="bi bi-check"></i>
+                    <span>Privilege</span>
                 </a>
-                <ul id="sales-nav3" class="nav-content collapse {{ request()->is('privilege') ? ' show' : 'hide' }}"
-                    data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{route('privilege.index')}}"
-                           class="{{ request()->is('privilege') ? ' active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Privilege list</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
     @endif
 
