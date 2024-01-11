@@ -2,13 +2,13 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link " href="{{route('dashboard')}}">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('users')) == true)
+        <li class="nav-item">
+            <a class="nav-link " href="{{route('dashboard')}}">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('users')) == true)
 
         <!-- End Dashboard Nav -->
             <li class="nav-item">
@@ -61,12 +61,12 @@
                         </a>
                     </li>
                     @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
-                    <li>
-                        <a href="{{route('locationType.index')}}"
-                           class="{{ request()->is('locationType') ? ' active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Location type list</span>
-                        </a>
-                    </li>
+                        <li>
+                            <a href="{{route('locationType.index')}}"
+                               class="{{ request()->is('locationType') ? ' active' : '' }}">
+                                <i class="bi bi-circle"></i><span>Location type list</span>
+                            </a>
+                        </li>
                     @endif
 
                 </ul>
@@ -116,22 +116,21 @@
             </li>
         @endif
         @if(auth()->user()->role_id == 1)
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
-                        <i class="bi bi-map-fill"></i><span>Location list</span><i
-                                class="bi bi-chevron-down ms-auto"></i>
-                    </a>
-                    <ul id="sales-nav3" class="nav-content collapse {{ request()->is('location') ? ' show' : 'hide' }}"
-                        data-bs-parent="#sidebar-nav">
-                        <li>
-                            <a href="{{route('privilege.index')}}"
-                               class="{{ request()->is('privilege') ? ' active' : '' }}">
-                                <i class="bi bi-circle"></i><span>Privilege list</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-map-fill"></i><span>Privilege list</span><i
+                            class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="sales-nav3" class="nav-content collapse {{ request()->is('privilege') ? ' show' : 'hide' }}"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{route('privilege.index')}}"
+                           class="{{ request()->is('privilege') ? ' active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Privilege list</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
     @endif
 
     {{--        <li class="nav-item">--}}
