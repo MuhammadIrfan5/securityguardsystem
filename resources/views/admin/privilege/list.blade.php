@@ -30,9 +30,11 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Country Name</th>
-                                <th>State Name</th>
-                                <th>Name</th>
+                                <th>Privilege</th>
+                                <th>User Name</th>
+                                <th>Role</th>
+                                <th>Assign By</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                         </table>
@@ -45,5 +47,5 @@
     </section>
 @endsection
 @section('page-js')
-    @include('admin.city.pageJs')
+    @include('admin.privilege.pageJs')
 @endsection

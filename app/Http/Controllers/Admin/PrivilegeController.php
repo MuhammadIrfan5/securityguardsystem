@@ -75,11 +75,13 @@ class PrivilegeController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->name,
-                view('admin.layout.defaultComponent.active', [ "boolean" => $record->is_active ])->render(),
-                view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('role.edit', $record->id)
+                $record->id,
+                $record->privilige->privilige_title,
+                $record->userId->first_name,
+                $record->role->name,
+                $record->assign_by,
+                 view('admin.layout.defaultComponent.deleteButton', [
+                    'deleteUrl' => route('privilege.destroy', $record->id)
                 ])->render(),
             ];
         }
