@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 22, 2023 at 01:05 PM
+-- Generation Time: Jan 11, 2024 at 11:28 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -118,7 +118,13 @@ CREATE TABLE `countries` (
 --
 
 INSERT INTO `countries` (`id`, `iso2`, `iso3`, `name`, `phone_code`, `dialling_pattern`, `region`, `sub_region`, `status`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'PAK', 'PAK', 'PAKISTAN', '+92', '.', '.', '.', '1', NULL, '2023-10-31 09:40:36', NULL);
+(1, 'PAK', 'PAK', 'PAKISTAN', '+92', '.', '.', '.', '1', NULL, '2023-10-31 09:40:36', NULL),
+(2, 'SA', 'SA', 'South Africa', '+92', '', '', '', '1', NULL, '2024-01-11 02:41:41', '2024-01-11 02:41:41'),
+(3, 'SA', 'SA', 'South Africa', '+92', '', '', '', '1', NULL, '2024-01-11 02:42:38', '2024-01-11 02:42:38'),
+(4, 'SA', 'SA', 'South Africa', '+92', '', '', '', '1', NULL, '2024-01-11 02:43:03', '2024-01-11 02:43:03'),
+(5, 'XQRFWUGW', 'XQRFWUGW', 'around', '+92', '', '', '', '1', NULL, '2024-01-11 02:43:18', '2024-01-11 02:43:18'),
+(6, 'XQRFWUGW', 'XQRFWUGW', 'around', '+92', '', '', '', '1', NULL, '2024-01-11 02:43:44', '2024-01-11 02:43:44'),
+(7, 'XQRFWUGW', 'XQRFWUGW', 'around', '+92', '', '', '', '1', NULL, '2024-01-11 02:43:54', '2024-01-11 02:43:54');
 
 -- --------------------------------------------------------
 
@@ -318,7 +324,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (32, '2023_11_15_063754_create_monitorings_table', 9),
 (33, '2023_12_12_135546_create_confirmation_calls_table', 10),
 (34, '2023_11_14_055601_create_schedules_table', 11),
-(35, '2023_12_22_103520_create_time_sheets_table', 12);
+(35, '2023_12_22_103520_create_time_sheets_table', 12),
+(36, '2024_01_11_063203_create_privileges_table', 13),
+(37, '2024_01_11_063544_create_user_privileges_table', 13);
 
 -- --------------------------------------------------------
 
@@ -398,6 +406,55 @@ CREATE TABLE `personal_access_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privileges`
+--
+
+CREATE TABLE `privileges` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `privilige_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `privilige_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `privileges`
+--
+
+INSERT INTO `privileges` (`id`, `privilige_title`, `privilige_url`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'users list', '/users/', 1, '2024-01-11 10:05:42', NULL),
+(2, 'users edit', '/users/{user}/edit', 1, '2024-01-11 10:05:42', NULL),
+(3, 'users show', '/users/{user}', 1, '2024-01-11 10:05:42', NULL),
+(4, 'users create', '/users/create', 1, '2024-01-11 10:05:42', NULL),
+(5, 'employee list', '/employee', 1, '2024-01-11 10:05:42', NULL),
+(6, 'employee edit', '/employee/{employee}/edit', 1, '2024-01-11 10:05:42', NULL),
+(7, 'employee show', '/employee/{employee}', 1, '2024-01-11 10:05:42', NULL),
+(8, 'employee create', '/employee/create', 1, '2024-01-11 10:05:42', NULL),
+(9, 'location list', '/location/', 1, '2024-01-11 10:05:42', NULL),
+(10, 'location edit', '/location/{location}/edit', 1, '2024-01-11 10:05:42', NULL),
+(11, 'location show', '/location/{location}', 1, '2024-01-11 10:05:42', NULL),
+(12, 'location create', '/location/create', 1, '2024-01-11 10:05:42', NULL),
+(13, 'locationType list', '/locationType/', 1, '2024-01-11 10:05:42', NULL),
+(14, 'locationType edit', '/locationType/{locationType}/edit', 1, '2024-01-11 10:05:42', NULL),
+(15, 'locationType show', '/locationType/{locationType}', 1, '2024-01-11 10:05:42', NULL),
+(16, 'locationType create', '/locationType/create', 1, '2024-01-11 10:05:42', NULL),
+(17, 'confirmation-call list', '/confirmation-call/', 1, '2024-01-11 10:05:42', NULL),
+(18, 'confirmation-call edit', '/confirmation-call/{confirmation-call}/edit', 1, '2024-01-11 10:05:42', NULL),
+(19, 'confirmation-call show', '/confirmation-call/{confirmation-call}', 1, '2024-01-11 10:05:42', NULL),
+(20, 'confirmation-call create', '/confirmation-call/create', 1, '2024-01-11 10:05:42', NULL),
+(21, 'time-sheet list', '/time-sheet/', 1, '2024-01-11 10:05:42', NULL),
+(22, 'time-sheet edit', '/time-sheet/{time-sheet}/edit', 1, '2024-01-11 10:05:42', NULL),
+(23, 'time-sheet show', '/time-sheet/{time-sheet}', 1, '2024-01-11 10:05:42', NULL),
+(24, 'time-sheet create', '/time-sheet/create', 1, '2024-01-11 10:05:42', NULL),
+(25, 'monitoring list', '/monitoring/', 1, '2024-01-11 10:05:42', NULL),
+(26, 'monitoring edit', '/monitoring/{monitoring}/edit', 1, '2024-01-11 10:05:42', NULL),
+(27, 'monitoring show', '/monitoring/{monitoring}', 1, '2024-01-11 10:05:42', NULL),
+(28, 'monitoring create', '/monitoring/create', 1, '2024-01-11 10:05:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -1010,6 +1067,22 @@ INSERT INTO `users` (`id`, `role_id`, `country_id`, `state_id`, `city_id`, `firs
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_privileges`
+--
+
+CREATE TABLE `user_privileges` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `privilege_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `assign_by` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_two_factors`
 --
 
@@ -1150,6 +1223,12 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `privileges`
+--
+ALTER TABLE `privileges`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -1204,6 +1283,16 @@ ALTER TABLE `users`
   ADD KEY `users_city_id_foreign` (`city_id`);
 
 --
+-- Indexes for table `user_privileges`
+--
+ALTER TABLE `user_privileges`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_privileges_privilege_id_foreign` (`privilege_id`),
+  ADD KEY `user_privileges_user_id_foreign` (`user_id`),
+  ADD KEY `user_privileges_role_id_foreign` (`role_id`),
+  ADD KEY `user_privileges_assign_by_foreign` (`assign_by`);
+
+--
 -- Indexes for table `user_two_factors`
 --
 ALTER TABLE `user_two_factors`
@@ -1236,7 +1325,7 @@ ALTER TABLE `confirmation_calls`
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -1278,7 +1367,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1297,6 +1386,12 @@ ALTER TABLE `monitor_locations`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `privileges`
+--
+ALTER TABLE `privileges`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -1339,6 +1434,12 @@ ALTER TABLE `time_zones`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `user_privileges`
+--
+ALTER TABLE `user_privileges`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_two_factors`
@@ -1439,6 +1540,15 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
   ADD CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   ADD CONSTRAINT `users_state_id_foreign` FOREIGN KEY (`state_id`) REFERENCES `states` (`id`);
+
+--
+-- Constraints for table `user_privileges`
+--
+ALTER TABLE `user_privileges`
+  ADD CONSTRAINT `user_privileges_assign_by_foreign` FOREIGN KEY (`assign_by`) REFERENCES `roles` (`id`),
+  ADD CONSTRAINT `user_privileges_privilege_id_foreign` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`id`),
+  ADD CONSTRAINT `user_privileges_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
+  ADD CONSTRAINT `user_privileges_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `user_two_factors`
