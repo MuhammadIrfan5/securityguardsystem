@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('privilege_id')->constrained('privileges');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('role_id')->constrained('roles');
-            $table->foreignId('assign_by')->constrained('roles');
+            $table->string('assign_by');
             $table->timestamps();
         });
     }

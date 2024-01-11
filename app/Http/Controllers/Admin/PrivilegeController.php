@@ -92,10 +92,10 @@ class PrivilegeController extends Controller
      */
     public function create()
     {
-        $data['activeMenu'] = 'Add Privilege';
+        $data['title']      = "Privilege";
         $data['users']      = User::where('role_id', '!=', 1)->get();
         $data['priviliges'] = Privilege::where('id', '!=', 1)->get();
-        return view('pages.privilege.add', $data);
+        return view('admin.privilege.add', $data);
     }
 
     /**
@@ -103,21 +103,21 @@ class PrivilegeController extends Controller
      */
     public function store(Request $request)
     {
-        $user  = array();
-        $admin = User::find($request->user_id);
-        foreach ($request->privilige_id as $item) {
+        $users  = array();
+        $user = User::find($request->user_id);
+        foreach ($request->privilige_ids as $item) {
             $check = UserPrivilege::where('user_id', $request->admin_id)
                 ->where('privilege_id', $item)->first();
             if ($check == null) {
-                $user[] = [
+                $users[] = [
                     'privilege_id' => $item,
                     'user_id'      => $request->user_id,
-                    'role_id'      => $admin['role_id'],
-                    'assign_by'    => $request->user()['name'],
+                    'role_id'      => $user['role_id'],
+                    'assign_by'    => $request->user()['first_name'],
                 ];
             }
         }
-        $users = UserPrivilege::insert($user);
+        $users = UserPrivilege::insert($users);
         Session::flash('msg', 'Permissions Given Successfully!');
         return redirect()->route('privilege.index');
     }

@@ -5,7 +5,7 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('city.create')}}" class="btn btn-primary">Create</a>
+            <a href="{{route('privilege.create')}}" class="btn btn-primary">Create</a>
         </div>
         <nav>
             <ol class="breadcrumb">

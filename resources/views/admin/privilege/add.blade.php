@@ -1,5 +1,7 @@
 @extends('admin.layout.main')
-
+@section('page-css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+@endsection
 @section('content')
     <div class="pagetitle">
         <h1>Add {{$title}}</h1>
@@ -19,39 +21,34 @@
                 <div class="alert alert-success">
                     {{ session('msg') }}
                 </div>
-            @endif
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-danger">{{ $error }}</div>
-        @endforeach
-
+        @endif
         <!-- Floating Labels Form -->
-            <form class="row g-3" method="post" action="{{route('country.store')}}">
+            <form class="row g-3" method="post" action="{{route('privilege.store')}}">
                 @csrf
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <select name="employee_id" class="form-select"
-                                id="employee_id">
-                            <option disabled selected>Employee list</option>
+                        <select name="user_id" class="form-select"
+                                id="user_id">
+                            <option disabled selected>User list</option>
                             @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{$user->name}}</option>
+                                <option value="{{ $user->id }}">{{$user->first_name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number"
-                               name="code">
-                        <label for="floatingid_number">Country Code</label>
+
+                        <select name="privilige_ids[]" class="form-select select2Location"
+                                id="parent_id" multiple="multiple">
+                            @foreach($priviliges as $location)
+                                <option value="{{$location->id}}">{{$location->privilige_title}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number"
-                               name="phone_code">
-                        <label for="floatingid_number">Phone Code</label>
-                    </div>
-                </div>
+
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
@@ -61,4 +58,11 @@
         </div>
     </div>
 
+@endsection
+@section('page-js')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2Location').select2();
+        });</script>
 @endsection

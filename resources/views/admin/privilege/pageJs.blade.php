@@ -11,7 +11,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "{{route('cityTable')}}",
+            "url": "{{route('privilege')}}",
             "data": function (d) {
                 var unindexed_array = $("#filterForm").serializeArray();
                 $.map(unindexed_array, function (n, i) {

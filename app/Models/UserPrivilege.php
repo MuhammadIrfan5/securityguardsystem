@@ -9,6 +9,13 @@ class UserPrivilege extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'privilege_id',
+        'user_id',
+        'role_id',
+        'assign_by'
+    ];
+
     static function get_single_privilige($user_id, $privilige_url)
     {
 
