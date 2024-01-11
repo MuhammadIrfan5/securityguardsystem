@@ -108,6 +108,11 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('confirmation-call', ConfirmationCallController::class);
     Route::get('confirmation-call-list', [ConfirmationCallController::class, 'tableData'])->name('confirmation.call.tableData');
 
+    /*Privileges*/
+    Route::get('admin/add_privilege',[PrivilegeController::class, 'index'])->name('add_privilege');
+    Route::post('admin/added_privilege',[PrivilegeController::class, 'addPrivilege']);
+    Route::get('admin/list-privilege',[PrivilegeController::class, 'listPrivilege'])->name('listPrivilege');
+    Route::get('admin/user-Privilege-Delete/{id}',[PrivilegeController::class, 'userPrivilegeDelete']);
 
 
     /*AJAX API*/
