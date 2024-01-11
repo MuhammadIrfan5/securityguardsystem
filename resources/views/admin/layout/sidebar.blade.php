@@ -8,7 +8,7 @@
                 <span>Dashboard</span>
             </a>
         </li>
-    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('users')) == true)
+    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'users') == true)
 
         <!-- End Dashboard Nav -->
             <li class="nav-item">
@@ -27,7 +27,7 @@
                 </ul>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('employee')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/employee') == true)
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
@@ -45,7 +45,7 @@
                 </ul>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('location')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/location') == true)
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
@@ -60,7 +60,7 @@
                             <i class="bi bi-circle"></i><span>Location list</span>
                         </a>
                     </li>
-                    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+                    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'locationType') == true)
                         <li>
                             <a href="{{route('locationType.index')}}"
                                class="{{ request()->is('locationType') ? ' active' : '' }}">
@@ -72,18 +72,18 @@
                 </ul>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/schedule') == true)
 
             <li class="nav-item">
                 <a class="nav-link
-{{ request()->is('calendar') ? '' : 'collapsed' }}
+{{ request()->is('schedule') ? '' : 'collapsed' }}
                         " href="{{route('calendar')}}">
                     <i class="bi bi-calendar"></i>
                     <span>Scheduling</span>
                 </a>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet') == true)
 
             <li class="nav-item">
                 <a class="nav-link  {{ request()->is('time-sheet') ? '' : 'collapsed' }}"
@@ -94,7 +94,7 @@
                 </a>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/monitoring') == true)
             <li class="nav-item">
                 <a class="nav-link
 {{ request()->is('monitoring') ? '' : 'collapsed' }}
@@ -105,7 +105,7 @@
                 </a>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),request()->is('monitoring')) == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/confirmation-call') == true)
             <li class="nav-item">
                 <a class="nav-link
 {{ request()->is('confirmation-call') ? '' : 'collapsed' }}
