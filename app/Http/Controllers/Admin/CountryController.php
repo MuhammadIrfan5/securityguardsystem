@@ -5,25 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
 
 class CountryController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        return view('admin.country.country');
+        $data['title'] = "Country list";
+        return view('admin.country.list', $data);
     }
 
     public function tableCountry(Request $request)
     {
-        $response = [
+        $response                 = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country = new Country();
+        $country                  = new Country();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -69,39 +72,79 @@ class CountryController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
+                $record->id,
+                $record->iso3,
                 $record->name,
-                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->status])->render(),
-                view('admin.defaultComponents.editViewDelete', [
-                    'deleteUrl' => route('deleteCountry', ['id' => $record->id])
-                ])->render()
+                $record->phone_code,
+                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->status ])->render(),
+//                view('admin.defaultComponents.editViewDelete', [
+//                    'deleteUrl' => route('deleteCountry', [ 'id' => $record->id ])
+//                ])->render()
             ];
         }
         return response($response, 201);
     }
 
-    public function createCountry(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $country = new Country();
-        $country['name'] = $request->name;
-        $country['iso2'] = '';
-        $country['iso3'] = '';
-        $country['phone_code'] = '';
-        $country['dialling_pattern'] = '';
-        $country['region'] = '';
-        $country['sub_region'] = '';
-        $country['status'] = 'pending';
-        $country->save();
-        Session::flash('message', 'Country Added successfully');
-        return redirect(route('Country'));
+        $data['title'] = 'Country';
+        return view('admin.country.add', $data);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $country                     = new Country();
+        $country['name']             = $request->name;
+        $country['iso2']             = $request->code;
+        $country['iso3']             = $request->code;
+        $country['phone_code']       = $request->phone_code;
+        $country['dialling_pattern'] = '';
+        $country['region']           = '';
+        $country['sub_region']       = '';
+        $country['status']           = 1;
+        $country->save();
+        Session::flash('message', 'Country Added successfully');
+        return redirect()->route('country.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
         $customer = Country::find($id);
         $customer->delete();
         Session::flash('info', 'Country deleted successfully');
-        return redirect()->route('Country');
+        return redirect()->route('country');
     }
-
 }

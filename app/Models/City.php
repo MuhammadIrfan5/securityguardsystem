@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class City extends Model
 {
     use HasFactory,SoftDeletes;
-    public function country(){
+    public function countryId(){
         return $this->belongsTo(Country::class,'country_id');
     }
     public function state(){

@@ -90,6 +90,22 @@
                 <span>Confirmation Call</span>
             </a>
         </li>
+{{--        <li class="nav-item">--}}
+{{--            <a class="nav-link--}}
+{{--{{ request()->is('country') ? '' : 'collapsed' }}--}}
+{{--                    " href="{{route('country.index')}}">--}}
+{{--                <i class="bi bi-check"></i>--}}
+{{--                <span>Country</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
+{{--        <li class="nav-item">--}}
+{{--            <a class="nav-link--}}
+{{--{{ request()->is('city') ? '' : 'collapsed' }}--}}
+{{--                    " href="{{route('city.index')}}">--}}
+{{--                <i class="bi bi-check"></i>--}}
+{{--                <span>City</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
         <!-- End Components Nav -->
     </ul>
 
