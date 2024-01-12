@@ -76,6 +76,9 @@ class MonitoringController extends Controller
 //                break;
 //        }
 
+        if ($request->user()['role_id'] != 1) {
+            $country = $country->where('user_id', $request->user()['id']);
+        }
         $response["recordsTotal"]    = $country->count();
         $response["recordsFiltered"] = $country->count();
         $country                     = $country->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
