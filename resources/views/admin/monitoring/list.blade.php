@@ -5,7 +5,9 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('monitoring.create')}}" class="btn btn-primary">Create</a>
+            @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/monitoring/create') == true)
+                <a href="{{route('monitoring.create')}}" class="btn btn-primary">Create</a>
+            @endif
         </div>
         <nav>
             <ol class="breadcrumb">
@@ -37,7 +39,7 @@
                                 <th>Employee</th>
                                 <th>Images</th>
                                 <th>Date</th>
-{{--                                <th>Actions</th>--}}
+                                {{--                                <th>Actions</th>--}}
                             </tr>
                             </thead>
                         </table>

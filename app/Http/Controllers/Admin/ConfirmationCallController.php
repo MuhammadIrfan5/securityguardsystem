@@ -73,6 +73,9 @@ class ConfirmationCallController extends Controller
         $records = $records->whereNotNull([ 'check_in_time', 'check_out_time' ]);
         $records = $records->skip($request->start)->take($request->length)->get();
         foreach ($records as $record) {
+            $button             = \App\Models\UserPrivilege::get_single_privilige(auth()->id(), '/confirmation-call/{confirmation-call}/edit') == true ? view('admin.layout.defaultComponent.editButton', [
+                'editUrl' => route('confirmation-call.edit', $record->id)
+            ])->render() : '';
             $time               = '<ul>
                     <li>Check-In:' . $record->check_in_time . '</li>
                     <li>Check-Out:' . $record->check_out_time . '</li>
@@ -89,9 +92,7 @@ class ConfirmationCallController extends Controller
                 $time,
                 !empty($item) ? $item->notes : '',
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
-                view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('confirmation-call.edit', $record->id)
-                ])->render(),
+                $button,
             ];
         }
         return response($response, 201);

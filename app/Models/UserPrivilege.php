@@ -28,7 +28,7 @@ class UserPrivilege extends Model
                     ->where('user_id', $user_id)
                     ->where('privilege_id', $privilige->id)
                     ->first();
-                if (!empty($check)) {
+                if ($check != null) {
                     return true;
                 } else {
                     return false;

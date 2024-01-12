@@ -47,8 +47,8 @@
                         <select name="type" class="form-select"
                                 id="type">
                             <option disabled selected>Type</option>
-                                <option value="check-in">Check-In</option>
-                                <option value="check-out">Check-Out</option>
+                            <option value="check-in">Check-In</option>
+                            <option value="check-out">Check-Out</option>
                         </select>
                     </div>
                 </div>
@@ -78,22 +78,22 @@
                     console.log(id);
                     var employeeId = $('#employee_id');
                     employeeId.empty();
-                    if (id != null){
-                    $.ajax({
-                        url: "{{url('get-employees?location_id=')}}" + id,
-                        type: 'GET',
-                        success: function (result) {
-                            console.log(result);
-                            $.each(result, function (index, value) {
-                                employeeId.append(
-                                    $('<option></option>').val(value.id).html(value.name)
-                                );
-                            });
-                        },
-                        error: function (error) {
-                            console.log(error.status)
-                        }
-                    });
+                    if (id != null) {
+                        $.ajax({
+                            url: "{{url('get-employees?location_id=')}}" + id,
+                            type: 'GET',
+                            success: function (result) {
+                                console.log(result);
+                                $.each(result, function (index, value) {
+                                    employeeId.append(
+                                        $('<option></option>').val(value.id).html(value.name)
+                                    );
+                                });
+                            },
+                            error: function (error) {
+                                console.log(error.status)
+                            }
+                        });
                     }
                 });
             });

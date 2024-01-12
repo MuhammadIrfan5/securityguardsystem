@@ -96,7 +96,7 @@ class PrivilegeController extends Controller
     {
         $data['title']      = "Privilege";
         $data['users']      = User::where('role_id', '!=', 1)->get();
-        $data['priviliges'] = Privilege::where('id', '!=', 1)->get();
+        $data['priviliges'] = Privilege::where('status', 1)->get();
         return view('admin.privilege.add', $data);
     }
 

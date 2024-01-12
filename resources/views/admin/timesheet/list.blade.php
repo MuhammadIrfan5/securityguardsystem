@@ -5,7 +5,9 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>
+            @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet/create') == true)
+                <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>
+            @endif
         </div>
         <form action="#" method="get" id="filterForm">
             <div class="row">
@@ -51,7 +53,7 @@
                                 <th>Employee</th>
                                 <th>Attendance</th>
                                 <th>Notes</th>
-{{--                                <th>Status</th>--}}
+                                {{--                                <th>Status</th>--}}
                                 <th>Actions</th>
                             </tr>
                             </thead>
