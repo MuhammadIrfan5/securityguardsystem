@@ -121,6 +121,7 @@ class ConfirmationCallController extends Controller
             'notes'       => 'nullable|string',
         ]);
         $data              = new ConfirmationCall();
+        $data->user_id     = $request->user()['id'];
         $data->location_id = $request->location_id;
         $data->employee_id = $request->employee_id;
         $data->status      = $request->status;

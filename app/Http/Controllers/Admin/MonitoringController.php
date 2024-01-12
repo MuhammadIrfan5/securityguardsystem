@@ -123,6 +123,7 @@ class MonitoringController extends Controller
         ]);
         $id                        = MonitorLocation::where('location_id', $request->location_id)->first('id');
         $data                      = new Monitoring();
+        $data->user_id             = $request->user()['id'];
         $data->location_id         = $request->location_id;
         $data->employee_id         = $request->employee_id;
         $data->monitor_location_id = $id->id;
