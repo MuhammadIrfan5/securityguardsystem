@@ -49,7 +49,6 @@ class AdminController extends Controller
                         [
                             'email'    => $request->email,
                             'password' => $request->password,
-                            'role_id'  => 1
                         ]
                     );
                     $request->session()->regenerate();

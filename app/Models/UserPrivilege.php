@@ -18,7 +18,6 @@ class UserPrivilege extends Model
 
     static function get_single_privilige($user_id, $privilige_url)
     {
-
         if (request()->user()['role_id'] == 1) {
             return true;
         } else {
@@ -29,7 +28,7 @@ class UserPrivilege extends Model
                     ->where('user_id', $user_id)
                     ->where('privilege_id', $privilige->id)
                     ->first();
-                if ($check != null) {
+                if (!empty($check)) {
                     return true;
                 } else {
                     return false;

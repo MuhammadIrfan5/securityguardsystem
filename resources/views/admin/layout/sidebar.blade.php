@@ -8,8 +8,7 @@
                 <span>Dashboard</span>
             </a>
         </li>
-    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'users') == true)
-
+        @if(auth()->user()->role_id == 1)
         <!-- End Dashboard Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav1" data-bs-toggle="collapse" href="#">
@@ -26,27 +25,6 @@
                     </li>
                 </ul>
             </li>
-        @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/employee') == true)
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-person"></i><span>Employee list</span><i
-                            class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="sales-nav2" class="nav-content collapse {{ request()->is('employee') ? ' show' : 'hide' }}"
-                    data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{route('employee.index')}}"
-                           class="{{ request()->is('employee') ? ' active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Employee list</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/location') == true)
-
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav3" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-map-fill"></i><span>Location list</span><i
@@ -71,8 +49,27 @@
 
                 </ul>
             </li>
+
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/schedule') == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/employee/') == true)
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-person"></i><span>Employee list</span><i
+                            class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="sales-nav2" class="nav-content collapse {{ request()->is('employee') ? ' show' : 'hide' }}"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{route('employee.index')}}"
+                           class="{{ request()->is('employee') ? ' active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Employee list</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endif
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/schedule/') == true)
 
             <li class="nav-item">
                 <a class="nav-link
@@ -83,7 +80,7 @@
                 </a>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet') == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet/') == true)
 
             <li class="nav-item">
                 <a class="nav-link  {{ request()->is('time-sheet') ? '' : 'collapsed' }}"
@@ -94,7 +91,7 @@
                 </a>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/monitoring') == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/monitoring/') == true)
             <li class="nav-item">
                 <a class="nav-link
 {{ request()->is('monitoring') ? '' : 'collapsed' }}
@@ -105,7 +102,7 @@
                 </a>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/confirmation-call') == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/confirmation-call/') == true)
             <li class="nav-item">
                 <a class="nav-link
 {{ request()->is('confirmation-call') ? '' : 'collapsed' }}
