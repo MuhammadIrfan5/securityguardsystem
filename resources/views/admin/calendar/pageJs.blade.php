@@ -265,9 +265,11 @@
     function displayMessage(message) {
         toastr.success(message, 'Event');
     }
+    @if(!empty($selectedlocation))
     $(document).ready(function () {
         loadCalendarEvents({{$selectedlocation->id}});
     });
+    @endif
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

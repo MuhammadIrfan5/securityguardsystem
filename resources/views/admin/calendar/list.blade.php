@@ -22,16 +22,15 @@
             </div>
             <div class="col-md-3">
                 @if(!empty($selectedlocation))
-{{--                    <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">--}}
-{{--                        <option value="#" disabled selected>Select location</option>--}}
-{{--                        <option value="{{$selectedlocation->id}}">{{$selectedlocation->name}}</option>--}}
-{{--                    </select>--}}
+                    <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
+                        <option value="{{$selectedlocation->id}}" selected>{{$selectedlocation->name}}</option>
+                    </select>
                 @else
                     <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
                         <option value="#" disabled selected>Select location</option>
-                    @foreach($locations as $location)
-                                <option value="{{$location->id}}">{{$location->name}}</option>
-                            @endforeach
+                        @foreach($locations as $location)
+                            <option value="{{$location->id}}">{{$location->name}}</option>
+                        @endforeach
                     </select>
                 @endif
 
