@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->foreignId('location_id')->constrained('locations');
             $table->foreignId('employee_id')->constrained('employees');
-            $table->foreignId('monitor_location_id')->constrained('monitor_locations');
+            $table->integer('monitor_location_id')->default(0);
             $table->longText('images');
             $table->text('notes')->nullable();
             $table->timestamps();

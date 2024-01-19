@@ -21,7 +21,7 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
-        $data['title'] = "Time Sheet";
+        $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
     }
 
@@ -90,7 +90,7 @@ class TimeSheetController extends Controller
      */
     public function create()
     {
-        $data['title']     = 'Time Sheet';
+        $data['title']     = 'Verify Records';
         $data['data']      = Schedule::find(\request()->id);
         $data['employee']  = Employee::all();
         $data['locations'] = Location::all();

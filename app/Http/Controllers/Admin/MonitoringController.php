@@ -126,7 +126,7 @@ class MonitoringController extends Controller
         $data->user_id             = $request->user()['id'];
         $data->location_id         = $request->location_id;
         $data->employee_id         = $request->employee_id;
-        $data->monitor_location_id = $id->id;
+        $data->monitor_location_id = !empty($id)?$id->id:0;
         if (!empty($request->hasFile("image"))) {
             $this->removeImage($data->image);
             $data->images = $this->imageUpload($request->file('image'), $data->getTable());
