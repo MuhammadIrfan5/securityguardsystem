@@ -50,9 +50,9 @@ class CalendarController extends Controller
     public function addEvent(Request $request)
     {
         $startDate = Carbon::parse($request->input('start'));
-        $endDate = Carbon::parse($request->input('end'));
+        $endDate   = Carbon::parse($request->input('end'));
 
-        $dates = [];
+        $dates     = [];
         $lastIndex = $endDate->diffInDays($startDate);
 
         while ($startDate->lte($endDate)) {
@@ -62,10 +62,12 @@ class CalendarController extends Controller
         switch ($request->type) {
 
             case 'add':
-                foreach ($dates as $key=> $item) {
-                    $nextDate=date('Y-m-d', strtotime("+1 day", strtotime($item)));
-                    if($lastIndex!=$key){
-                        $event = Schedule::create([
+                foreach ($dates as $key => $item) {
+                    $nextDate = date('Y-m-d', strtotime("+1 day", strtotime($item)));
+                    if ($lastIndex != $key) {
+                        $location = Location::find($request->location);
+                        $event    = Schedule::create([
+                            'user_id'     => $location->user_id,
                             'location_id' => $request->location,
                             'employee_id' => '',
                             'start_date'  => $item,
