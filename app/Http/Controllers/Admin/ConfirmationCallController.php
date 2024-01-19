@@ -90,7 +90,7 @@ class ConfirmationCallController extends Controller
                 )->render(),
                 $record->employee->name,
                 $time,
-                !empty($item) ? $item->notes : '',
+                $record->notes,
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_approved ])->render(),
                 $button,
             ];
