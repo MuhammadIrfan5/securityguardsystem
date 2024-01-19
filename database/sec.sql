@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2024 at 07:36 AM
+-- Generation Time: Jan 19, 2024 at 02:37 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sec`
+-- Database: `sec1`
 --
 
 -- --------------------------------------------------------
@@ -67,7 +67,8 @@ CREATE TABLE `client_locations` (
 
 INSERT INTO `client_locations` (`id`, `location_id`, `client_name`, `client_designation`, `client_email`, `client_phone`, `created_at`, `updated_at`) VALUES
 (1, 2, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-11-21 01:07:09', '2023-11-21 01:07:09'),
-(2, 3, 'DK', 'MANAGER', 's@l.co', '03212342212', '2023-12-12 08:10:31', '2023-12-12 08:10:31');
+(2, 3, 'DK', 'MANAGER', 's@l.co', '03212342212', '2023-12-12 08:10:31', '2023-12-12 08:10:31'),
+(3, 4, 'sasasas', 'sasas', 's@l.co', '03212342212', '2024-01-19 07:39:44', '2024-01-19 07:39:44');
 
 -- --------------------------------------------------------
 
@@ -250,7 +251,8 @@ CREATE TABLE `locations` (
 INSERT INTO `locations` (`id`, `user_id`, `name`, `address`, `timezone_id`, `timezone`, `coverage_start_time`, `coverage_end_time`, `location_type`, `location_sub_type`, `license_number`, `is_monitoring`, `notes`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Kaneez square', 'Nazimabad', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09'),
 (2, 1, 'around', 'nazimabad 2', 248, 'Asia/Karachi', '11:06:00', '11:06:00', '1', '', 'sasasa1234', 1, NULL, '2023-11-21 01:07:09', '2023-11-21 01:07:09'),
-(3, 1, 'DHA', 'PHASE 7', 248, 'Asia/Karachi', '06:09:00', '06:09:00', '7', '', NULL, 1, NULL, '2023-12-12 08:10:31', '2023-12-12 08:10:31');
+(3, 1, 'DHA', 'PHASE 7', 248, 'Asia/Karachi', '06:09:00', '06:09:00', '7', '', NULL, 1, NULL, '2023-12-12 08:10:31', '2023-12-12 08:10:31'),
+(4, 3, 'PUNJAB', 'sasa', 1, 'Africa/Abidjan', '05:39:00', '05:39:00', '4', '', NULL, 0, NULL, '2024-01-19 07:39:44', '2024-01-19 07:39:44');
 
 -- --------------------------------------------------------
 
@@ -317,10 +319,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (29, '2023_10_18_100635_create_jobs_table', 7),
 (36, '2024_01_11_063203_create_privileges_table', 13),
 (38, '2024_01_11_063544_create_user_privileges_table', 14),
-(39, '2023_12_22_103520_create_time_sheets_table', 15),
 (40, '2023_11_14_055601_create_schedules_table', 16),
-(41, '2023_11_15_063754_create_monitorings_table', 16),
-(42, '2023_12_12_135546_create_confirmation_calls_table', 17);
+(42, '2023_12_12_135546_create_confirmation_calls_table', 17),
+(43, '2023_11_15_063754_create_monitorings_table', 18),
+(44, '2023_12_22_103520_create_time_sheets_table', 19);
 
 -- --------------------------------------------------------
 
@@ -333,12 +335,19 @@ CREATE TABLE `monitorings` (
   `user_id` int(11) NOT NULL,
   `location_id` bigint(20) UNSIGNED NOT NULL,
   `employee_id` bigint(20) UNSIGNED NOT NULL,
-  `monitor_location_id` bigint(20) UNSIGNED NOT NULL,
+  `monitor_location_id` int(11) NOT NULL DEFAULT 0,
   `images` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `notes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `monitorings`
+--
+
+INSERT INTO `monitorings` (`id`, `user_id`, `location_id`, `employee_id`, `monitor_location_id`, `images`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 4, 4, 3, 0, 'monitorings/1705670768.png', 'sasas', '2024-01-19 08:26:08', '2024-01-19 08:26:08');
 
 -- --------------------------------------------------------
 
@@ -434,7 +443,8 @@ INSERT INTO `privileges` (`id`, `privilige_title`, `privilige_url`, `status`, `c
 (25, 'monitoring list', '/monitoring/', 1, '2024-01-11 10:05:42', NULL),
 (26, 'monitoring edit', '/monitoring/{monitoring}/edit', 1, '2024-01-11 10:05:42', NULL),
 (27, 'monitoring show', '/monitoring/{monitoring}', 1, '2024-01-11 10:05:42', NULL),
-(28, 'monitoring create', '/monitoring/create', 1, '2024-01-11 10:05:42', NULL);
+(28, 'monitoring create', '/monitoring/create', 1, '2024-01-11 10:05:42', NULL),
+(29, 'schedule', '/schedule/', 1, '2024-01-19 12:56:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -484,6 +494,13 @@ CREATE TABLE `schedules` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`id`, `user_id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, '3', 4, '2024-01-19', '2024-01-20', '17:41', '05:41', '', '1', '2024-01-19 07:44:13', '2024-01-19 07:44:24', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -522,6 +539,33 @@ CREATE TABLE `states` (
 
 INSERT INTO `states` (`id`, `country_id`, `name`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, 1, 'SINDH', NULL, '2023-10-31 09:41:21', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `time_sheets`
+--
+
+CREATE TABLE `time_sheets` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `schedule_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` bigint(20) UNSIGNED NOT NULL,
+  `location_id` bigint(20) UNSIGNED NOT NULL,
+  `check_in_time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `check_out_time` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_approved` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `time_sheets`
+--
+
+INSERT INTO `time_sheets` (`id`, `user_id`, `schedule_id`, `employee_id`, `location_id`, `check_in_time`, `check_out_time`, `notes`, `is_approved`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 3, 4, '18:33', '06:33', 'sasas', 1, '2024-01-19 08:33:54', '2024-01-19 08:34:51');
 
 -- --------------------------------------------------------
 
@@ -1009,7 +1053,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `role_id`, `country_id`, `state_id`, `city_id`, `first_name`, `last_name`, `image`, `middle_name`, `email`, `secondary_email`, `phone1`, `phone2`, `address`, `dob`, `gender`, `age`, `email_verified_at`, `password`, `opt`, `opt_expiry`, `admin_approved`, `deleted_at`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 1, 1, 'admin', 'admin', '', NULL, 'admin@gmail.com', NULL, '23739493', NULL, '', 'admin', 'male', NULL, NULL, '$2y$10$xNYVTYzI/HRkpmr7k7st3ORmOblEqvJIyPRnbhR7K405mau5rNGbq', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-(2, 2, 1, 1, 1, 'sas', 'assaa', '', 'Muhammad', 'sa@live.com', 'sa@live.com', '03453096441', '03453096441', 'sasasas', '2023-10-31', 'male', NULL, NULL, '$2y$10$xNYVTYzI/HRkpmr7k7st3ORmOblEqvJIyPRnbhR7K405mau5rNGbq', NULL, NULL, 1, NULL, NULL, '2023-10-31 08:40:42', '2023-10-31 08:40:42');
+(2, 2, 1, 1, 1, 'sas', 'assaa', '', 'Muhammad', 'sa@live.com', 'sa@live.com', '03453096441', '03453096441', 'sasasas', '2023-10-31', 'male', NULL, NULL, '$2y$10$xNYVTYzI/HRkpmr7k7st3ORmOblEqvJIyPRnbhR7K405mau5rNGbq', NULL, NULL, 1, NULL, NULL, '2023-10-31 08:40:42', '2023-10-31 08:40:42'),
+(3, 3, 1, 1, 1, 'sasa', 'sas', '', 'ssas', 'farhantahir242@gmail.com', 'sa1@live.com', '2121212', '2121212', 'ddsddsd', '2024-01-19', 'male', NULL, NULL, '$2y$10$xNYVTYzI/HRkpmr7k7st3ORmOblEqvJIyPRnbhR7K405mau5rNGbq', NULL, NULL, 1, NULL, NULL, '2024-01-19 07:38:22', '2024-01-19 07:38:22'),
+(4, 5, 1, 1, 1, 'Monitor', 'sa', '', 'wq', 'monitor@gmail.com', 'monitor@gmail.com', '121212', '1221212', 'sasas', '2024-01-19', 'male', NULL, NULL, '$2y$10$wh5Pr0WHFpqJS3LU.FAnEuAzeLRDswXTlq1tuqwGCMez1ffJX7ReC', NULL, NULL, 1, NULL, NULL, '2024-01-19 08:22:33', '2024-01-19 08:22:33');
 
 -- --------------------------------------------------------
 
@@ -1032,7 +1078,11 @@ CREATE TABLE `user_privileges` (
 --
 
 INSERT INTO `user_privileges` (`id`, `privilege_id`, `user_id`, `role_id`, `assign_by`, `created_at`, `updated_at`) VALUES
-(3, 5, 2, 2, 'admin', NULL, NULL);
+(5, 29, 3, 3, 'admin', NULL, NULL),
+(6, 25, 4, 5, 'admin', NULL, NULL),
+(7, 26, 4, 5, 'admin', NULL, NULL),
+(8, 27, 4, 5, 'admin', NULL, NULL),
+(9, 28, 4, 5, 'admin', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1063,7 +1113,9 @@ INSERT INTO `user_two_factors` (`id`, `user_id`, `opt_number`, `ip_address`, `br
 (1, 1, '1234', '::1', 'Chrome', '118.0.0.0', 'Windows', 0, 1, 0, '2023-10-31 04:44:36', '2023-10-31 04:44:36'),
 (2, 1, '1234', '::1', 'Chrome', '119.0.0.0', 'Windows', 0, 1, 0, '2023-11-06 07:32:29', '2023-11-06 07:32:29'),
 (3, 1, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2023-12-13 04:47:48', '2023-12-13 04:47:48'),
-(4, 2, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-12 00:41:38', '2024-01-12 00:41:38');
+(4, 2, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-12 00:41:38', '2024-01-12 00:41:38'),
+(5, 3, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:12:52', '2024-01-19 08:12:52'),
+(6, 4, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:23:28', '2024-01-19 08:23:28');
 
 --
 -- Indexes for dumped tables
@@ -1153,8 +1205,7 @@ ALTER TABLE `migrations`
 ALTER TABLE `monitorings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `monitorings_location_id_foreign` (`location_id`),
-  ADD KEY `monitorings_employee_id_foreign` (`employee_id`),
-  ADD KEY `monitorings_monitor_location_id_foreign` (`monitor_location_id`);
+  ADD KEY `monitorings_employee_id_foreign` (`employee_id`);
 
 --
 -- Indexes for table `monitor_locations`
@@ -1211,6 +1262,15 @@ ALTER TABLE `states`
   ADD KEY `states_country_id_foreign` (`country_id`);
 
 --
+-- Indexes for table `time_sheets`
+--
+ALTER TABLE `time_sheets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `time_sheets_schedule_id_foreign` (`schedule_id`),
+  ADD KEY `time_sheets_employee_id_foreign` (`employee_id`),
+  ADD KEY `time_sheets_location_id_foreign` (`location_id`);
+
+--
 -- Indexes for table `time_zones`
 --
 ALTER TABLE `time_zones`
@@ -1258,7 +1318,7 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `client_locations`
 --
 ALTER TABLE `client_locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `confirmation_calls`
@@ -1300,7 +1360,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `location_types`
@@ -1312,13 +1372,13 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
 --
 ALTER TABLE `monitorings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `monitor_locations`
@@ -1336,7 +1396,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `privileges`
 --
 ALTER TABLE `privileges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -1348,7 +1408,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
@@ -1363,6 +1423,12 @@ ALTER TABLE `states`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `time_sheets`
+--
+ALTER TABLE `time_sheets`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `time_zones`
 --
 ALTER TABLE `time_zones`
@@ -1372,19 +1438,19 @@ ALTER TABLE `time_zones`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_privileges`
 --
 ALTER TABLE `user_privileges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_two_factors`
 --
 ALTER TABLE `user_two_factors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -1436,8 +1502,7 @@ ALTER TABLE `locations`
 --
 ALTER TABLE `monitorings`
   ADD CONSTRAINT `monitorings_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
-  ADD CONSTRAINT `monitorings_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
-  ADD CONSTRAINT `monitorings_monitor_location_id_foreign` FOREIGN KEY (`monitor_location_id`) REFERENCES `monitor_locations` (`id`);
+  ADD CONSTRAINT `monitorings_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
 
 --
 -- Constraints for table `monitor_locations`
@@ -1462,6 +1527,14 @@ ALTER TABLE `schedule_days`
 --
 ALTER TABLE `states`
   ADD CONSTRAINT `states_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
+
+--
+-- Constraints for table `time_sheets`
+--
+ALTER TABLE `time_sheets`
+  ADD CONSTRAINT `time_sheets_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
+  ADD CONSTRAINT `time_sheets_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
+  ADD CONSTRAINT `time_sheets_schedule_id_foreign` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`);
 
 --
 -- Constraints for table `users`
