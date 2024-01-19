@@ -8,6 +8,7 @@ use App\Models\Location;
 use App\Models\LocationType;
 use App\Models\MonitorLocation;
 use App\Models\TimeZone;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -104,6 +105,7 @@ class LocationController extends Controller
         $data                 = array();
         $data['locationType'] = array();
         $data['title']        = 'Location';
+        $data['users']        = User::where('role_id', 3)->get();
         $locationType         = LocationType::where('parent_id', '!=', 0)->get()->toArray();
         $locationType2        = LocationType::where('id', 1)->get()->toArray();
         $datalocationType     = array_merge($locationType, $locationType2);
@@ -134,7 +136,7 @@ class LocationController extends Controller
 
         $data                      = new Location();
         $data->name                = $request->name;
-        $data->user_id             = $request->user()['id'];
+        $data->user_id             = $request->user_id;
         $data->address             = $request->address;
         $data->timezone_id         = $request->timezone_id;
         $data->license_number      = $request->license_number;

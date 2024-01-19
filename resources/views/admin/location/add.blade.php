@@ -23,7 +23,19 @@
         <!-- Floating Labels Form -->
             <form class="row g-3" method="post" action="{{route('location.store')}}">
                 @csrf
-
+                @if(request()->user()['role_id']==1)
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select name="user_id" class="form-select"
+                                id="user_id">
+                            <option disabled selected>Users list</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{$user->first_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @endif
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingName" placeholder="Location Name"
