@@ -8,7 +8,7 @@
                 <span>Dashboard</span>
             </a>
         </li>
-        @if(auth()->user()->role_id == 1)
+    @if(auth()->user()->role_id == 1)
         <!-- End Dashboard Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav1" data-bs-toggle="collapse" href="#">
@@ -51,8 +51,19 @@
             </li>
 
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/employee/') == true)
+        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/schedule/') == true)
 
+            <li class="nav-item">
+                <a class="nav-link
+{{ request()->is('schedule') ? '' : 'collapsed' }}
+                        " href="{{route('calendar')}}">
+                    <i class="bi bi-calendar"></i>
+                    <span>Scheduling</span>
+                </a>
+            </li>
+        @endif
+
+    @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/employee/') == true)
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sales-nav2" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-person"></i><span>Employee list</span><i
@@ -69,17 +80,7 @@
                 </ul>
             </li>
         @endif
-        @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/schedule/') == true)
 
-            <li class="nav-item">
-                <a class="nav-link
-{{ request()->is('schedule') ? '' : 'collapsed' }}
-                        " href="{{route('calendar')}}">
-                    <i class="bi bi-calendar"></i>
-                    <span>Scheduling</span>
-                </a>
-            </li>
-        @endif
         @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet/') == true)
 
             <li class="nav-item">

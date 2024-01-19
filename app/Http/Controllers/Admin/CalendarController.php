@@ -13,8 +13,9 @@ class CalendarController extends Controller
 {
     public function index()
     {
-        $data['title']     = "Scheduling";
-        $data['locations'] = Location::all();
+        $data['title']            = "Scheduling";
+        $data['locations']        = Location::all();
+        $data['selectedlocation'] = \request()->user()['role_id'] == 3 ? Location::where('user_id', \request()->user()['id'])->first() : '';
         return view('admin.calendar.list', $data);
     }
 
