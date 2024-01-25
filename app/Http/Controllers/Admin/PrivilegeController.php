@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Privilege;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserPrivilege;
 use Illuminate\Http\Request;
@@ -78,7 +79,7 @@ class PrivilegeController extends Controller
                 $record->id,
                 $record->privilige->privilige_title,
                 $record->userId->first_name,
-                $record->role->name,
+                $record->roleId->name,
                 $record->assign_by,
                  view('admin.layout.defaultComponent.deleteButton', [
                     'deleteUrl' => route('privilege.destroy', $record->id)

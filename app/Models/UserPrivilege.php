@@ -62,8 +62,8 @@ class UserPrivilege extends Model
         return $this->belongsTo(Privilege::class, 'privilege_id');
     }
 
-    public function role()
+    public function roleId()
     {
-        return $this->belongsTo(Role::class, 'role_id', 'id');
+        return $this->belongsTo(Role::class, 'role_id');
     }
 }
