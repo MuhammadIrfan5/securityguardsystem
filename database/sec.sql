@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 19, 2024 at 02:37 PM
+-- Generation Time: Jan 26, 2024 at 02:10 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -499,7 +499,8 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`id`, `user_id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, '3', 4, '2024-01-19', '2024-01-20', '17:41', '05:41', '', '1', '2024-01-19 07:44:13', '2024-01-19 07:44:24', NULL);
+(1, 3, '3', 4, '2024-01-19', '2024-01-20', '17:41', '05:41', '', '1', '2024-01-19 07:44:13', '2024-01-19 07:44:24', NULL),
+(2, 1, '', 1, '2024-01-26', '2024-01-27', '18:10', '06:10', '', '1', '2024-01-26 08:10:25', '2024-01-26 08:10:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -1408,7 +1409,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
