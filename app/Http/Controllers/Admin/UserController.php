@@ -185,6 +185,9 @@ class UserController extends Controller
         if ($request->country_name) {
             $data['country_id'] = $request->country_name;
         }
+        if ($request->password) {
+            $data['password'] = $request->password;
+        }
         if ($request->city_name) {
             $data['city_id'] = $request->city_name;
         }
