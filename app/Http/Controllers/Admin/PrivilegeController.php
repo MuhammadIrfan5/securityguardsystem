@@ -120,6 +120,7 @@ class PrivilegeController extends Controller
                 ];
             }
         }
+        dd($users);
         $users = UserPrivilege::insert($users);
         Session::flash('msg', 'Permissions Given Successfully!');
         return redirect()->route('privilege.index');

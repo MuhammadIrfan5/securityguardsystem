@@ -31,7 +31,7 @@
                                 id="user_id">
                             <option disabled selected>User list</option>
                             @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{$user->first_name}}</option>
+                                <option value="{{ $user->id }}">{{$user->first_name.' '.$user->last_name}}</option>
                             @endforeach
                         </select>
                     </div>
