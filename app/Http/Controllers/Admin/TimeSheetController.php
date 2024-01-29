@@ -44,9 +44,6 @@ class TimeSheetController extends Controller
             ->whereDate('start_date', '>=', Carbon::today())
             ->whereDate('end_date', '<=', Carbon::tomorrow());
 
-        if ($request->user()['role_id'] != 1) {
-            $records = $records->where('user_id', $request->user()['id']);
-        }
         $response["recordsTotal"]    = $records->count();
         $response["recordsFiltered"] = $records->count();
 
