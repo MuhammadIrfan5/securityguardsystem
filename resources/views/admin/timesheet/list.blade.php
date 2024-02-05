@@ -6,7 +6,7 @@
         <h1>{{$title}}</h1>
         <div class="text-end">
             @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet/create') == true)
-                <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>
+{{--                <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>--}}
             @endif
         </div>
 {{--        <form action="#" method="get" id="filterForm">--}}
