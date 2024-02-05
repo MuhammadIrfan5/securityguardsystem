@@ -6,8 +6,8 @@
         <h1>{{$title}}</h1>
         <div class="text-end">
             @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/confirmation-call/create') == true)
-{{--                <a href="{{route('confirmation-call.create')}}" class="btn btn-primary">Create</a>--}}
-{{--            @endif--}}
+                <a href="{{route('confirmation-call.create')}}" class="btn btn-primary">Create</a>
+            @endif
         </div>
         <nav>
             <ol class="breadcrumb">
