@@ -126,4 +126,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('get-employees', [CalendarController::class, 'getEmployee']);
     Route::get('get-edit', [CalendarController::class, 'getEdit']);
     Route::get('get-locations-list', [CalendarController::class, 'getLocationlist'])->name('location.list');
+
+
+    Route::get('/schedule-user', [ScheduleController::class, 'index'])->name('scheduleIndex');
+    Route::get('/fullcalender', [ScheduleController::class, 'getEvents'])->name('getEvents');
 });
