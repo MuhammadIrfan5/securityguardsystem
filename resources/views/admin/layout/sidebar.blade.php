@@ -65,6 +65,15 @@
                 </a>
             </li>
         @endif
+        @if(request()->user()['role_id']==3)
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('schedule-user') ? '' : 'collapsed' }}"
+                   href="{{route('scheduleIndex')}}">
+                    <i class="bi bi-calendar"></i>
+                    <span>Scheduling-list</span>
+                </a>
+            </li>
+        @endif
 
         @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet/') == true)
 
