@@ -23,7 +23,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{request()->user()->firstname}}</h6>
-                        <span>Super Admin</span>
+                        <span>{{request()->user()->firstname}}</span>
                     </li>
                     {{--                    <li>--}}
                     {{--                        <hr class="dropdown-divider">--}}
