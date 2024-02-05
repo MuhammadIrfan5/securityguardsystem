@@ -105,7 +105,7 @@
                 <div id="cc_baox" class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" maxlength="16" name="client[client_name]"
+                            <input type="text" class="form-control"  name="client[client_name]"
                                    id="client_name"
                             >
                             <label for="client_name"> Client Name </label>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" maxlength="16" name="client[client_designation]"
+                            <input type="text" class="form-control"  name="client[client_designation]"
                                    id="client_designation"
                             >
                             <label for="client_designation"> Client Designation </label>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="email" class="form-control" maxlength="16" name="client[client_email]"
+                            <input type="email" class="form-control"  name="client[client_email]"
                                    id="client_email"
                             >
                             <label for="client_email"> Client Email </label>
@@ -144,7 +144,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" maxlength="11" name="client[client_phone]"
+                            <input type="text" class="form-control"  name="client[client_phone]"
                                    id="client_phone"
                             >
                             <label for="client_phone"> Client Phone </label>
@@ -171,7 +171,7 @@
                 <div id="licenseNumber" class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" maxlength="16" name="license_number"
+                            <input type="text" class="form-control"  name="license_number"
                                    id="license_number">
                             <label for="license_number"> License Number </label>
                             @error('license_number')
@@ -208,7 +208,7 @@
                 <div id="monitoringCheck" class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="number" class="form-control" maxlength="16" name="monitor[number_of_camera]"
+                            <input type="number" class="form-control"  name="monitor[number_of_camera]"
                                    id="number_of_camera">
                             <label for="number_of_camera"> Number of Camera </label>
                             @error('number_of_camera')
@@ -220,7 +220,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="number" class="form-control" maxlength="16" name="monitor[camera_tower_number]"
+                            <input type="number" class="form-control"  name="monitor[camera_tower_number]"
                                    id="camera_tower_number">
                             <label for="camera_tower_number"> Camera Tower Number </label>
                             @error('camera_tower_number')
@@ -232,7 +232,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" maxlength="16" name="monitor[nvr]"
+                            <input type="text" class="form-control"  name="monitor[nvr]"
                                    id="nvr">
                             <label for="nvr"> NVR </label>
                             @error('nvr')
