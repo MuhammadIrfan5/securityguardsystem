@@ -79,7 +79,7 @@
                                             <div class="col-lg-6">
                                                 <div class="card">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">Client Detail ({{$key+1}})</h5>
+                                                        <h5 class="card-title">Client Detail ({{(int)$key+1}})</h5>
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-4 label ">Client Name</div>
                                                             <div class="col-lg-9 col-md-8">{{$item->client_name}}</div>
