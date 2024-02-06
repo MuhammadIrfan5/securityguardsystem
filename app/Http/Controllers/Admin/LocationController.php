@@ -147,15 +147,23 @@ class LocationController extends Controller
         $data->location_sub_type   = '';
         $data->save();
 
-        if (!empty($request->client['client_name'])) {
-            ClientLocation::create([
-                'location_id'        => $data->id,
-                'client_name'        => $request->client['client_name'],
-                'client_designation' => $request->client['client_designation'],
-                'client_email'       => $request->client['client_email'],
-                'client_phone'       => $request->client['client_phone']
-            ]);
+//        dd($request->client);
+        $clientLocation = array();
+        $count          = 0;
+        foreach ($request->client as $key => $item) {
+            if (count($request->client['client_name']) >= $count+1){
+                $clientLocation[] = [
+                    'location_id'        => $data->id,
+                    'client_name'        => $request->client['client_name'][$count],
+                    'client_designation' => $request->client['client_designation'][$count],
+                    'client_email'       => $request->client['client_email'][$count],
+                    'client_phone'       => $request->client['client_phone'][$count]
+                ];
+            }
+            $count++;
         }
+        ClientLocation::insert($clientLocation);
+
         if (!empty($request->monitor['number_of_camera'])) {
             MonitorLocation::create([
                 'location_id'         => $data->id,

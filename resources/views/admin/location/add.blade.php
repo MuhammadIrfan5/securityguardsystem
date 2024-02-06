@@ -24,17 +24,17 @@
             <form class="row g-3" method="post" action="{{route('location.store')}}">
                 @csrf
                 @if(request()->user()['role_id']==1)
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <select name="user_id" class="form-select"
-                                id="user_id">
-                            <option disabled selected>Users list</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{$user->first_name}}</option>
-                            @endforeach
-                        </select>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select name="user_id" class="form-select"
+                                    id="user_id">
+                                <option disabled selected>Users list</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{$user->first_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
                 @endif
                 <div class="col-md-6">
                     <div class="form-floating">
@@ -102,61 +102,78 @@
 
                     {{--                    </div>--}}
                 </div>
-                <div id="cc_baox" class="row g-3">
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control"  name="client[client_name]"
-                                   id="client_name"
-                            >
-                            <label for="client_name"> Client Name </label>
-                            @error('client_name')
-                            <div class="alert alert-danger" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control"  name="client[client_designation]"
-                                   id="client_designation"
-                            >
-                            <label for="client_designation"> Client Designation </label>
-                            @error('client_designation')
-                            <div class="alert alert-danger" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="email" class="form-control"  name="client[client_email]"
-                                   id="client_email"
-                            >
-                            <label for="client_email"> Client Email </label>
-                            @error('client_email')
-                            <div class="alert alert-danger" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control"  name="client[client_phone]"
-                                   id="client_phone"
-                            >
-                            <label for="client_phone"> Client Phone </label>
-                            @error('client_phone')
-                            <div class="alert alert-danger" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
 
+                <div id="client-details-container">
+                    <div class="client-details">
+                        <div class="col-md-12">
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="client[client_name][]"
+                                           id="client_name"
+                                    >
+                                    <label for="client_name"> Client Name </label>
+                                    @error('client_name')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="client[client_designation][]"
+                                           id="client_designation"
+                                    >
+                                    <label for="client_designation"> Client Designation </label>
+                                    @error('client_designation')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" name="client[client_email][]"
+                                           id="client_email"
+                                    >
+                                    <label for="client_email"> Client Email </label>
+                                    @error('client_email')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="client[client_phone][]"
+                                           id="client_phone"
+                                    >
+                                    <label for="client_phone"> Client Phone </label>
+                                    @error('client_phone')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-end">
+                        <button type="button"  class="btn btn-danger delete-client " >X</button>
+                        </div>
+
+                    </div>
                 </div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" id="add-client">Add Client</button>
+                </div>
+                <div class="col-md-12">
+                </div>
+
+
                 {{--License Number--}}
                 <div class="col-md-12">
                     <div class="form-check">
@@ -171,7 +188,7 @@
                 <div id="licenseNumber" class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control"  name="license_number"
+                            <input type="text" class="form-control" name="license_number"
                                    id="license_number">
                             <label for="license_number"> License Number </label>
                             @error('license_number')
@@ -208,7 +225,7 @@
                 <div id="monitoringCheck" class="row g-3">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="number" class="form-control"  name="monitor[number_of_camera]"
+                            <input type="number" class="form-control" name="monitor[number_of_camera]"
                                    id="number_of_camera">
                             <label for="number_of_camera"> Number of Camera </label>
                             @error('number_of_camera')
@@ -220,7 +237,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="number" class="form-control"  name="monitor[camera_tower_number]"
+                            <input type="number" class="form-control" name="monitor[camera_tower_number]"
                                    id="camera_tower_number">
                             <label for="camera_tower_number"> Camera Tower Number </label>
                             @error('camera_tower_number')
@@ -232,7 +249,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control"  name="monitor[nvr]"
+                            <input type="text" class="form-control" name="monitor[nvr]"
                                    id="nvr">
                             <label for="nvr"> NVR </label>
                             @error('nvr')

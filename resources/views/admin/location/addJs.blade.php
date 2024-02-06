@@ -7,6 +7,7 @@
     $("#cc_box").hide();
     $("#licenseNumber").hide();
     $("#monitoringCheck").hide();
+    $('#client-details-container .delete-client').hide();
 
     function checkOnsite(obj) {
         $('#licenseNumber').prop('checked', true); // Checks it
@@ -51,5 +52,21 @@
         }
     }
 
+    $('#add-client').on('click', function () {
+        var clonedClientDetails = $('#client-details-container .client-details').first().clone();
+        clonedClientDetails.find('.delete-client').show(); // Show delete button for cloned container
+        clonedClientDetails.find('input[type="text"], input[type="email"]').val(''); // Clear input fields
+
+        $('#client-details-container').append(clonedClientDetails);
+    });
+
+    $('#client-details-container').on('click', '.delete-client', function () {
+        var clientDetails = $(this).closest('.client-details');
+        if ($('#client-details-container .client-details').length > 1) {
+            clientDetails.remove();
+        } else {
+            alert("At least one set of client details should be present.");
+        }
+    });
 
 </script>
