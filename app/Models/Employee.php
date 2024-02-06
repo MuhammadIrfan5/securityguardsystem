@@ -25,4 +25,8 @@ class Employee extends Model
         'is_active',
         'manager_name',
     ];
+
+    public function schedules(){
+        return $this->hasMany(Schedule::class,'employee_id');
+    }
 }

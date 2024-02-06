@@ -156,8 +156,14 @@ class CalendarController extends Controller
 
     public function getEdit(Request $request)
     {
+        $today = Carbon::today();
+
         $data['record']   = Schedule::find($request->id);
-        $data['employee'] = Employee::all();
+        $data['employee'] = Employee::whereDoesntHave('schedules', function ($query) use ($today) {
+            $query
+                ->whereDate('start_date', '>=', date('Y-m-d'))
+                ->whereDate('end_date', '<=', date('Y-m-d', strtotime('tomorrow')));
+        })->get();
 
         return response($data);
     }
