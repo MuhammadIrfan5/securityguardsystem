@@ -110,7 +110,7 @@
                         <div class="form-floating">
                             <input type="text" class="form-control" id="floatingMiddlename" placeholder="Middle Name"
                                    name="middle_name"
-                                   required>
+                                   >
                             <label for="floatingMiddlename">Middle Name</label>
                             @error('last_name')
                             <div class="alert alert-danger" role="alert">
@@ -136,7 +136,7 @@
                         <div class="form-floating">
                             <input type="number" class="form-control" id="floatingPhone2" placeholder="Phone Number 2"
                                    name="phone2"
-                                   required>
+                                   >
                             <label for="floatingPhone2">Phone Number 2</label>
                             @error('phone2')
                             <div class="alert alert-danger" role="alert">
@@ -161,7 +161,7 @@
                         <div class="form-floating">
                             <input type="email" class="form-control" id="floatingEmail" placeholder="Secondary Email"
                                    name="secondary_email"
-                                   required>
+                                   >
                             <label for="floatingEmail">Secondary Email</label>
                             @error('secondary_email')
                             <div class="alert alert-danger" role="alert">

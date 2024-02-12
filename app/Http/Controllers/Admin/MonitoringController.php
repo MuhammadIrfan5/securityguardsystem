@@ -76,6 +76,9 @@ class MonitoringController extends Controller
 //                break;
 //        }
 
+        if ($request->user()['role_id'] != 1) {
+            $country = $country->where('user_id', $request->user()['id']);
+        }
         $response["recordsTotal"]    = $country->count();
         $response["recordsFiltered"] = $country->count();
         $country                     = $country->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
@@ -120,9 +123,10 @@ class MonitoringController extends Controller
         ]);
         $id                        = MonitorLocation::where('location_id', $request->location_id)->first('id');
         $data                      = new Monitoring();
+        $data->user_id             = $request->user()['id'];
         $data->location_id         = $request->location_id;
         $data->employee_id         = $request->employee_id;
-        $data->monitor_location_id = $id->id;
+        $data->monitor_location_id = !empty($id)?$id->id:0;
         if (!empty($request->hasFile("image"))) {
             $this->removeImage($data->image);
             $data->images = $this->imageUpload($request->file('image'), $data->getTable());

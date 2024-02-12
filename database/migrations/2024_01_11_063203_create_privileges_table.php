@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('confirmation_calls', function (Blueprint $table) {
+        Schema::create('privileges', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->foreignId('location_id')->constrained('locations');
-            $table->foreignId('employee_id')->constrained('employees');
-            $table->string('status');
-            $table->longText('notes');
+            $table->string('privilige_title');
+            $table->string('privilige_url');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('confirmation_calls');
+        Schema::dropIfExists('privileges');
     }
 };

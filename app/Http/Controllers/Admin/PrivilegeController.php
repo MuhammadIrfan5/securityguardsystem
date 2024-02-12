@@ -3,22 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Country;
+use App\Models\Privilege;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserPrivilege;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class CountryController extends Controller
+class PrivilegeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['title'] = "Country list";
-        return view('admin.country.list', $data);
+        $data['title'] = "Privilege";
+        return view('admin.privilege.list', $data);
     }
 
-    public function tableCountry(Request $request)
+    public function tableData(Request $request)
     {
         $response                 = [
             "draw"            => $request->draw,
@@ -26,7 +29,7 @@ class CountryController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Country();
+        $country                  = new UserPrivilege();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -69,29 +72,33 @@ class CountryController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
+
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
                 $record->id,
-                $record->iso3,
-                $record->name,
-                $record->phone_code,
-                view('admin.layout.defaultComponent.approved', [ "boolean" => $record->status ])->render(),
-//                view('admin.defaultComponents.editViewDelete', [
-//                    'deleteUrl' => route('deleteCountry', [ 'id' => $record->id ])
-//                ])->render()
+                $record->privilige->privilige_title,
+                $record->userId->first_name,
+                $record->roleId->name,
+                $record->assign_by,
+                 view('admin.layout.defaultComponent.deleteButton', [
+                    'deleteUrl' => route('privilege.destroy', $record->id)
+                ])->render(),
             ];
         }
         return response($response, 201);
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $data['title'] = 'Country';
-        return view('admin.country.add', $data);
+        $data['title']      = "Privilege";
+        $data['users']      = User::where('role_id', '!=', 1)->get();
+        $data['priviliges'] = Privilege::where('status', 1)->get();
+        return view('admin.privilege.add', $data);
     }
 
     /**
@@ -99,18 +106,23 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        $country                     = new Country();
-        $country['name']             = $request->name;
-        $country['iso2']             = $request->code;
-        $country['iso3']             = $request->code;
-        $country['phone_code']       = $request->phone_code;
-        $country['dialling_pattern'] = '';
-        $country['region']           = '';
-        $country['sub_region']       = '';
-        $country['status']           = 1;
-        $country->save();
-        Session::flash('message', 'Country Added successfully');
-        return redirect()->route('country.index');
+        $users  = array();
+        $user = User::find($request->user_id);
+        foreach ($request->privilige_ids as $item) {
+            $check = UserPrivilege::where('user_id', $request->admin_id)
+                ->where('privilege_id', $item)->first();
+            if ($check == null) {
+                $users[] = [
+                    'privilege_id' => $item,
+                    'user_id'      => $request->user_id,
+                    'role_id'      => $user['role_id'],
+                    'assign_by'    => $request->user()['first_name'],
+                ];
+            }
+        }
+        $users = UserPrivilege::insert($users);
+        Session::flash('msg', 'Permissions Given Successfully!');
+        return redirect()->route('privilege.index');
     }
 
     /**
@@ -142,9 +154,10 @@ class CountryController extends Controller
      */
     public function destroy(string $id)
     {
-        $customer = Country::find($id);
-        $customer->delete();
-        Session::flash('info', 'Country deleted successfully');
-        return redirect()->route('country');
+        $UserPrivilege = UserPrivilege::find($id);
+        $UserPrivilege->delete();
+        Session::flash('msg', 'Permissions Deleted Successfully!');
+        return redirect()->route('privilege.index');
+
     }
 }

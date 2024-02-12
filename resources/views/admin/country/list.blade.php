@@ -5,24 +5,8 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/time-sheet/create') == true)
-{{--                <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>--}}
-            @endif
+            <a href="{{route('country.create')}}" class="btn btn-primary">Create</a>
         </div>
-{{--        <form action="#" method="get" id="filterForm">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-5">--}}
-{{--                    <input type="time" name="startTime" class="form-control">--}}
-{{--                </div>--}}
-{{--                <div class="col-5">--}}
-{{--                    <input type="time" name="endTime" class="form-control">--}}
-{{--                </div>--}}
-{{--                <div class="col-2">--}}
-{{--                    <input id="filter" type="submit" class="btn btn-outline-primary " value="Filter">--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </form>--}}
-
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
@@ -30,9 +14,6 @@
             </ol>
         </nav>
     </div>
-    <!-- End Page Title -->
-    <!-- End Page Title -->
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -49,22 +30,22 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Location</th>
-                                <th>Employee</th>
-                                <th>Attendance</th>
-                                <th>Notes</th>
-                                {{--                                <th>Status</th>--}}
-                                <th>Actions</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Phone Code</th>
+                                <th>Status</th>
+{{--                                <th>Actions</th>--}}
                             </tr>
                             </thead>
                         </table>
                         <!-- End Table with stripped rows -->
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 @endsection
 @section('page-js')
-    @include('admin.timesheet.pageJs')
+    @include('admin.country.pageJs')
 @endsection

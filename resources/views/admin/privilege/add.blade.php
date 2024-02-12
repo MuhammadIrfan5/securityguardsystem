@@ -23,35 +23,29 @@
                 </div>
         @endif
         <!-- Floating Labels Form -->
-            <form class="row g-3" method="post" action="{{route('reschedule.store')}}">
+            <form class="row g-3" method="post" action="{{route('privilege.store')}}">
                 @csrf
-
                 <div class="col-md-6">
                     <div class="form-floating">
-
-                        <select name="location_id[]" class="form-select select2Location"
-                                id="parent_id" multiple="multiple">
-                            @foreach($locations as $location)
-                                <option value="{{$location->id}}">{{$location->location->name}}</option>
+                        <select name="user_id" class="form-select"
+                                id="user_id">
+                            <option disabled selected>User list</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{$user->first_name.' '.$user->last_name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-check">
-                        <input class="form-check-input" value="Last_day" type="radio" name="previous_date" >
-                        <h5 class="form-check-label" for="monitoring">
-                                Last Day
+                    <div class="form-floating">
 
-                        </h5>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" value="Last_week" type="radio" name="previous_date"
-                               checked="">
-                        <h5 class="form-check-label" for="NonMonitoring">
-                            Last Week
-                        </h5>
+                        <select name="privilige_ids[]" class="form-select select2Location"
+                                id="parent_id" multiple="multiple">
+                            @foreach($priviliges as $location)
+                                <option value="{{$location->id}}">{{$location->privilige_title}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 

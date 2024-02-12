@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('time_sheets', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
             $table->foreignId('schedule_id')->constrained('schedules');
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('location_id')->constrained('locations');

@@ -11,7 +11,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "{{route('schedule.tableData')}}",
+            "url": "{{route('privilege.tableData')}}",
             "data": function (d) {
                 var unindexed_array = $("#filterForm").serializeArray();
                 $.map(unindexed_array, function (n, i) {

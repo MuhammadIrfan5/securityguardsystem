@@ -5,7 +5,9 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
+            @if(\App\Models\UserPrivilege::get_single_privilige(auth()->id(),'/employee/create') == true)
             <a href="{{route('employee.create')}}" class="btn btn-primary">Create</a>
+            @endif
         </div>
         <nav>
             <ol class="breadcrumb">

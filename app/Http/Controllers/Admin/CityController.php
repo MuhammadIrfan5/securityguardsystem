@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
-use App\Models\Region;
 use App\Models\State;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class CityController extends Controller
 {
@@ -18,9 +15,9 @@ class CityController extends Controller
      */
     public function index()
     {
-        return view('admin.city.city');
+        $data['title'] = "City list";
+        return view('admin.city.list',$data);
     }
-
     public function tableCity(Request $request)
     {
         $response = [
@@ -75,15 +72,10 @@ class CityController extends Controller
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $response['data'][] = [
-                '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-                $record->country_id,
-                //$record->country->name,
+                $record->id,
+                $record->countryId->name,
                 $record->state->name,
                 $record->name,
-                view('admin.defaultComponents.delete', [
-                    'deleteUrl' => route('deleteCity', ['id' => $record->id])
-                ])->render()
-
             ];
         }
         return response($response, 201);
@@ -94,10 +86,10 @@ class CityController extends Controller
      */
     public function create()
     {
+        $data['title'] = 'City';
         $data['country'] = Country::all();
         $data['state'] = State::all();
-        $data['activeMenu'] = "Add City";
-        return view('admin.city.addCity', $data);
+        return view('admin.city.add', $data);
     }
 
     /**
@@ -105,13 +97,7 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $country = new City();
-        $country['country_id'] = $request->country_id;
-        $country['state_id'] = $request->state_id;
-        $country['name'] = $request->name;
-        $country->save();
-        Session::flash('message', 'City Added successfully');
-        return redirect(route('City'));
+        //
     }
 
     /**
@@ -143,9 +129,6 @@ class CityController extends Controller
      */
     public function destroy(string $id)
     {
-        $customer = City::find($id);
-        $customer->delete();
-        Session::flash('info', 'City deleted successfully');
-        return redirect()->route('City');
+        //
     }
 }

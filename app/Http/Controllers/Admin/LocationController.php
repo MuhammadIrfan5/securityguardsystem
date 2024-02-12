@@ -8,6 +8,7 @@ use App\Models\Location;
 use App\Models\LocationType;
 use App\Models\MonitorLocation;
 use App\Models\TimeZone;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -72,6 +73,9 @@ class LocationController extends Controller
 //                $loans = $loans->orderBy('created_at', $orderDir);
 //                break;
 //        }
+        if ($request->user()['role_id'] != 1) {
+            $country = $country->where('user_id', $request->user()['id']);
+        }
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
             $mainCategory = '';
@@ -80,7 +84,7 @@ class LocationController extends Controller
             }
             $response['data'][] = [
                 $record->id,
-                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show',$record->id), "username" => $record->name ])->render(),
+                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show', $record->id), "username" => $record->name ])->render(),
                 $record->address,
                 $record->timezone,
                 "<li>$record->coverage_start_time</li>" . "<li>$record->coverage_end_time</li>",
@@ -101,6 +105,7 @@ class LocationController extends Controller
         $data                 = array();
         $data['locationType'] = array();
         $data['title']        = 'Location';
+        $data['users']        = User::where('role_id', 3)->get();
         $locationType         = LocationType::where('parent_id', '!=', 0)->get()->toArray();
         $locationType2        = LocationType::where('id', 1)->get()->toArray();
         $datalocationType     = array_merge($locationType, $locationType2);
@@ -131,7 +136,7 @@ class LocationController extends Controller
 
         $data                      = new Location();
         $data->name                = $request->name;
-        $data->user_id             = $request->user()['id'];
+        $data->user_id             = $request->user_id;
         $data->address             = $request->address;
         $data->timezone_id         = $request->timezone_id;
         $data->license_number      = $request->license_number;
@@ -142,15 +147,23 @@ class LocationController extends Controller
         $data->location_sub_type   = '';
         $data->save();
 
-        if (!empty($request->client['client_name'])) {
-            ClientLocation::create([
-                'location_id'        => $data->id,
-                'client_name'        => $request->client['client_name'],
-                'client_designation' => $request->client['client_designation'],
-                'client_email'       => $request->client['client_email'],
-                'client_phone'       => $request->client['client_phone']
-            ]);
+//        dd($request->client);
+        $clientLocation = array();
+        $count          = 0;
+        foreach ($request->client as $key => $item) {
+            if (count($request->client['client_name']) >= $count+1){
+                $clientLocation[] = [
+                    'location_id'        => $data->id,
+                    'client_name'        => $request->client['client_name'][$count],
+                    'client_designation' => $request->client['client_designation'][$count],
+                    'client_email'       => $request->client['client_email'][$count],
+                    'client_phone'       => $request->client['client_phone'][$count]
+                ];
+            }
+            $count++;
         }
+        ClientLocation::insert($clientLocation);
+
         if (!empty($request->monitor['number_of_camera'])) {
             MonitorLocation::create([
                 'location_id'         => $data->id,
@@ -158,7 +171,7 @@ class LocationController extends Controller
                 'camera_tower_number' => $request->monitor['camera_tower_number'],
                 'nvr'                 => $request->monitor['nvr'],
             ]);
-            $data->is_monitoring=1;
+            $data->is_monitoring = 1;
             $data->update();
         }
         return redirect()->route('location.index')->with('msg', 'Location Added Successfully!');
@@ -169,9 +182,9 @@ class LocationController extends Controller
      */
     public function show(string $id)
     {
-        $data['activeMenu']='Location';
-        $data['data']=Location::find($id);
-        return view('admin.location.detail',$data);
+        $data['activeMenu'] = 'Location';
+        $data['data']       = Location::find($id);
+        return view('admin.location.detail', $data);
     }
 
     /**

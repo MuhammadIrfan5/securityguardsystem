@@ -74,28 +74,34 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if(!empty($data->clientDetail))
-                                        <div class="col-lg-6">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Client Detail</h5>
-                                                    <div class="row">
-                                                        <div class="col-lg-3 col-md-4 label ">Client Name</div>
-                                                        <div class="col-lg-9 col-md-8">{{$data->clientDetail->client_name}}</div>
-                                                    </div>
+                                    @if($data->clientDetail->count()>0)
+                                        @foreach($data->clientDetail as $key=> $item)
+                                            <div class="col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Client Detail ({{(int)$key+1}})</h5>
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-4 label ">Client Name</div>
+                                                            <div class="col-lg-9 col-md-8">{{$item->client_name}}</div>
+                                                        </div>
 
-                                                    <div class="row">
-                                                        <div class="col-lg-3 col-md-4 label ">Client Designation</div>
-                                                        <div class="col-lg-9 col-md-8">{{$data->clientDetail->client_designation}}</div>
-                                                    </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-4 label ">Client Designation</div>
+                                                            <div class="col-lg-9 col-md-8">{{$item->client_designation}}</div>
+                                                        </div>
 
-                                                    <div class="row">
-                                                        <div class="col-lg-3 col-md-4 label">Client Email</div>
-                                                        <div class="col-lg-9 col-md-8">{{$data->clientDetail->client_email}}</div>
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-4 label">Client Email</div>
+                                                            <div class="col-lg-9 col-md-8">{{$item->client_email}}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-4 label">Client Phone</div>
+                                                            <div class="col-lg-9 col-md-8">{{$item->client_phone}}</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endforeach
                                     @endif
                                     @if(!empty($data->monitoring))
                                         <div class="col-lg-6">

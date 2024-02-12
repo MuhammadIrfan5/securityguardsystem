@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\MonitoringController;
+use App\Http\Controllers\Admin\PrivilegeController;
 use App\Http\Controllers\Admin\RescheduleController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ScheduleController;
@@ -66,33 +67,13 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('units-state', [StateController::class, 'tableData'])->name('tableState');
 
     /*Country*/
-    Route::get('country', [CountryController::class, 'index'])->name('Country');
+    Route::resource('country', CountryController::class);
     Route::get('country-table', [CountryController::class, 'tableCountry'])->name('countryTable');
-
-    Route::get('add-country', function () {
-        return view('admin.country.addCountry');
-    })->name('addCountry');
-
-    Route::post('create-country', [CountryController::class, 'createCountry'])->name('createCountry');
-
-//    Route::get('delete-country', [CountryController::class, 'destroy'])->name('deleteCountry');
-    Route::get('delete-country/{id}', [CountryController::class, 'destroy'])->name('deleteCountry');
 
 
     /*City*/
-    Route::get('city', [CityController::class, 'index'])->name('City');
-
+    Route::resource('city', CityController::class);
     Route::get('city-table', [CityController::class, 'tableCity'])->name('cityTable');
-
-    Route::get('add-city', [CityController::class, 'create'])->name('addCity');
-
-    Route::post('create-city', [CityController::class, 'store'])->name('createCity');
-    Route::get('delete-city/{id}', [CityController::class, 'destroy'])->name('deleteCity');
-
-
-    /*Role*/
-    Route::resource('role', RoleController::class);
-    Route::get('listData', [RoleController::class, 'tableData'])->name('role.listData');
 
     /*Users*/
     Route::resource('users', UserController::class);
@@ -114,10 +95,6 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::resource('assign-job', JobController::class);
     Route::get('assign-job-list', [JobController::class, 'tableData'])->name('assign.job.tableData');
 
-    /*Scheduling*/
-    Route::resource('schedule', ScheduleController::class);
-    Route::get('schedule-list', [ScheduleController::class, 'tableData'])->name('schedule.tableData');
-
     /*Monitoring*/
     Route::resource('monitoring', MonitoringController::class);
     Route::get('monitoring-list', [MonitoringController::class, 'tableData'])->name('monitoring.tableData');
@@ -128,18 +105,19 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
     Route::get('time-sheet-create', [TimeSheetController::class, 'create'])->name('time.sheet.create');
 
-    Route::resource('reschedule', RescheduleController::class);
-
     /*Confirmation Call*/
     Route::resource('confirmation-call', ConfirmationCallController::class);
     Route::get('confirmation-call-list', [ConfirmationCallController::class, 'tableData'])->name('confirmation.call.tableData');
 
+    /*Privileges*/
+    Route::resource('privilege', PrivilegeController::class);
+    Route::get('privilege-list', [PrivilegeController::class, 'tableData'])->name('privilege.tableData');
 
 
     /*AJAX API*/
     Route::get('get-employee', [TimeSheetController::class, 'getEmployees']);
 
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::get('/schedule', [CalendarController::class, 'index'])->name('calendar');
     Route::get('/fullcalender', [CalendarController::class, 'getEvents'])->name('getEvents');
     Route::post('/event/add', [CalendarController::class, 'addEvent'])->name('CRUD.Event');
     Route::post('/event/update', [CalendarController::class, 'updateEvent']);
@@ -148,4 +126,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('get-employees', [CalendarController::class, 'getEmployee']);
     Route::get('get-edit', [CalendarController::class, 'getEdit']);
     Route::get('get-locations-list', [CalendarController::class, 'getLocationlist'])->name('location.list');
+
+
+    Route::get('/schedule-user', [ScheduleController::class, 'index'])->name('scheduleIndex');
+    Route::get('/fullcalender', [ScheduleController::class, 'getEvents'])->name('getEvents');
 });

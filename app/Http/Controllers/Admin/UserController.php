@@ -185,6 +185,9 @@ class UserController extends Controller
         if ($request->country_name) {
             $data['country_id'] = $request->country_name;
         }
+        if ($request->password) {
+            $data['password'] = Hash::make($request->password);
+        }
         if ($request->city_name) {
             $data['city_id'] = $request->city_name;
         }
@@ -222,7 +225,7 @@ class UserController extends Controller
             $data['dob'] = $request->dob;
         }
         $data->save();
-        Session::flash('message', 'User Updated successfully');
+        Session::flash('msg', 'User Updated successfully');
         return redirect(route('users.index'));
     }
 

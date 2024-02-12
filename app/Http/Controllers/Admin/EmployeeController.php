@@ -73,6 +73,10 @@ class EmployeeController extends Controller
 //        }
         $country = $country->skip($request->start)->take($request->length)->get();
         foreach ($country as $record) {
+            $button = \App\Models\UserPrivilege::get_single_privilige(auth()->id(), '/employee/{employee}/edit') == true ? view('admin.layout.defaultComponent.editButton', [
+                'editUrl' => route('employee.edit', $record->id)
+            ])->render() : '';
+
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('employee.show', $record->id), "username" => $record->name ])->render(),
@@ -81,9 +85,7 @@ class EmployeeController extends Controller
                 $record->expiry_date,
 //                view('admin.layout.defaultComponent.status', [ "boolean" => $record->is_regular_guard ])->render(),
                 view('admin.layout.defaultComponent.approved', [ "boolean" => $record->is_active ])->render(),
-                view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('employee.edit', $record->id)
-                ])->render(),
+                $button,
             ];
         }
         return response($response, 201);
@@ -121,19 +123,19 @@ class EmployeeController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         } else {
             $data = [
-                'name'             => $request->name,
-                'id_number'        => $request->id_number,
-                'phone_one'        => $request->phone_one,
-                'guard_number'     => $request->guard_number,
-                'issue_date'       => $request->issue_date,
-                'pay_rate'         => $request->pay_rate,
-                'expiry_date'      => $request->expiry_date,
-                'category_id'      => $request->category_id,
-                'manager_name'     => $request->manager_name,
-                'user_id'          => $request->user()['id'],
-                'phone_two'        => !empty($request->phone_two) ? $request->phone_two : '',
-                'notes'            => !empty($request->notes) ? $request->notes : '',
-                'is_active'        => 0,
+                'name'         => $request->name,
+                'id_number'    => $request->id_number,
+                'phone_one'    => $request->phone_one,
+                'guard_number' => $request->guard_number,
+                'issue_date'   => $request->issue_date,
+                'pay_rate'     => $request->pay_rate,
+                'expiry_date'  => $request->expiry_date,
+                'category_id'  => $request->category_id,
+                'manager_name' => $request->manager_name,
+                'user_id'      => $request->user()['id'],
+                'phone_two'    => !empty($request->phone_two) ? $request->phone_two : '',
+                'notes'        => !empty($request->notes) ? $request->notes : '',
+                'is_active'    => 0,
 
             ];
             $data = Employee::create($data);
@@ -157,9 +159,9 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        $data['title']  = 'Employee';
+        $data['title']      = 'Employee';
         $data['categories'] = EmployeeCategory::all();
-        $data['record'] = Employee::find($id);
+        $data['record']     = Employee::find($id);
         return view('admin.employee.edit', $data);
     }
 
@@ -190,7 +192,7 @@ class EmployeeController extends Controller
         if (!empty($request->notes)) {
             $data->notes = $request->notes;
         }
-            $data->is_active = (int)$request->is_active;
+        $data->is_active = (int)$request->is_active;
 
         $data->save();
 

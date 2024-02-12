@@ -5,7 +5,7 @@
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <div class="text-end">
-            <a href="{{route('schedule.create')}}" class="btn btn-primary">Create</a>
+            <a href="{{route('city.create')}}" class="btn btn-primary">Create</a>
         </div>
         <nav>
             <ol class="breadcrumb">
@@ -14,9 +14,6 @@
             </ol>
         </nav>
     </div>
-    <!-- End Page Title -->
-    <!-- End Page Title -->
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -33,21 +30,20 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Location</th>
-                                <th>Employee</th>
-                                <th>Time/Date</th>
-                                <th>Phone</th>
-                                <th>Actions</th>
+                                <th>Country Name</th>
+                                <th>State Name</th>
+                                <th>Name</th>
                             </tr>
                             </thead>
                         </table>
                         <!-- End Table with stripped rows -->
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 @endsection
 @section('page-js')
-    @include('admin.schedule.pageJs')
+    @include('admin.city.pageJs')
 @endsection
