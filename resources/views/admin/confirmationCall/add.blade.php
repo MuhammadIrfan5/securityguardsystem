@@ -46,6 +46,8 @@
                         </select>
                     </div>
                 </div>
+                <input type="hidden" name="schedule_id" id="schedule_id" value="">
+
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="status" class="form-select"
@@ -90,10 +92,14 @@
                         $('#employee_id').empty();
                         $.each(data, function (index, item) {
                             $('#employee_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+
+                            $('#schedule_id').append('<input type="hidden" name="schedule_id" value="' + item.schedule_id + '">');
+
                         });
                     }
                 });
             });
+
         });
     </script>
 @endsection

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('confirmation_calls', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->foreignId('schedule_id')->constrained('schedules');
             $table->foreignId('location_id')->constrained('locations');
             $table->foreignId('employee_id')->constrained('employees');
             $table->string('status');

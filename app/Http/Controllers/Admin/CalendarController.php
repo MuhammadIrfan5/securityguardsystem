@@ -147,8 +147,9 @@ class CalendarController extends Controller
             ->get();
         foreach ($employees as $item) {
             $data['employee'][] = [
-                'id'   => $item->employee_id,
-                'name' => $item->employee->name,
+                'id'          => $item->employee_id,
+                'name'        => $item->employee->name,
+                'schedule_id' => $item->id,
             ];
         }
         return response($data);
@@ -156,6 +157,8 @@ class CalendarController extends Controller
 
     public function getEdit(Request $request)
     {
+        $today = Carbon::today();
+
         $data['record']   = Schedule::find($request->id);
         $data['employee'] = Employee::whereDoesntHave('schedules', function ($query) use ($today) {
             $query
