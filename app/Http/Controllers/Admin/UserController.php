@@ -143,7 +143,7 @@ class UserController extends Controller
         $data['address']         = $request->address;
         $data['dob']             = $request->dob;
         $data['password']        = Hash::make($request->password);
-        $data['image']           = $profile_image;
+        $data['image']           = $profile_image ?? "";
         $data->save();
         Session::flash('message', 'User Added successfully');
         return redirect(route('users.index'));

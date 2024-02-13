@@ -52,7 +52,6 @@ class ConfirmationCallController extends Controller
                 'schedule_id' => $record->id,
             ])
                 ->whereNotNull('check_in_time')
-                ->whereNotNull('check_out_time')
                 ->first();
             $button = '';
             $time = '';

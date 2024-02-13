@@ -219,18 +219,18 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="file" class="form-control" id="floatingImage" placeholder="Image"
-                                   name="image" required>
-                            <label for="floatingImage">Image</label>
-                            @error('image')
-                            <div class="alert alert-danger" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-                    </div>
+{{--                    <div class="col-md-6">--}}
+{{--                        <div class="form-floating">--}}
+{{--                            <input type="file" class="form-control" id="floatingImage" placeholder="Image"--}}
+{{--                                   name="image" required>--}}
+{{--                            <label for="floatingImage">Image</label>--}}
+{{--                            @error('image')--}}
+{{--                            <div class="alert alert-danger" role="alert">--}}
+{{--                                {{ $message }}--}}
+{{--                            </div>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
                 <br>
                 <div class="text-end">
