@@ -100,8 +100,8 @@
                     <div class="form-floating">
                         <select name="is_active" class="form-select"
                                 id="state_id">
-                            <option {{$record->is_active == '1'  ? 'selected' : ''}} value="1">Active</option>
-                            <option {{$record->is_active == '0'  ? 'selected' : ''}} value="0">In Active</option>
+                            <option {{$record->is_active == '1'  ? 'selected' : ''}} value="1">Approved</option>
+                            <option {{$record->is_active == '0'  ? 'selected' : ''}} value="0">Not Approved</option>
                         </select>
                         <label for="floatingphone_one">Status</label>
 

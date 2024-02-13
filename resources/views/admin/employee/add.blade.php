@@ -100,15 +100,17 @@
                         <label for="floatingphone_one">Notes(Optional)</label>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select name="is_active" class="form-select"
+                                id="state_id">
+                            <option value="1">Approved</option>
+                            <option value="0">Not Approved</option>
+                        </select>
+                        <label for="floatingphone_one">Status</label>
 
-{{--                <div class="col-md-12">--}}
-{{--                    <div class="form-check form-switch">--}}
-{{--                        <input type="checkbox" class="form-check-input" name="is_regular_guard"--}}
-{{--                               id="flexSwitchCheckChecked"--}}
-{{--                               value="1" checked>--}}
-{{--                        <label class="form-check-label" for="flexSwitchCheckChecked">Is Regular Guard</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                    </div>
+                </div>
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>

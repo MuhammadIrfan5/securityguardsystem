@@ -135,7 +135,7 @@ class EmployeeController extends Controller
                 'user_id'      => $request->user()['id'],
                 'phone_two'    => !empty($request->phone_two) ? $request->phone_two : '',
                 'notes'        => !empty($request->notes) ? $request->notes : '',
-                'is_active'    => 0,
+                'is_active'    => boolval($request->is_active),
 
             ];
             $data = Employee::create($data);
