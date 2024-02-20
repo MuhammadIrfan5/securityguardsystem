@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2024 at 02:10 PM
+-- Generation Time: Feb 20, 2024 at 07:07 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sec1`
+-- Database: `sec`
 --
 
 -- --------------------------------------------------------
@@ -79,6 +79,7 @@ INSERT INTO `client_locations` (`id`, `location_id`, `client_name`, `client_desi
 CREATE TABLE `confirmation_calls` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
+  `schedule_id` bigint(20) UNSIGNED NOT NULL,
   `location_id` bigint(20) UNSIGNED NOT NULL,
   `employee_id` bigint(20) UNSIGNED NOT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -320,9 +321,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (36, '2024_01_11_063203_create_privileges_table', 13),
 (38, '2024_01_11_063544_create_user_privileges_table', 14),
 (40, '2023_11_14_055601_create_schedules_table', 16),
-(42, '2023_12_12_135546_create_confirmation_calls_table', 17),
 (43, '2023_11_15_063754_create_monitorings_table', 18),
-(44, '2023_12_22_103520_create_time_sheets_table', 19);
+(44, '2023_12_22_103520_create_time_sheets_table', 19),
+(45, '2023_12_23_135546_create_confirmation_calls_table', 20);
 
 -- --------------------------------------------------------
 
@@ -1116,7 +1117,8 @@ INSERT INTO `user_two_factors` (`id`, `user_id`, `opt_number`, `ip_address`, `br
 (3, 1, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2023-12-13 04:47:48', '2023-12-13 04:47:48'),
 (4, 2, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-12 00:41:38', '2024-01-12 00:41:38'),
 (5, 3, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:12:52', '2024-01-19 08:12:52'),
-(6, 4, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:23:28', '2024-01-19 08:23:28');
+(6, 4, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:23:28', '2024-01-19 08:23:28'),
+(7, 1, '1234', '::1', 'Chrome', '121.0.0.0', 'Windows', 0, 1, 0, '2024-02-20 01:01:19', '2024-02-20 01:01:19');
 
 --
 -- Indexes for dumped tables
@@ -1142,6 +1144,7 @@ ALTER TABLE `client_locations`
 --
 ALTER TABLE `confirmation_calls`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `confirmation_calls_schedule_id_foreign` (`schedule_id`),
   ADD KEY `confirmation_calls_location_id_foreign` (`location_id`),
   ADD KEY `confirmation_calls_employee_id_foreign` (`employee_id`);
 
@@ -1373,7 +1376,7 @@ ALTER TABLE `location_types`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `monitorings`
@@ -1451,7 +1454,7 @@ ALTER TABLE `user_privileges`
 -- AUTO_INCREMENT for table `user_two_factors`
 --
 ALTER TABLE `user_two_factors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -1475,7 +1478,8 @@ ALTER TABLE `client_locations`
 --
 ALTER TABLE `confirmation_calls`
   ADD CONSTRAINT `confirmation_calls_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
-  ADD CONSTRAINT `confirmation_calls_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`);
+  ADD CONSTRAINT `confirmation_calls_location_id_foreign` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
+  ADD CONSTRAINT `confirmation_calls_schedule_id_foreign` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`);
 
 --
 -- Constraints for table `employees`
