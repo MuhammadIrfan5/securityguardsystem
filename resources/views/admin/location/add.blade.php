@@ -61,20 +61,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
-                               name="coverage_start_time" required>
-                        <label for="floatingcoverage_time">Coverage Start Time</label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-floating">
-                        <input type="time" class="form-control" id="floatingcoverage_time" placeholder="Coverage Time"
-                               name="coverage_end_time" required>
-                        <label for="floatingcoverage_time">Coverage End Time</label>
-                    </div>
-                </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="locationType_id" class="form-select"
@@ -87,6 +73,46 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$title}} list</h5>
+                            <!-- Table with stripped rows -->
+                            <table id="dataTable" class="table cell-border display compact">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Days</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $key=> $day)
+                                    @if($key==0)
+                                        <tr>
+                                            <td><input type="checkbox" class="form-check-input day-checkbox" checked name="days[]" value="{{$day}}"></td>
+                                            <td>{{$day}}</td>
+                                            <td><input type="time" class="form-control time-input" name="start_time[]" required></td>
+                                            <td><input type="time" class="form-control time-input" name="end_time[]" required></td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td><input type="checkbox" class="form-check-input day-checkbox" name="days[]" value="{{$day}}"></td>
+                                            <td>{{$day}}</td>
+                                            <td><input type="time" class="form-control time-input" name="start_time[]"></td>
+                                            <td><input type="time" class="form-control time-input" name="end_time[]"></td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                        </div>
+                    </div>
+
                 </div>
 
                 {{--client detail--}}

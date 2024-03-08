@@ -24,13 +24,13 @@ class LocationController extends Controller
 
     public function tableData(Request $request)
     {
-        $response                 = [
+        $response = [
             "draw"            => $request->draw,
             "recordsTotal"    => 0,
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $country                  = new Location();
+        $country = new Location();
         $response["recordsTotal"] = $country->count();
 
         /*Sorting*/
@@ -82,12 +82,23 @@ class LocationController extends Controller
             if ($record->maintype->parent_id != 0) {
                 $mainCategory = LocationType::find($record->maintype->parent_id)['type'];
             }
+            $schedules = array();
+            if($record->schedule_list){
+                foreach (json_decode($record->schedule_list) as $item) {
+                    $schedules[] = [
+                        "<li>$item->day</li>" .
+                        "<li>$item->start_time</li>" .
+                        "<li>$item->end_time</li>"
+                    ];
+                }
+            }
+
             $response['data'][] = [
                 $record->id,
-                view('admin.layout.defaultComponent.linkDetail', [ 'is_location' => 1, "url" => route('location.show', $record->id), "username" => $record->name ])->render(),
+                view('admin.layout.defaultComponent.linkDetail', ['is_location' => 1, "url" => route('location.show', $record->id), "username" => $record->name])->render(),
                 $record->address,
                 $record->timezone,
-                "<li>$record->coverage_start_time</li>" . "<li>$record->coverage_end_time</li>",
+                $schedules,
                 $mainCategory . ' (' . $record->maintype->type . ")",
                 view('admin.layout.defaultComponent.editButton', [
                     'editUrl' => route('location.edit', $record->id)
@@ -102,15 +113,15 @@ class LocationController extends Controller
      */
     public function create()
     {
-        $data                 = array();
+        $data = array();
         $data['locationType'] = array();
-        $data['title']        = 'Location';
-        $data['users']        = User::where('role_id', 3)->get();
-        $locationType         = LocationType::where('parent_id', '!=', 0)->get()->toArray();
-        $locationType2        = LocationType::where('id', 1)->get()->toArray();
-        $datalocationType     = array_merge($locationType, $locationType2);
+        $data['title'] = 'Location';
+        $data['users'] = User::where('role_id', 3)->get();
+        $locationType = LocationType::where('parent_id', '!=', 0)->get()->toArray();
+        $locationType2 = LocationType::where('id', 1)->get()->toArray();
+        $datalocationType = array_merge($locationType, $locationType2);
         foreach ($datalocationType as $item) {
-            $parentName             = LocationType::find($item['parent_id']);
+            $parentName = LocationType::find($item['parent_id']);
             $data['locationType'][] = [
                 'id'   => $item['id'],
                 'type' => !empty($parentName) ? $parentName->type . ' (' . $item['type'] . ")" : $item['type']
@@ -125,33 +136,46 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $request->validate([
-            'name'                => 'required',
-            'address'             => 'required',
-            'timezone_id'         => 'required',
-            'coverage_start_time' => 'required',
-            'coverage_end_time'   => 'required',
-            'locationType_id'     => 'required',
+            'name'            => 'required',
+            'address'         => 'required',
+            'timezone_id'     => 'required',
+            //            'coverage_start_time' => 'required',
+            //            'coverage_end_time'   => 'required',
+            'locationType_id' => 'required',
         ]);
 
-        $data                      = new Location();
-        $data->name                = $request->name;
-        $data->user_id             = $request->user_id;
-        $data->address             = $request->address;
-        $data->timezone_id         = $request->timezone_id;
-        $data->license_number      = $request->license_number;
-        $data->timezone            = TimeZone::find($request->timezone_id)['timezone'];
+        $start_time = array_filter($request->start_time);
+        $start_time = array_values($start_time);
+        $end_time = array_filter($request->end_time);
+        $end_time = array_values($end_time);
+        foreach (\request()->days as $key => $day) {
+            $schedules[] = [
+                'day'        => $day,
+                'start_time' => $start_time[$key],
+                'end_time'   => $end_time[$key],
+            ];
+        }
+
+        $data = new Location();
+        $data->name = $request->name;
+        $data->user_id = $request->user_id;
+        $data->address = $request->address;
+        $data->timezone_id = $request->timezone_id;
+        $data->license_number = $request->license_number;
+        $data->timezone = TimeZone::find($request->timezone_id)['timezone'];
         $data->coverage_start_time = date('h:i:s', strtotime($request->coverage_start_time));
-        $data->coverage_end_time   = date('h:i:s', strtotime($request->coverage_end_time));
-        $data->location_type       = $request->locationType_id;
-        $data->location_sub_type   = '';
+        $data->coverage_end_time = date('h:i:s', strtotime($request->coverage_end_time));
+        $data->location_type = $request->locationType_id;
+        $data->location_sub_type = '';
+        $data->schedule_list = json_encode($schedules);
         $data->save();
 
-//        dd($request->client);
         $clientLocation = array();
-        $count          = 0;
+        $count = 0;
         foreach ($request->client as $key => $item) {
-            if (count($request->client['client_name']) >= $count+1){
+            if (count($request->client['client_name']) >= $count + 1) {
                 $clientLocation[] = [
                     'location_id'        => $data->id,
                     'client_name'        => $request->client['client_name'][$count],
@@ -183,7 +207,7 @@ class LocationController extends Controller
     public function show(string $id)
     {
         $data['activeMenu'] = 'Location';
-        $data['data']       = Location::find($id);
+        $data['data'] = Location::find($id);
         return view('admin.location.detail', $data);
     }
 
