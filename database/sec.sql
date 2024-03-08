@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2024 at 07:07 AM
+-- Generation Time: Mar 08, 2024 at 11:37 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -68,7 +68,8 @@ CREATE TABLE `client_locations` (
 INSERT INTO `client_locations` (`id`, `location_id`, `client_name`, `client_designation`, `client_email`, `client_phone`, `created_at`, `updated_at`) VALUES
 (1, 2, 'sasas', 'sasasas', 's@l.co', '03212342212', '2023-11-21 01:07:09', '2023-11-21 01:07:09'),
 (2, 3, 'DK', 'MANAGER', 's@l.co', '03212342212', '2023-12-12 08:10:31', '2023-12-12 08:10:31'),
-(3, 4, 'sasasas', 'sasas', 's@l.co', '03212342212', '2024-01-19 07:39:44', '2024-01-19 07:39:44');
+(3, 4, 'sasasas', 'sasas', 's@l.co', '03212342212', '2024-01-19 07:39:44', '2024-01-19 07:39:44'),
+(4, 5, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -87,6 +88,14 @@ CREATE TABLE `confirmation_calls` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `confirmation_calls`
+--
+
+INSERT INTO `confirmation_calls` (`id`, `user_id`, `schedule_id`, `location_id`, `employee_id`, `status`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, 1, 1, 'approved', 'sasasa', '2024-03-05 00:41:56', '2024-03-05 00:41:56'),
+(2, 1, 3, 1, 1, 'not approved', 'xxx', '2024-03-05 00:45:13', '2024-03-05 00:45:13');
 
 -- --------------------------------------------------------
 
@@ -239,6 +248,7 @@ CREATE TABLE `locations` (
   `location_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `location_sub_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `license_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `schedule_list` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_monitoring` tinyint(1) NOT NULL DEFAULT 0,
   `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -249,11 +259,12 @@ CREATE TABLE `locations` (
 -- Dumping data for table `locations`
 --
 
-INSERT INTO `locations` (`id`, `user_id`, `name`, `address`, `timezone_id`, `timezone`, `coverage_start_time`, `coverage_end_time`, `location_type`, `location_sub_type`, `license_number`, `is_monitoring`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Kaneez square', 'Nazimabad', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09'),
-(2, 1, 'around', 'nazimabad 2', 248, 'Asia/Karachi', '11:06:00', '11:06:00', '1', '', 'sasasa1234', 1, NULL, '2023-11-21 01:07:09', '2023-11-21 01:07:09'),
-(3, 1, 'DHA', 'PHASE 7', 248, 'Asia/Karachi', '06:09:00', '06:09:00', '7', '', NULL, 1, NULL, '2023-12-12 08:10:31', '2023-12-12 08:10:31'),
-(4, 3, 'PUNJAB', 'sasa', 1, 'Africa/Abidjan', '05:39:00', '05:39:00', '4', '', NULL, 0, NULL, '2024-01-19 07:39:44', '2024-01-19 07:39:44');
+INSERT INTO `locations` (`id`, `user_id`, `name`, `address`, `timezone_id`, `timezone`, `coverage_start_time`, `coverage_end_time`, `location_type`, `location_sub_type`, `license_number`, `schedule_list`, `is_monitoring`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Kaneez square', 'Nazimabad', 212, 'Asia/Aden', '12:28:00', '12:33:00', '3', '', NULL, NULL, 0, NULL, '2023-11-01 02:29:09', '2023-11-01 02:29:09'),
+(2, 1, 'around', 'nazimabad 2', 248, 'Asia/Karachi', '11:06:00', '11:06:00', '1', '', 'sasasa1234', NULL, 1, NULL, '2023-11-21 01:07:09', '2023-11-21 01:07:09'),
+(3, 1, 'DHA', 'PHASE 7', 248, 'Asia/Karachi', '06:09:00', '06:09:00', '7', '', NULL, NULL, 1, NULL, '2023-12-12 08:10:31', '2023-12-12 08:10:31'),
+(4, 3, 'PUNJAB', 'sasa', 1, 'Africa/Abidjan', '05:39:00', '05:39:00', '4', '', NULL, NULL, 0, NULL, '2024-01-19 07:39:44', '2024-01-19 07:39:44'),
+(5, 3, 'HYD', 'haha', 2, 'Africa/Accra', '12:00:00', '12:00:00', '3', '', NULL, '[{\"day\":\"Monday\",\"start_time\":\"15:20\",\"end_time\":\"15:20\"},{\"day\":\"Sunday\",\"start_time\":\"03:20\",\"end_time\":\"03:20\"}]', 0, NULL, '2024-03-08 05:29:38', '2024-03-08 05:29:38');
 
 -- --------------------------------------------------------
 
@@ -501,7 +512,8 @@ CREATE TABLE `schedules` (
 
 INSERT INTO `schedules` (`id`, `user_id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 3, '3', 4, '2024-01-19', '2024-01-20', '17:41', '05:41', '', '1', '2024-01-19 07:44:13', '2024-01-19 07:44:24', NULL),
-(2, 1, '', 1, '2024-01-26', '2024-01-27', '18:10', '06:10', '', '1', '2024-01-26 08:10:25', '2024-01-26 08:10:25', NULL);
+(2, 1, '', 1, '2024-01-26', '2024-01-27', '18:10', '06:10', '', '1', '2024-01-26 08:10:25', '2024-01-26 08:10:25', NULL),
+(3, 1, '1', 1, '2024-03-05', '2024-03-06', '10:41', '22:41', '', '1', '2024-03-05 00:41:17', '2024-03-05 00:41:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -567,7 +579,8 @@ CREATE TABLE `time_sheets` (
 --
 
 INSERT INTO `time_sheets` (`id`, `user_id`, `schedule_id`, `employee_id`, `location_id`, `check_in_time`, `check_out_time`, `notes`, `is_approved`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 3, 4, '18:33', '06:33', 'sasas', 1, '2024-01-19 08:33:54', '2024-01-19 08:34:51');
+(1, 1, 1, 3, 4, '18:33', '06:33', 'sasas', 1, '2024-01-19 08:33:54', '2024-01-19 08:34:51'),
+(2, 1, 3, 1, 1, '22:41', NULL, NULL, 0, '2024-03-05 00:41:37', '2024-03-05 00:41:37');
 
 -- --------------------------------------------------------
 
@@ -1118,7 +1131,8 @@ INSERT INTO `user_two_factors` (`id`, `user_id`, `opt_number`, `ip_address`, `br
 (4, 2, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-12 00:41:38', '2024-01-12 00:41:38'),
 (5, 3, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:12:52', '2024-01-19 08:12:52'),
 (6, 4, '1234', '::1', 'Chrome', '120.0.0.0', 'Windows', 0, 1, 0, '2024-01-19 08:23:28', '2024-01-19 08:23:28'),
-(7, 1, '1234', '::1', 'Chrome', '121.0.0.0', 'Windows', 0, 1, 0, '2024-02-20 01:01:19', '2024-02-20 01:01:19');
+(7, 1, '1234', '::1', 'Chrome', '121.0.0.0', 'Windows', 0, 1, 0, '2024-02-20 01:01:19', '2024-02-20 01:01:19'),
+(8, 1, '1234', '::1', 'Chrome', '122.0.0.0', 'Windows', 0, 1, 0, '2024-03-05 00:41:00', '2024-03-05 00:41:00');
 
 --
 -- Indexes for dumped tables
@@ -1322,13 +1336,13 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `client_locations`
 --
 ALTER TABLE `client_locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `confirmation_calls`
 --
 ALTER TABLE `confirmation_calls`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -1364,7 +1378,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `location_types`
@@ -1412,7 +1426,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
@@ -1430,7 +1444,7 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `time_sheets`
 --
 ALTER TABLE `time_sheets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `time_zones`
@@ -1454,7 +1468,7 @@ ALTER TABLE `user_privileges`
 -- AUTO_INCREMENT for table `user_two_factors`
 --
 ALTER TABLE `user_two_factors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
