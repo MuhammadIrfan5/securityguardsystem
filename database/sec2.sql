@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 17, 2024 at 12:09 PM
+-- Generation Time: Mar 17, 2024 at 12:12 PM
 -- Server version: 5.7.44
 -- PHP Version: 8.1.27
 
@@ -423,15 +423,6 @@ CREATE TABLE `schedules` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `schedules`
---
-
-INSERT INTO `schedules` (`id`, `user_id`, `employee_id`, `location_id`, `start_date`, `end_date`, `start_time`, `end_time`, `comments`, `created_by`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, '3', 4, '2024-01-19', '2024-01-20', '17:41', '05:41', '', '1', '2024-01-19 07:44:13', '2024-01-19 07:44:24', NULL),
-(2, 1, '', 1, '2024-01-26', '2024-01-27', '18:10', '06:10', '', '1', '2024-01-26 08:10:25', '2024-01-26 08:10:25', NULL),
-(3, 1, '1', 1, '2024-03-05', '2024-03-06', '10:41', '22:41', '', '1', '2024-03-05 00:41:17', '2024-03-05 00:41:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -1308,7 +1299,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `schedule_days`
