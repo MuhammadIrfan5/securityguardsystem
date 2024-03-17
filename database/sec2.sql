@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 17, 2024 at 11:54 AM
+-- Generation Time: Mar 17, 2024 at 12:09 PM
 -- Server version: 5.7.44
 -- PHP Version: 8.1.27
 
@@ -995,17 +995,6 @@ CREATE TABLE `user_privileges` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `user_privileges`
---
-
-INSERT INTO `user_privileges` (`id`, `privilege_id`, `user_id`, `role_id`, `assign_by`, `created_at`, `updated_at`) VALUES
-(5, 29, 3, 3, 'admin', NULL, NULL),
-(6, 25, 4, 5, 'admin', NULL, NULL),
-(7, 26, 4, 5, 'admin', NULL, NULL),
-(8, 27, 4, 5, 'admin', NULL, NULL),
-(9, 28, 4, 5, 'admin', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -1355,7 +1344,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_privileges`
 --
 ALTER TABLE `user_privileges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_two_factors`
