@@ -44,7 +44,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingphone_one" placeholder="Contact Number"
-                               name="phone_one" maxlength="11">
+                               name="phone_one">
                         <label for="floatingphone_one">Contact Number</label>
                     </div>
                 </div>
