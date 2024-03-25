@@ -132,6 +132,6 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('/fullcalender', [ScheduleController::class, 'getEvents'])->name('getEvents');
 
     Route::get('/delete',function (){
-       \App\Models\User::first()->delete();
+       \App\Models\Employee::first()->delete();
     });
 });
