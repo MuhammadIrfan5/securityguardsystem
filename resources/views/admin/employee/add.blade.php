@@ -36,6 +36,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingAddress" placeholder="Employee Address"
+                               name="address" required>
+                        <label for="floatingAddress">Employee Address</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
                         <input type="text" class="form-control" id="floatingid_number" placeholder="Employee ID Number"
                                name="id_number">
                         <label for="floatingid_number">Employee ID Number</label>

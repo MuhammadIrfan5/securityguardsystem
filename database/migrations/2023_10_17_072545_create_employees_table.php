@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('category_id')->constrained('employee_categories');
             $table->string('name');
+            $table->text('address');
             $table->string('id_number');
             $table->string('phone_one');
             $table->string('phone_two')->nullable();
