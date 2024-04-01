@@ -30,7 +30,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingName" placeholder="Employee Name"
-                               name="name">
+                               name="name" required>
                         <label for="floatingName">Employee Name</label>
                     </div>
                 </div>
