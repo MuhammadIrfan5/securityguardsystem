@@ -69,7 +69,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingguard_number"
-                               placeholder="Guard Card Number" name="guard_number" required>
+                               placeholder="Guard Card Number" name="guard_number">
                         <label for="floatingguard_number">Guard Card Number</label>
                     </div>
                 </div>
