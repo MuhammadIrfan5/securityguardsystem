@@ -62,9 +62,9 @@
                             <select name="state_id" class="form-select"
                                     id="state_id">
                                 <option disabled selected>State list</option>
-                                @foreach($state as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name}}</option>
-                                @endforeach
+{{--                                @foreach($state as $user)--}}
+{{--                                    <option value="{{ $user->id }}">{{ $user->name}}</option>--}}
+{{--                                @endforeach--}}
                             </select>
                         </div>
                     </div>
@@ -73,9 +73,9 @@
                             <select name="city_name" class="form-select"
                                     id="city_name">
                                 <option disabled selected>City list</option>
-                                @foreach($city as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name}}</option>
-                                @endforeach
+{{--                                @foreach($city as $user)--}}
+{{--                                    <option value="{{ $user->id }}">{{ $user->name}}</option>--}}
+{{--                                @endforeach--}}
                             </select>
                         </div>
                     </div>
@@ -257,5 +257,32 @@
                 $('.redColor').html('Not Matching').css('border-color', 'red');
             // $('.redColor').html('Not Matching').css('background-color', 'red');
         });
+        $('#country_name').on('change',function(e){
+
+            var cat_id = e.target.value;
+            var state = $('#state_id');
+
+            $.get("{{url('/get-state?id=')}}"+ cat_id,function(data){
+                var state =  $('#state_id').empty();
+                $.each(data,function(create,subcatObj){
+                    state.append('<option value ="'+subcatObj.id+'">'+subcatObj.name+'</option>');
+                });
+                if (data.length === 1) {
+                    state.val(data[0].id).change(); // Select the first state and trigger change event
+                }
+            });
+
+        });
+        $('#state_id').on('change',function(e){
+
+            var state_id = e.target.value??1;
+            $.get("{{url('/get-cities?id=')}}"+ state_id,function(data){
+                var city =  $('#city_name').empty();
+                $.each(data,function(create,obj){
+                    city.append('<option value ="'+obj.id+'">'+obj.name+'</option>');
+                });
+            });
+        });
+
     </script>
 @endsection

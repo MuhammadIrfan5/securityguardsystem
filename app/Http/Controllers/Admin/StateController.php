@@ -16,7 +16,7 @@ class StateController extends Controller
     public function index()
     {
         $data['activeMenu'] = "State";
-        return view('admin.state.table',$data);
+        return view('admin.state.table', $data);
     }
 
     public function tableData(Request $request)
@@ -74,10 +74,10 @@ class StateController extends Controller
         foreach ($country as $record) {
             $response['data'][] = [
                 '<input type="checkbox" class="checkbox" onclick="handleCheck(this)" value="' . $record->id . '">',
-//                $record->country->name,
+                //                $record->country->name,
                 $record->country_id,
                 $record->name,
-//                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->status])->render(),
+                //                view('admin.defaultComponents.binaryStatusWithValue', ["status" => $record->status])->render(),
                 view('admin.defaultComponents.editViewDelete', [
 //                    'deleteUrl' => route('DeleteLoan', ['id' => $record->id])
                 ])->render()
@@ -141,5 +141,10 @@ class StateController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getStatesById(Request $request)
+    {
+        return State::select(['id', 'name'])->where('country_id', $request->id)->get() ?? '';
     }
 }

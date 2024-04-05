@@ -131,4 +131,9 @@ class CityController extends Controller
     {
         //
     }
+
+    public function getCitiesById(Request $request)
+    {
+        return City::select(['id', 'name'])->where('country_id', $request->id)->get() ?? '';
+    }
 }
