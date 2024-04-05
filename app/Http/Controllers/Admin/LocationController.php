@@ -83,7 +83,7 @@ class LocationController extends Controller
                 $mainCategory = LocationType::find($record->maintype->parent_id)['type'];
             }
             $schedules = array();
-            if($record->schedule_list){
+            if ($record->schedule_list) {
                 foreach (json_decode($record->schedule_list) as $item) {
                     $schedules[] = [
                         "<li>$item->day</li>" .
@@ -136,13 +136,11 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
         $request->validate([
             'name'            => 'required',
             'address'         => 'required',
             'timezone_id'     => 'required',
-            //            'coverage_start_time' => 'required',
-            //            'coverage_end_time'   => 'required',
+            'user_id'         => 'required|not_in:0',
             'locationType_id' => 'required',
         ]);
 
@@ -216,7 +214,35 @@ class LocationController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = array();
+        $location = Location::find($id);
+        $data['locationType'] = array();
+        $data['title'] = 'Location';
+        $data['users'] = User::where('role_id', 3)->get();
+        $locationType = LocationType::where('parent_id', '!=', 0)->get()->toArray();
+        $locationType2 = LocationType::where('id', 1)->get()->toArray();
+        $datalocationType = array_merge($locationType, $locationType2);
+        foreach ($datalocationType as $item) {
+            $parentName = LocationType::find($item['parent_id']);
+            $data['locationType'][] = [
+                'id'   => $item['id'],
+                'type' => !empty($parentName) ? $parentName->type . ' (' . $item['type'] . ")" : $item['type']
+            ];
+        }
+        $selectedDays = array();
+        $selectedStartTime = array();
+        $selectedEndTime = array();
+        foreach (json_decode($location->schedule_list) as $item) {
+            array_push($selectedDays, $item->day);
+            array_push($selectedStartTime, $item->start_time);
+            array_push($selectedEndTime, $item->end_time);
+        }
+        $data['selectedDays'] = $selectedDays;
+        $data['selectedStartTime'] = $selectedStartTime;
+        $data['selectedEndTime'] = $selectedEndTime;
+        $data['data'] = $location;
+        $data['timeZone'] = TimeZone::all();
+        return view('admin.location.edit', $data);
     }
 
     /**

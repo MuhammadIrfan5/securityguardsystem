@@ -27,8 +27,8 @@
                     <div class="col-md-6">
                         <div class="form-floating">
                             <select name="user_id" class="form-select"
-                                    id="user_id">
-                                <option disabled selected>Users list</option>
+                                    id="user_id" required>
+                                <option disabled selected value="0">Users list</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{$user->first_name}}</option>
                                 @endforeach
