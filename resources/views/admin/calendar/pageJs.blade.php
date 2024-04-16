@@ -12,11 +12,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <script>
-    // var myDropDown = $("#locationDropdown");
-    // var length = $('#locationDropdown> option').length;
-    // //open dropdown
-    // myDropDown.attr('size', length);
-
     function loadCalendarEvents(element) {
         $.ajaxSetup({
             headers: {
@@ -188,7 +183,7 @@
             var employee = $('#employee_id').val();
             var startTime = $('#startTime').val();
             var endTime = $('#endTime').val();
-            if (location) {
+            if (location && startTime && endTime) {
                 // Perform AJAX request to save event
                 $.ajax({
                     url: "{{route('CRUD.Event')}}",
@@ -203,13 +198,15 @@
                     },
                     type: "POST",
                     success: function (data) {
+                        $('#startTime').val('');
+                        $('#endTime').val('');
                         $('#eventModal').modal('hide');
-
                         displayMessage("Event Created Successfully");
                         calendar.fullCalendar('refetchEvents');
-
                     }
                 });
+            }else {
+                alert("Please fill in start time and end time.");
             }
         });
     }
