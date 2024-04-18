@@ -28,9 +28,9 @@ class BackupDatabase extends Command
         $backupDirectory = storage_path('app/backups');
 
         // Create the directory if it doesn't exist
-//        if (!is_dir($backupDirectory)) {
-//            mkdir($backupDirectory, 0755, true);
-//        }
+        if (!is_dir($backupDirectory)) {
+            mkdir($backupDirectory, 0755, true);
+        }
 
         $filename = $backupDirectory . '/' . date('Y-m-d_His') . '.sql';
 
@@ -38,19 +38,11 @@ class BackupDatabase extends Command
         $database = config('database.connections.mysql.database');
         $username = config('database.connections.mysql.username');
         $password = config('database.connections.mysql.password');
-        $host = config('database.connections.mysql.host');
+        $filename = $backupDirectory . '/' . date('Y-m-d_His') . '.sql';
 
-        $command = sprintf(
-            'mysqldump -u%s -p%s -h%s %s > %s',
-            escapeshellarg($username),
-            escapeshellarg($password),
-            escapeshellarg($host),
-            escapeshellarg($database),
-            escapeshellarg($filename)
-        );
+        exec("mysqldump -u{$username} -p{$password} {$database} > {$filename}");
 
-        // Use Laravel's database connection to execute the command
-        DB::connection()->getPdo()->exec($command);
+        $this->info("Database backup saved to: {$filename}");
 
         $this->info("Database backup saved to: {$filename}");
     }
