@@ -28,9 +28,9 @@ class BackupDatabase extends Command
         $backupDirectory = storage_path('app/backups');
 
         // Create the directory if it doesn't exist
-        if (!is_dir($backupDirectory)) {
-            mkdir($backupDirectory, 0755, true);
-        }
+//        if (!is_dir($backupDirectory)) {
+//            mkdir($backupDirectory, 0755, true);
+//        }
 
         $filename = $backupDirectory . '/' . date('Y-m-d_His') . '.sql';
 
