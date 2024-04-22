@@ -21,19 +21,12 @@
                 @endif
             </div>
             <div class="col-md-3">
-                @if(!empty($selectedlocation))
-                    <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
-                        <option value="{{$selectedlocation->id}}" selected>{{$selectedlocation->name}}</option>
-                    </select>
-                @else
                     <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
                         <option value="#" disabled selected>Select location</option>
                         @foreach($locations as $location)
                             <option value="{{$location->id}}">{{$location->name}}</option>
                         @endforeach
                     </select>
-                @endif
-
             </div>
             <div class="col-md-9">
 
@@ -89,6 +82,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <input type="hidden" name="id" id="eventId">
                 <div class="modal-body">
                     <form id="locationId" class="row g-3">
                         <div class="col-md-6">
