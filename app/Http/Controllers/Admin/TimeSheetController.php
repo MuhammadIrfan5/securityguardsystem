@@ -83,6 +83,46 @@ class TimeSheetController extends Controller
         }
         return response($response);
     }
+    public function updatedtableData(Request $request)
+    {
+        $response = [
+            "draw"            => $request->draw,
+            "recordsTotal"    => 0,
+            "recordsFiltered" => 0,
+            "data"            => [],
+        ];
+        $data = new Schedule();
+
+        /*Search function*/
+        $data=$data->where('location_id', \request()->location_id)->whereDate('start_date', '>=', Carbon::today())
+            ->whereDate('end_date', '<=', Carbon::tomorrow())->pluck('id')->toArray();
+
+        $records=TimeSheet::whereIn('schedule_id',$data);
+
+        $response["recordsTotal"] = $records->count();
+        $response["recordsFiltered"] = $records->count();
+
+        $records = $records->orderBy('id', 'ASC')
+            ->skip($request->start)->take($request->length)
+            ->get();
+        foreach ($records as $record) {
+                    $time = '<ul>
+                    <li> Start time   : ' . $record->start_time . '</li>
+                    <li>End time ' . $record->end_time . '</li>
+                </ul>';
+
+            $editButton = view('admin.layout.defaultComponent.editButton', [
+                'editUrl' => route('time-sheet.edit', $record->id)
+            ])->render();
+
+            $response['data'][] = [
+                $record->id,
+                $record->employee->name,
+                $time,
+            ];
+        }
+        return response($response);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -183,9 +223,8 @@ class TimeSheetController extends Controller
         $id = $request->location_id;
         $employee = Schedule::
         select('id', 'employee_id')
-            ->
-            where('location_id', $id)
-            ->whereNotNull('employee_id')
+            ->where('employee_id', '!=', '')
+            ->where('location_id', $id)
             ->whereDate('start_date', '>=', date('Y-m-d'))
             ->whereDate('end_date', '<=', Carbon::tomorrow())
             ->get();
@@ -194,6 +233,29 @@ class TimeSheetController extends Controller
                 $list[] = [
                     'id'   => $item->employee->id,
                     'name' => $item->employee->name,
+                ];
+            }
+        }
+        return $list;
+    }
+
+    public function getEmployeeByLocation(Request $request)
+    {
+        $list = array();
+        $id = $request->location_id;
+        $employee = Employee::
+        select('id', 'name')
+            ->wheredoesntHave('schedules', function ($q) use ($id) {
+                $q->where('id', $id)
+                    ->whereDate('start_date', '>=', date('Y-m-d'))
+                    ->whereDate('end_date', '<=', Carbon::tomorrow());
+            })
+            ->get();
+        if (count($employee) > 0) {
+            foreach ($employee as $item) {
+                $list[] = [
+                    'id'   => $item->id,
+                    'name' => $item->name,
                 ];
             }
         }

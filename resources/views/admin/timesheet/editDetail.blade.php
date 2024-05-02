@@ -11,7 +11,7 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
+    <input type="hidden" name="location_id" id="location_id" value="{{$location->id}}">
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Employee list</h5>
@@ -80,8 +80,11 @@
             <!-- End Table with stripped rows -->
         </div>
     </div>
+    <div class="pagetitle">
+        <h1>Time Sheet</h1>
+    </div>
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <div id="dataTableUpdates_wrapper" class="dataTables_wrapper no-footer">
@@ -120,36 +123,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"></h5>
-
-                    <!-- General Form Elements -->
-                    <form id="addUpdates">
-                        <input type="hidden" id="location_id" name="location_id" value="{{$location->id}}">
-                        <div class="row mb-3">
-                            <label for="inputPassword" class="col-sm-3 col-form-label">Message</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" style="height: 100px" name="message"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form><!-- End General Form Elements -->
-
-                </div>
-            </div>                                        <!-- End Transaction Datatable-->
-        </div>
     </div>
     <div class="modal fade" id="basicModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Donations</h5>
+                    <h5 class="modal-title">Add Time Sheet</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="addUpdates" method="post">
@@ -173,12 +152,29 @@
                                 </tr>
 
 
-
                                 <tr>
-                                    <td width="200" align="center" height="50"> Donation Date</td>
+                                    <td width="200" align="center" height="50"> Check In</td>
                                     <td width="10">:</td>
                                     <td width="170" align="left">
-                                        <input type="date" class="form-control-sm" name="donation_date"  id="donation_date" maxlength="10"  value="<?php if(!empty($qEdit)):echo substr($qEdit['created_at'],0,strlen($q['created_at'])-9);endif;?>"/>
+                                        <input type="time" class="form-control" id="floatingName" placeholder="Check-In"
+                                               name="check_in" value="" required>
+                                        <br/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="200" align="center" height="50"> Check Out</td>
+                                    <td width="10">:</td>
+                                    <td width="170" align="left">
+                                        <input type="time" class="form-control" id="floatingName" placeholder="Check-Out"
+                                               name="check_out" value="" required>
+                                        <br/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="200" align="center" height="50"> Notes</td>
+                                    <td width="10">:</td>
+                                    <td width="170" align="left">
+                                        <textarea class="form-control" style="height: 100px" name="message"></textarea>
                                         <br/>
                                     </td>
                                 </tr>
@@ -187,15 +183,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="submitAddonation()">Save changes</button>
+                        <button type="button" class="btn btn-primary" onclick="submitAddonation()">Save</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div><!-- End Basic Modal-->
 
 @endsection
 @section('page-js')
-@include('admin.timesheet.editDetailJS')
+    @include('admin.timesheet.editDetailJS')
 @endsection

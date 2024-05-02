@@ -102,6 +102,7 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     /*Time Sheet*/
     Route::resource('time-sheet', TimeSheetController::class);
     Route::get('time-sheet-list', [TimeSheetController::class, 'tableData'])->name('time.sheet.tableData');
+    Route::get('updated-time-sheet-list', [TimeSheetController::class, 'updatedtableData'])->name('updated.time.sheet.tableData');
 
     Route::get('time-sheet-create', [TimeSheetController::class, 'create'])->name('time.sheet.create');
 
@@ -116,6 +117,7 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
     /*AJAX API*/
     Route::get('get-employee', [TimeSheetController::class, 'getEmployees']);
+    Route::get('get-employee-By-locationId', [TimeSheetController::class, 'getEmployeeByLocation']);
 
     Route::get('/schedule', [CalendarController::class, 'index'])->name('calendar');
     Route::get('/fullcalender', [CalendarController::class, 'getEvents'])->name('getEvents');
