@@ -33,28 +33,28 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $records  = new Location();
+        $records = new Location();
 
         /*Search function*/
         if (!empty($request->search["value"])) {
             $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
             $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
-        $response["recordsTotal"]    = $records->count();
+        $response["recordsTotal"] = $records->count();
         $response["recordsFiltered"] = $records->count();
 
         $records = $records->orderBy('id', 'ASC')
             ->skip($request->start)->take($request->length)
             ->get();
         foreach ($records as $record) {
-            $schedules=Schedule::where('location_id',$record->id)->whereDate('start_date', '>=', Carbon::today())
+            $schedules = Schedule::where('location_id', $record->id)->whereDate('start_date', '>=', Carbon::today())
                 ->whereDate('end_date', '<=', Carbon::tomorrow())->get();
-            $time='';
+            $time = '';
             foreach ($schedules as $schedule) {
                 if (!empty($schedule->employee)) {
                     $time .= '<ul>
-                    <li>'.$schedule->employee->name.' : ' . $schedule->start_time . '</li>
-                    <li>'.$schedule->employee->name.' : ' . $schedule->end_time . '</li>
+                    <li>' . $schedule->employee->name . ' : ' . $schedule->start_time . '</li>
+                    <li>' . $schedule->employee->name . ' : ' . $schedule->end_time . '</li>
                 </ul>';
                 } else {
                     $time .= '<ul>
@@ -64,20 +64,21 @@ class TimeSheetController extends Controller
                 }
             }
 
-            $editButton= view('admin.layout.defaultComponent.editButton', [
+            $editButton = view('admin.layout.defaultComponent.editButton', [
                 'editUrl' => route('time-sheet.edit', $record->id)
             ])->render();
 
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.linkDetail',
-                    [ 'is_location' => 1,
-                      "url"         => route('location.show', $record->id),
-                      "username"    => $record->name
+                    [
+                        'is_location' => 1,
+                        "url"         => route('location.show', $record->id),
+                        "username"    => $record->name
                     ]
                 )->render(),
                 $time,
-                $editButton
+                count($schedules) > 0 ? $editButton : ''
             ];
         }
         return response($response);
@@ -149,9 +150,9 @@ class TimeSheetController extends Controller
      */
     public function create()
     {
-        $data['title']     = 'Verify Records';
-        $data['data']      = Schedule::find(\request()->id);
-        $data['employee']  = Employee::all();
+        $data['title'] = 'Verify Records';
+        $data['data'] = Schedule::find(\request()->id);
+        $data['employee'] = Employee::all();
         $data['locations'] = Location::all();
         return view('admin.timesheet.add', $data);
     }
@@ -171,14 +172,14 @@ class TimeSheetController extends Controller
         /*GET EMPLOYEE*/
         $record = Schedule::find($request->id);
 
-        $data                 = new TimeSheet();
-        $data->user_id        = $request->user()['id'];
-        $data->schedule_id    = $record->id;
-        $data->location_id    = $record->location_id;
-        $data->employee_id    = $record->employee_id;
-        $data->check_in_time  = $request->check_in;
+        $data = new TimeSheet();
+        $data->user_id = $request->user()['id'];
+        $data->schedule_id = $record->id;
+        $data->location_id = $record->location_id;
+        $data->employee_id = $record->employee_id;
+        $data->check_in_time = $request->check_in;
         $data->check_out_time = $request->check_out;
-        $data->notes          = $request->notes;
+        $data->notes = $request->notes;
         $data->save();
 
         return redirect()->route('time-sheet.index')->with('msg', 'Time-Sheet Successfully!');
@@ -198,10 +199,10 @@ class TimeSheetController extends Controller
      */
     public function edit(string $id)
     {
-        $data['title']    = 'Time Sheet';
+        $data['title'] = 'Time Sheet';
         $data['employee'] = Employee::all();
-        $data['data']     = Schedule::find($id);
-        $data['record']   = TimeSheet::where('schedule_id', $id)->first();
+        $data['data'] = Schedule::find($id);
+        $data['record'] = TimeSheet::where('schedule_id', $id)->first();
         return view('admin.timesheet.editDetail', $data);
 
     }
@@ -237,8 +238,8 @@ class TimeSheetController extends Controller
 
     public function getEmployees(Request $request)
     {
-        $list     = array();
-        $id       = $request->location_id;
+        $list = array();
+        $id = $request->location_id;
         $employee = Schedule::
         select('id', 'employee_id')
             ->
@@ -265,7 +266,7 @@ class TimeSheetController extends Controller
         $currentDateTime = new \DateTime();
 
         $startTime = !empty($startTime) ? $startTime : $currentDateTime->format('H:i');
-        $endTime   = !empty($endTime) ? $endTime : $currentDateTime->format('H:i');
+        $endTime = !empty($endTime) ? $endTime : $currentDateTime->format('H:i');
 
         $item = Schedule::where('location_id', $locationId)
             ->whereTime('start_time', '>', $startTime)
