@@ -83,67 +83,6 @@ class TimeSheetController extends Controller
         }
         return response($response);
     }
-//    public function tableData(Request $request)
-//    {
-//        $response = [
-//            "draw"            => $request->draw,
-//            "recordsTotal"    => 0,
-//            "recordsFiltered" => 0,
-//            "data"            => [],
-//        ];
-//        $records  = new Schedule();
-//
-//        /*Search function*/
-//        if (!empty($request->search["value"])) {
-//            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
-//            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
-//        }
-//        $records = $records
-////            ->where('employee_id', '!=', '')
-//            ->whereDate('start_date', '>=', Carbon::today())
-//            ->whereDate('end_date', '<=', Carbon::tomorrow());
-//
-//        $response["recordsTotal"]    = $records->count();
-//        $response["recordsFiltered"] = $records->count();
-//
-//        $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
-//        foreach ($records as $record) {
-//            $item = TimeSheet::where('schedule_id', $record->id)->first();
-//            if (!empty($item)) {
-//                $time = '<ul>
-//                    <li>Check-In:' . $item->check_in_time . '</li>
-//                    <li>Check-Out:' . $item->check_out_time . '</li>
-//                </ul>';
-//            } else {
-//                $time = '<ul>
-//                    <li>Check-In:</li>
-//                    <li>Check-Out:</li>
-//                </ul>';
-//            }
-//            $editButton= view('admin.layout.defaultComponent.editButton', [
-//                'editUrl' => route('time-sheet.edit', $record->id)
-//            ])->render() ;
-////                view('admin.layout.defaultComponent.editButton', [
-////                'editUrl' => route('time.sheet.create', [ 'id' => $record->id ])
-////            ])->render();
-//
-//            $response['data'][] = [
-//                $record->id,
-//                view('admin.layout.defaultComponent.linkDetail',
-//                    [ 'is_location' => 1,
-//                      "url"         => route('location.show', $record->location_id),
-//                      "username"    => $record->location->name
-//                    ]
-//                )->render(),
-//                !empty($record->employee)?$record->employee->name:'No name',
-//                $time,
-//                !empty($item)?$item->notes : '',
-//                !empty($record->employee)?$editButton:''
-//            ];
-//        }
-//        return response($response);
-//    }
-
 
     /**
      * Show the form for creating a new resource.
@@ -200,9 +139,11 @@ class TimeSheetController extends Controller
     public function edit(string $id)
     {
         $data['title'] = 'Time Sheet';
+        $data['location'] = Location::find($id);
         $data['employee'] = Employee::all();
-        $data['data'] = Schedule::find($id);
-        $data['record'] = TimeSheet::where('schedule_id', $id)->first();
+        $data['data'] = Schedule::where('location_id', $id)->whereDate('start_date', '>=', Carbon::today())
+            ->whereDate('end_date', '<=', Carbon::tomorrow())->get();
+
         return view('admin.timesheet.editDetail', $data);
 
     }
