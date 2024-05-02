@@ -5,10 +5,8 @@
 
     let table = new DataTable('#dataTable', {
         responsive: true,
-        searching: false,
         searchable: false,
-        lengthChange: true,
-        ordering: false,
+        paging: true,
         autoWidth: true,
         processing: true,
         serverSide: true,
@@ -30,21 +28,4 @@
         table.ajax.reload()
     })
 
-    function handleCheck(cb) {
-        if ($(cb).hasClass("check-all")) {
-            if ($(cb).prop("checked")) {
-                $(".checkbox").prop("checked", true);
-            } else {
-                $(".checkbox").prop("checked", false);
-            }
-            $('#export').css('opacity', '1');
-        } else {
-            if ($(cb).prop("checked") && $(".checkbox:checked").length == ($(".checkbox").length - 1)) {
-                $(".checkbox").prop("checked", true);
-            } else {
-                $(".check-all").prop("checked", false);
-            }
-            $('#export').css('opacity', '1');
-        }
-    }
 </script>

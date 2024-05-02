@@ -9,20 +9,6 @@
 {{--                <a href="{{route('time-sheet.create')}}" class="btn btn-primary">Create</a>--}}
             @endif
         </div>
-{{--        <form action="#" method="get" id="filterForm">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-5">--}}
-{{--                    <input type="time" name="startTime" class="form-control">--}}
-{{--                </div>--}}
-{{--                <div class="col-5">--}}
-{{--                    <input type="time" name="endTime" class="form-control">--}}
-{{--                </div>--}}
-{{--                <div class="col-2">--}}
-{{--                    <input id="filter" type="submit" class="btn btn-outline-primary " value="Filter">--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </form>--}}
-
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
@@ -50,9 +36,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Location</th>
-                                <th>Employee</th>
                                 <th>Attendance</th>
-                                <th>Notes</th>
                                 {{--                                <th>Status</th>--}}
                                 <th>Actions</th>
                             </tr>
