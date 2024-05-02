@@ -77,8 +77,7 @@ class TimeSheetController extends Controller
                     ]
                 )->render(),
                 $time,
-                !empty($item)?$item->notes : '',
-                !empty($record->employee)?$editButton:''
+                $editButton
             ];
         }
         return response($response);

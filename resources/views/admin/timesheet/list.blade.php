@@ -37,7 +37,6 @@
                                 <th>ID</th>
                                 <th>Location</th>
                                 <th>Attendance</th>
-                                {{--                                <th>Status</th>--}}
                                 <th>Actions</th>
                             </tr>
                             </thead>
