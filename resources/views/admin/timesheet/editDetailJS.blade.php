@@ -31,7 +31,9 @@
 
     $('#addUpdates').submit(function (e) {
         e.preventDefault();
-        console.log(e)
+
+        $('#basicModal').modal('hide');
+
         var formData = $(this).serialize();
         var form = $(this);
         $.ajax({
