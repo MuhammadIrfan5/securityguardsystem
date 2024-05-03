@@ -2,53 +2,54 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <script>
-    function loadDraftInModal(data){
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')}});
+
+    function loadDraftInModal(data) {
+        $('#schedule_id').val(data.value);
+
         $('#employee_id').empty();
-        let location=$('#location_id').val();
-            console.log(location)
-            var employee = $('#employee_id');
-            employee.empty();
-            $.ajax({
-                url: "{{url('get-employee-By-locationId')}}",
-                type: 'GET',
-                data: {
-                    location_id: location,
-                },
-                success: function (result) {
-                    $.each(result, function (index, value) {
-                        console.log(value);
-                        employee.append('<option value ="'+value.id+'">'+value.name+'</option>');
-                    });
-                },
-                error: function (error) {
-                    console.log(error.status)
-                }
-            });
+        let location = $('#location_id').val();
+        var employee = $('#employee_id');
+        employee.empty();
+        $.ajax({
+            url: "{{url('get-employee-By-locationId')}}",
+            type: 'GET',
+            data: {
+                location_id: location,
+            },
+            success: function (result) {
+                $.each(result, function (index, value) {
+                    employee.append('<option value ="' + value.id + '">' + value.name + '</option>');
+                });
+            },
+            error: function (error) {
+                console.log(error.status)
+            }
+        });
 
     }
 
-    $('#addUpdates').submit(function(e) {
+    $('#addUpdates').submit(function (e) {
         e.preventDefault();
-
+        console.log(e)
         var formData = $(this).serialize();
         var form = $(this);
         $.ajax({
             type: 'POST',
-            url: '{{ route("confirmation-call.create") }}',
+            url: '{{ route("time-sheet.store") }}',
             data: formData,
-            success: function(response) {
+            success: function (response) {
                 // Handle success response
-                updates.ajax.reload();
+                table.ajax.reload();
                 form.trigger("reset");
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 // Handle error response
                 console.error(xhr.responseText);
             }
         });
     });
-    let locationId=$('#location_id').val();
-    console.log(locationId);
+    let locationId = $('#location_id').val();
     let table = new DataTable('#dataTable', {
         responsive: true,
         searchable: false,
@@ -61,15 +62,21 @@
             "data": function (d) {
                 // Add location_id to the data being sent
                 d.location_id = $('#location_id').val();
+            },
+            "dataSrc": function (json) {
+                // Update the footer with the total hours
+                $('#totalHoursFooter').text('Total Hours: ' + json.totalHours);
 
-                // Serialize other form data and add it to the request
-                var unindexed_array = $("#filterForm").serializeArray();
-                $.map(unindexed_array, function (n, i) {
-                    d[n['name']] = n['value'];
-                });
+                // Return the data for the DataTable to consume
+                return json.data;
             }
         }
     });
 
+
+    function Callback(data)
+    {
+        alert(data);
+    }
 
 </script>

@@ -83,6 +83,7 @@ class TimeSheetController extends Controller
         }
         return response($response);
     }
+
     public function updatedtableData(Request $request)
     {
         $response = [
@@ -91,38 +92,64 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $data = new Schedule();
 
-        /*Search function*/
-        $data=$data->where('location_id', \request()->location_id)->whereDate('start_date', '>=', Carbon::today())
-            ->whereDate('end_date', '<=', Carbon::tomorrow())->pluck('id')->toArray();
+        // Initialize total minutes
+        $total_minutes = 0;
 
-        $records=TimeSheet::whereIn('schedule_id',$data);
+        $data = Schedule::where('location_id', $request->location_id)
+            ->whereDate('start_date', '>=', Carbon::today())
+            ->whereDate('end_date', '<=', Carbon::tomorrow())
+            ->pluck('id')
+            ->toArray();
+
+        $records = TimeSheet::whereIn('schedule_id', $data);
 
         $response["recordsTotal"] = $records->count();
         $response["recordsFiltered"] = $records->count();
 
         $records = $records->orderBy('id', 'ASC')
-            ->skip($request->start)->take($request->length)
+            ->skip($request->start)
+            ->take($request->length)
             ->get();
-        foreach ($records as $record) {
-                    $time = '<ul>
-                    <li> Start time   : ' . $record->start_time . '</li>
-                    <li>End time ' . $record->end_time . '</li>
-                </ul>';
 
+        foreach ($records as $record) {
+            $start_datetime = Carbon::createFromFormat('H:i', $record->check_in_time);
+            $end_datetime = Carbon::createFromFormat('H:i', $record->check_out_time);
+
+            $difference = $start_datetime->diff($end_datetime);
+
+            // Add the difference in minutes to the total
+            $total_minutes += $difference->format('%i') + ($difference->format('%h') * 60);
+
+            // Build time HTML
+            $time = '<ul>
+            <li>' . $record->getSchedule->employee->name . '</li>
+            <li> Start time   : ' . $record->getSchedule->start_time . '</li>
+            <li>End time ' . $record->getSchedule->end_time . '</li>
+        </ul>';
+
+            // Render edit button
             $editButton = view('admin.layout.defaultComponent.editButton', [
                 'editUrl' => route('time-sheet.edit', $record->id)
             ])->render();
 
+            // Populate response data
             $response['data'][] = [
                 $record->id,
-                $record->employee->name,
                 $time,
+                $record->employee->name,
+                $record->check_in_time,
+                $record->check_out_time,
+                $record->notes,
             ];
         }
+
+        // Calculate total hours
+        $response['totalHours'] = floor($total_minutes / 60) . ':' . ($total_minutes % 60);
+
         return response($response);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -155,13 +182,12 @@ class TimeSheetController extends Controller
         $data->user_id = $request->user()['id'];
         $data->schedule_id = $record->id;
         $data->location_id = $record->location_id;
-        $data->employee_id = $record->employee_id;
+        $data->employee_id = $request->employee_id;
         $data->check_in_time = $request->check_in;
         $data->check_out_time = $request->check_out;
         $data->notes = $request->notes;
         $data->save();
-
-        return redirect()->route('time-sheet.index')->with('msg', 'Time-Sheet Successfully!');
+        return true;
 
     }
 

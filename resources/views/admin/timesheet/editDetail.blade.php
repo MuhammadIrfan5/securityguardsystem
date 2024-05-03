@@ -16,7 +16,7 @@
         <div class="card-body">
             <h5 class="card-title">Employee list</h5>
             <!-- Table with stripped rows -->
-            <table id="dataTable" class="table cell-border display compact">
+            <table id="dataTable1" class="table cell-border compact">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -88,35 +88,27 @@
             <div class="card">
                 <div class="card-body">
                     <div id="dataTableUpdates_wrapper" class="dataTables_wrapper no-footer">
-                        <div id="dataTableUpdates_processing" class="dataTables_processing" role="status"
-                             style="display: none;">
-                            <div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <table id="dataTableUpdates" class="table cell-border display compact dataTable no-footer"
-                               width="100%" style="width: 100%;">
+                        <table id="dataTable" class="table cell-border display compact">
                             <thead>
                             <tr>
-                                <th scope="col" class="sorting_disabled" rowspan="1" colspan="1" style="width: 239px;">
-                                    From
-                                </th>
-                                <th scope="col" class="sorting_disabled" rowspan="1" colspan="1" style="width: 299px;">
-                                    Update
-                                </th>
-                                <th scope="col" class="sorting_disabled" rowspan="1" colspan="1" style="width: 396px;">
-                                    Created At
-                                </th>
+                                <th>ID</th>
+                                <th>Schedule Employee</th>
+                                <th>Present Employee</th>
+                                <th>Check IN</th>
+                                <th>Check OUT</th>
+                                <th>Notes</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr class="odd">
-                                <td valign="top" colspan="3" class="dataTables_empty">No matching records found</td>
+                            <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th colspan="1" id="totalHoursFooter">Total Hours: </th>
                             </tr>
-                            </tbody>
+                            </tfoot>
                         </table>
                     </div>
                     <!-- End Transaction Datatable-->
@@ -134,7 +126,7 @@
                 <form id="addUpdates" method="post">
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" name="contest_id" id="contest_id" value=""/>
+                            <input type="hidden" name="id" id="schedule_id" value=""/>
                             <table width="520" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td colspan="3" align="center" id="error_show" style="color:red;">
@@ -174,7 +166,7 @@
                                     <td width="200" align="center" height="50"> Notes</td>
                                     <td width="10">:</td>
                                     <td width="170" align="left">
-                                        <textarea class="form-control" style="height: 100px" name="message"></textarea>
+                                        <textarea class="form-control" style="height: 100px" name="notes"></textarea>
                                         <br/>
                                     </td>
                                 </tr>
@@ -183,7 +175,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="submitAddonation()">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
