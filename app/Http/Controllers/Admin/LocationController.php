@@ -47,32 +47,6 @@ class LocationController extends Controller
             $country = $country->orWhere("name", "like", "%" . $request->search["value"] . "%");
         }
         $response["recordsFiltered"] = $country->count();
-        /*ordering*/
-//        $order = $request["order"][0]["column"]??0;
-//        $orderDir = $request["order"][0]["dir"]??"desc";
-//        switch ($order) {
-//            case '0':
-//                $loans = $loans->orderBy('id', $orderDir);
-//                break;
-//            case '1':
-//                $loans = $loans->orderBy('booker_id', $orderDir);
-//                break;
-//            case '2':
-//                $loans = $loans->orderBy('start_date', $orderDir);
-//                break;
-//            case '3':
-//                $loans = $loans->orderBy('end_date', $orderDir);
-//                break;
-//            case '4':
-//                $loans = $loans->orderBy('target', $orderDir);
-//                break;
-//            case '5':
-//                $loans = $loans->orderBy('achieved', $orderDir);
-//                break;
-//            case '5':
-//                $loans = $loans->orderBy('created_at', $orderDir);
-//                break;
-//        }
         if ($request->user()['role_id'] != 1) {
             $country = $country->where('user_id', $request->user()['id']);
         }
@@ -250,7 +224,67 @@ class LocationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+//        dd($request->all());
+        $request->validate([
+            'name'            => 'nullable',
+            'address'         => 'nullable',
+            'timezone_id'     => 'nullable',
+            'user_id'         => 'nullable|not_in:0',
+            'locationType_id' => 'nullable',
+        ]);
+
+        $start_time = array_filter($request->start_time);
+        $start_time = array_values($start_time);
+        $end_time = array_filter($request->end_time);
+        $end_time = array_values($end_time);
+        foreach (\request()->days as $key => $day) {
+            $schedules[] = [
+                'day'        => $day,
+                'start_time' => $start_time[$key],
+                'end_time'   => $end_time[$key],
+            ];
+        }
+        $data = Location::find($id);
+        $data->name = $request->name;
+        $data->address = $request->address;
+        $data->timezone_id = $request->timezone_id;
+        $data->license_number = $request->license_number;
+        $data->timezone = TimeZone::find($request->timezone_id)['timezone'];
+        $data->coverage_start_time = date('h:i:s', strtotime($request->coverage_start_time));
+        $data->coverage_end_time = date('h:i:s', strtotime($request->coverage_end_time));
+        $data->location_type = $request->locationType_id;
+        $data->location_sub_type = '';
+        $data->schedule_list = json_encode($schedules);
+        $data->save();
+
+//        $clientLocation = array();
+//        $count = 0;
+//        foreach ($request->client as $key => $item) {
+//            if (count($request->client['client_name']) >= $count + 1) {
+//                $clientLocation[] = [
+//                    'location_id'        => $data->id,
+//                    'client_name'        => $request->client['client_name'][$count],
+//                    'client_designation' => $request->client['client_designation'][$count],
+//                    'client_email'       => $request->client['client_email'][$count],
+//                    'client_phone'       => $request->client['client_phone'][$count]
+//                ];
+//            }
+//            $count++;
+//        }
+//        dd($request->client,$clientLocation);
+//        ClientLocation::insert($clientLocation);
+
+        if (!empty($request->monitor['number_of_camera'])) {
+            MonitorLocation::create([
+                'location_id'         => $data->id,
+                'number_of_camera'    => $request->monitor['number_of_camera'],
+                'camera_tower_number' => $request->monitor['camera_tower_number'],
+                'nvr'                 => $request->monitor['nvr'],
+            ]);
+            $data->is_monitoring = 1;
+            $data->update();
+        }
+        return redirect()->route('location.index')->with('msg', 'Location updated Successfully!');
     }
 
     /**

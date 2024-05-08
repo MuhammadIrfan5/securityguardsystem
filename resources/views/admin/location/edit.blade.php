@@ -57,7 +57,7 @@
                                 id="state_id">
                             <option disabled selected>Time Zone list</option>
                             @foreach($timeZone as $user)
-                                <option value="{{ $user->id }}">{{$user->timezone}}</option>
+                                <option value="{{ $user->id }}" {{$user->id==$data->timezone_id?'selected':''  }}>{{$user->timezone}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -66,9 +66,8 @@
                     <div class="form-floating">
                         <select name="locationType_id" class="form-select"
                                 id="state_id" required>
-                            <option disabled selected>Location Type list</option>
                             @foreach($locationType as $user)
-                                <option value="{{ $user['id'] }}">{{$user['type']}}</option>
+                                <option value="{{ $user['id'] }}"{{$data->locationType_id==$user['id']?'selected':''}}>{{$user['type']}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -107,90 +106,89 @@
                     </div>
 
                 </div>
-
                 {{--client detail--}}
-                <div class="col-md-12">
-                    <h4 class="form-check-label" for="clientDetails">
-                        <u> Add Client Details</u>
-                    </h4>
+{{--                <div class="col-md-12">--}}
+{{--                    <h4 class="form-check-label" for="clientDetails">--}}
+{{--                        <u> Add Client Details</u>--}}
+{{--                    </h4>--}}
 
-                    {{--                    <div class="form-check">--}}
-                    {{--                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"--}}
-                    {{--                               id="clientDetails"--}}
-                    {{--                               onclick="showbox(this)">--}}
+{{--                    --}}{{--                    <div class="form-check">--}}
+{{--                    --}}{{--                        <input class="form-check-input" value="creditcard" type="checkbox" name="payment_mode"--}}
+{{--                    --}}{{--                               id="clientDetails"--}}
+{{--                    --}}{{--                               onclick="showbox(this)">--}}
 
-                    {{--                    </div>--}}
-                </div>
+{{--                    --}}{{--                    </div>--}}
+{{--                </div>--}}
 
-                <div id="client-details-container">
-                    <div class="client-details">
-                        <div class="col-md-12">
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" name="client[client_name][]"
-                                           id="client_name"
-                                    >
-                                    <label for="client_name"> Client Name </label>
-                                    @error('client_name')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" name="client[client_designation][]"
-                                           id="client_designation"
-                                    >
-                                    <label for="client_designation"> Client Designation </label>
-                                    @error('client_designation')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" name="client[client_email][]"
-                                           id="client_email"
-                                    >
-                                    <label for="client_email"> Client Email </label>
-                                    @error('client_email')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" name="client[client_phone][]"
-                                           id="client_phone"
-                                    >
-                                    <label for="client_phone"> Client Phone </label>
-                                    @error('client_phone')
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-end">
-                            <button type="button"  class="btn btn-danger delete-client " >X</button>
-                        </div>
+{{--                <div id="client-details-container">--}}
+{{--                    <div class="client-details">--}}
+{{--                        <div class="col-md-12">--}}
+{{--                        </div>--}}
+{{--                        <div class="row g-3">--}}
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="form-floating">--}}
+{{--                                    <input type="text" class="form-control" name="client[client_name][]"--}}
+{{--                                           id="client_name"--}}
+{{--                                    >--}}
+{{--                                    <label for="client_name"> Client Name </label>--}}
+{{--                                    @error('client_name')--}}
+{{--                                    <div class="alert alert-danger" role="alert">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </div>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="form-floating">--}}
+{{--                                    <input type="text" class="form-control" name="client[client_designation][]"--}}
+{{--                                           id="client_designation"--}}
+{{--                                    >--}}
+{{--                                    <label for="client_designation"> Client Designation </label>--}}
+{{--                                    @error('client_designation')--}}
+{{--                                    <div class="alert alert-danger" role="alert">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </div>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="form-floating">--}}
+{{--                                    <input type="email" class="form-control" name="client[client_email][]"--}}
+{{--                                           id="client_email"--}}
+{{--                                    >--}}
+{{--                                    <label for="client_email"> Client Email </label>--}}
+{{--                                    @error('client_email')--}}
+{{--                                    <div class="alert alert-danger" role="alert">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </div>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-6">--}}
+{{--                                <div class="form-floating">--}}
+{{--                                    <input type="text" class="form-control" name="client[client_phone][]"--}}
+{{--                                           id="client_phone"--}}
+{{--                                    >--}}
+{{--                                    <label for="client_phone"> Client Phone </label>--}}
+{{--                                    @error('client_phone')--}}
+{{--                                    <div class="alert alert-danger" role="alert">--}}
+{{--                                        {{ $message }}--}}
+{{--                                    </div>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-12 text-end">--}}
+{{--                            <button type="button"  class="btn btn-danger delete-client " >X</button>--}}
+{{--                        </div>--}}
 
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" id="add-client">Add Client</button>
-                </div>
-                <div class="col-md-12">
-                </div>
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="col-md-12">--}}
+{{--                    <button type="button" class="btn btn-primary" id="add-client">Add Client</button>--}}
+{{--                </div>--}}
+{{--                <div class="col-md-12">--}}
+{{--                </div>--}}
 
 
                 {{--License Number--}}
@@ -297,4 +295,7 @@
         </div>
     </div>
 
+@endsection
+@section('page-js')
+    @include('admin.location.editJs')
 @endsection
