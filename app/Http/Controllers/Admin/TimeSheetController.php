@@ -113,6 +113,7 @@ class TimeSheetController extends Controller
             ->get();
 
         foreach ($records as $record) {
+            if(!empty($record->check_out_time)){
             $start_datetime = Carbon::createFromFormat('H:i', $record->check_in_time);
             $end_datetime = Carbon::createFromFormat('H:i', $record->check_out_time);
 
@@ -120,7 +121,7 @@ class TimeSheetController extends Controller
 
             // Add the difference in minutes to the total
             $total_minutes += $difference->format('%i') + ($difference->format('%h') * 60);
-
+            }
             // Build time HTML
             $time = '<ul>
             <li>' . $record->getSchedule->employee->name . '</li>
@@ -141,6 +142,10 @@ class TimeSheetController extends Controller
                 $record->check_in_time,
                 $record->check_out_time,
                 $record->notes,
+                view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => url('edit-verify-record?id='. $record->id)
+                ])->render()
+
             ];
         }
 
@@ -213,10 +218,16 @@ class TimeSheetController extends Controller
         return view('admin.timesheet.editDetail', $data);
 
     }
+    public function editVerifyRecord(Request $request)
+    {
+        $data['title'] = 'Time Sheet';
+        $data['data'] = TimeSheet::find($request->id);
+        $data['employee'] = Employee::all();
+        $data['locations'] = Location::all();
 
-    /**
-     * Update the specified resource in storage.
-     */
+        return view('admin.timesheet.editVerifyRecord', $data);
+
+    }
     public function update(Request $request, string $id)
     {
         $data = TimeSheet::find($id);
@@ -233,6 +244,28 @@ class TimeSheetController extends Controller
             $data->update();
         }
         return redirect()->route('time-sheet.index')->with('msg', 'Assign Job Updated Successfully!');
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateVerifyRecord(Request $request)
+    {
+        $data = TimeSheet::find($request->id);
+        if (!empty($data)) {
+            if (!empty($request->check_in)) {
+                $data->check_in_time = $request->check_in;
+            }
+            if (!empty($request->check_out)) {
+                $data->check_out_time = $request->check_out;
+            }
+            if (!empty($request->notes)) {
+                $data->notes = $request->notes;
+            }
+            $data->update();
+        }
+        return redirect()->route('time-sheet.edit',$data->location_id)->with('msg', 'Time Sheet Updated Successfully!');
     }
 
     /**

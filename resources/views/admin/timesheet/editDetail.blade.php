@@ -97,10 +97,12 @@
                                 <th>Check IN</th>
                                 <th>Check OUT</th>
                                 <th>Notes</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -159,7 +161,7 @@
                                     <td width="10">:</td>
                                     <td width="170" align="left">
                                         <input type="time" class="form-control" id="floatingName" placeholder="Check-Out"
-                                               name="check_out" value="" required>
+                                               name="check_out" value="">
                                         <br/>
                                     </td>
                                 </tr>

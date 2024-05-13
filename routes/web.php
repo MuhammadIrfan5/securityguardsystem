@@ -105,6 +105,8 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::get('updated-time-sheet-list', [TimeSheetController::class, 'updatedtableData'])->name('updated.time.sheet.tableData');
 
     Route::get('time-sheet-create', [TimeSheetController::class, 'create'])->name('time.sheet.create');
+    Route::get('edit-verify-record', [TimeSheetController::class, 'editVerifyRecord'])->name('edit.verify.record');
+    Route::post('update-verify-record', [TimeSheetController::class, 'updateVerifyRecord'])->name('update.verify.record');
 
     /*Confirmation Call*/
     Route::resource('confirmation-call', ConfirmationCallController::class);
