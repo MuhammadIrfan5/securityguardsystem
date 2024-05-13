@@ -100,6 +100,7 @@ class ConfirmationCallController extends Controller
         $data->employee_id = $request->employee_id;
         $data->status      = $request->status;
         $data->notes       = $request->notes;
+        $data->call_time       = $request->call_time;
         $data->save();
 
         return redirect()->route('confirmation-call.index')->with('msg', 'Confirmation call updated Successfully!');

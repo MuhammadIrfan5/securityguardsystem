@@ -142,6 +142,7 @@ class CalendarController extends Controller
     {
         $data      = array();
         $employees = Schedule::where('location_id', $request->locationId)
+            ->where('employee_id','!=','')
             ->whereDate('start_date', '>=', date('Y-m-d'))
             ->whereDate('end_date', '<=', date('Y-m-d', strtotime('tomorrow')))
             ->get();

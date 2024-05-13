@@ -40,14 +40,16 @@
                         <select name="employee_id" class="form-select"
                                 id="employee_id">
                             <option disabled selected>Employee list</option>
-                            {{--                            @foreach($employee as $user)--}}
-                            {{--                                <option value="{{ $user->id }}">{{$user->name}}</option>--}}
-                            {{--                            @endforeach--}}
                         </select>
                     </div>
                 </div>
                 <input type="hidden" name="schedule_id" id="schedule_id" value="">
-
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" id="floatingTIME" placeholder="Call Time" name="call_time">
+                        <label for="floatingTIME">Calling Time</label>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-floating">
                         <select name="status" class="form-select"
