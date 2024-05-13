@@ -64,6 +64,7 @@ class ConfirmationCallController extends Controller
                 )->render(),
                 $record->employee->name,
                 $time,
+                $record->user->first_name.' : ' .$record->call_time,
                 $record->notes ?? '',
                 view('admin.layout.defaultComponent.approved', [ "boolean" =>  $record->status=='approved'?true:false ])->render(),
                 $button,

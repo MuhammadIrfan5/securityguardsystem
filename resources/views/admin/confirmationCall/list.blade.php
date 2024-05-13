@@ -38,6 +38,7 @@
                                 <th>Location</th>
                                 <th>Employee</th>
                                 <th>Attendance</th>
+                                <th>Call Time</th>
                                 <th>Notes</th>
                                 <th>Status</th>
                                 <th>Actions</th>
