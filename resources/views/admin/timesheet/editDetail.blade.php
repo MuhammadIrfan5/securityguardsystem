@@ -64,7 +64,9 @@
                             <?php
                             $start_datetime = DateTime::createFromFormat('H:i', $item->start_time);
                             $end_datetime = DateTime::createFromFormat('H:i', $item->end_time);
-
+                            if ($end_datetime < $start_datetime) {
+                                $end_datetime->add(new DateInterval('P1D')); // Add one day to the end time
+                            }
                             $difference = $start_datetime->diff($end_datetime);
 
                             // Add the difference in minutes to the total
