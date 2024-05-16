@@ -6,7 +6,7 @@
 
     function loadDraftInModal(data) {
         $('#schedule_id').val(data.value);
-
+        var employeeId=$(data).data('id');
         $('#employee_id').empty();
         let location = $('#location_id').val();
         var employee = $('#employee_id');
@@ -19,7 +19,13 @@
             },
             success: function (result) {
                 $.each(result, function (index, value) {
-                    employee.append('<option value ="' + value.id + '">' + value.name + '</option>');
+
+                    if(value.id==employeeId){
+                        employee.append('<option value ="' + value.id + '" selected>' + value.name + '</option>');
+                    }
+                    else {
+                        employee.append('<option value ="' + value.id + '">' + value.name + '</option>');
+                    }
                 });
             },
             error: function (error) {
@@ -74,11 +80,5 @@
             }
         }
     });
-
-
-    function Callback(data)
-    {
-        alert(data);
-    }
 
 </script>

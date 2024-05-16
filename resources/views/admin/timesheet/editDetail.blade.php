@@ -57,6 +57,7 @@
                                 <button
                                         onclick="loadDraftInModal(this)"
                                         value="{{$item->id}}"
+                                        data-id="{{$item->employee_id}}"
                                         type="button" class="btn btn-success btn-sm"
                                         data-bs-toggle="modal" data-bs-target="#basicModal">
                                     <i class="bi bi-plus"></i>
