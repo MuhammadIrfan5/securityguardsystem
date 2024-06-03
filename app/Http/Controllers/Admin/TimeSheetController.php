@@ -33,6 +33,7 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
+        if(!empty(request()->input('start_time'))){
         $records = new Location();
 
         /*Search function*/
@@ -46,9 +47,25 @@ class TimeSheetController extends Controller
         $records = $records->orderBy('id', 'ASC')
             ->skip($request->start)->take($request->length)
             ->get();
+
         foreach ($records as $record) {
-            $schedules = Schedule::where('location_id', $record->id)->whereDate('start_date', '>=', Carbon::today())
-                ->whereDate('end_date', '<=', Carbon::tomorrow())->get();
+            $schedules = new Schedule();
+            $schedules = $schedules->where('location_id', $record->id)->whereDate('start_date', '>=', Carbon::today())
+                ->whereDate('end_date', '<=', Carbon::tomorrow());
+                if(!empty(request()->input('start_time')) && request()->input('end_time')){
+                    $startTime=request()->input('start_time');
+                    $endTime=request()->input('end_time');
+                    $schedules = $schedules->where(function ($query) use ($startTime, $endTime) {
+                        $query->whereTime('start_time', '>=', $startTime)
+                            ->whereTime('start_time', '<=', $endTime);
+                    })
+                        ->orWhere(function ($query) use ($startTime, $endTime) {
+                            $query->whereTime('end_time', '>=', $startTime)
+                                ->whereTime('end_time', '<=', $endTime);
+                        });
+                }
+
+            $schedules = $schedules->get();
             $time = '';
             foreach ($schedules as $schedule) {
                 if (!empty($schedule->employee)) {
@@ -80,6 +97,7 @@ class TimeSheetController extends Controller
                 $time,
                 count($schedules) > 0 ? $editButton : ''
             ];
+        }
         }
         return response($response);
     }
