@@ -33,71 +33,73 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        if(!empty(request()->input('start_time'))){
-        $records = new Location();
+        if (!empty(request()->input('start_time'))) {
+            $records = new Location();
 
-        /*Search function*/
-        if (!empty($request->search["value"])) {
-            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
-            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
-        }
-        $response["recordsTotal"] = $records->count();
-        $response["recordsFiltered"] = $records->count();
+            $response["recordsTotal"] = $records->count();
+            $response["recordsFiltered"] = $records->count();
 
-        $records = $records->orderBy('id', 'ASC')
-            ->skip($request->start)->take($request->length)
-            ->get();
+            $records = $records->orderBy('id', 'ASC')
+                ->skip($request->start)->take($request->length)
+                ->get();
+            $startTime = request()->input('start_time');
+            $endTime = request()->input('end_time');
 
-        foreach ($records as $record) {
-            $schedules = new Schedule();
-            $schedules = $schedules->where('location_id', $record->id)->whereDate('start_date', '>=', Carbon::today())
-                ->whereDate('end_date', '<=', Carbon::tomorrow());
-                if(!empty(request()->input('start_time')) && request()->input('end_time')){
-                    $startTime=request()->input('start_time');
-                    $endTime=request()->input('end_time');
-                    $schedules = $schedules->where(function ($query) use ($startTime, $endTime) {
-                        $query->whereTime('start_time', '>=', $startTime)
+            foreach ($records as $record) {
+                $id=$record->id;
+                $schedules = new Schedule();
+                if (!empty(request()->input('start_time')) && request()->input('end_time')) {
+                    $schedules = $schedules->whereDate('start_date', '>=', Carbon::today())
+                        ->whereDate('end_date', '<=', Carbon::tomorrow())->where(function ($query) use ($startTime, $endTime,$id) {
+                        $query->where('location_id', $id)->whereTime('start_time', '>=', $startTime)
                             ->whereTime('start_time', '<=', $endTime);
                     })
-                        ->orWhere(function ($query) use ($startTime, $endTime) {
-                            $query->whereTime('end_time', '>=', $startTime)
+                        ->orWhere(function ($query) use ($startTime,$id, $endTime) {
+                            $query->where('location_id', $id)->whereTime('end_time', '>=', $startTime)
                                 ->whereTime('end_time', '<=', $endTime);
                         });
                 }
 
-            $schedules = $schedules->get();
-            $time = '';
-            foreach ($schedules as $schedule) {
-                if (!empty($schedule->employee)) {
-                    $time .= '<ul>
-                    <li>' . $schedule->employee->name . ' : ' . $schedule->start_time . '</li>
-                    <li>' . $schedule->employee->name . ' : ' . $schedule->end_time . '</li>
+                $schedules = $schedules->get();
+                $time = '';
+                $number = '';
+                $matchType = '';
+                $times = '';
+                if ($schedules->count()) {
+                    foreach ($schedules as $schedule) {
+                        if (!empty($schedule->employee)) {
+                            if ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) {
+                                $matchType = 'IN';
+                                $times = $schedule->employee->name;
+                                $number=$schedule->employee->phone_one;
+                            } elseif ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime) {
+                                $matchType = 'OUT';
+                                $times = $schedule->employee->name;
+                                $number=$schedule->employee->phone_one;
+                            }
+                        }
+                        $time .= '<ul>
+                    <li>' . $matchType . ': ' . $times . '  /  '.$number.'</li>
                 </ul>';
-                } else {
-                    $time .= '<ul>
-                    <li>Check-In:</li>
-                    <li>Check-Out:</li>
-                </ul>';
+                    }
+                    $editButton = view('admin.layout.defaultComponent.editButton', [
+                        'editUrl' => route('time-sheet.edit', $record->id)
+                    ])->render();
+
+                    $response['data'][] = [
+                        $record->id,
+                        view('admin.layout.defaultComponent.linkDetail',
+                            [
+                                'is_location' => 1,
+                                "url"         => route('location.show', $record->id),
+                                "username"    => $record->name
+                            ]
+                        )->render(),
+                        $time,
+                        count($schedules) > 0 ? $editButton : ''
+                    ];
                 }
             }
-
-            $editButton = view('admin.layout.defaultComponent.editButton', [
-                'editUrl' => route('time-sheet.edit', $record->id)
-            ])->render();
-
-            $response['data'][] = [
-                $record->id,
-                view('admin.layout.defaultComponent.linkDetail',
-                    [
-                        'is_location' => 1,
-                        "url"         => route('location.show', $record->id),
-                        "username"    => $record->name
-                    ]
-                )->render(),
-                $time,
-                count($schedules) > 0 ? $editButton : ''
-            ];
-        }
         }
         return response($response);
     }
@@ -131,14 +133,14 @@ class TimeSheetController extends Controller
             ->get();
 
         foreach ($records as $record) {
-            if(!empty($record->check_out_time)){
-            $start_datetime = Carbon::createFromFormat('H:i', $record->check_in_time);
-            $end_datetime = Carbon::createFromFormat('H:i', $record->check_out_time);
+            if (!empty($record->check_out_time)) {
+                $start_datetime = Carbon::createFromFormat('H:i', $record->check_in_time);
+                $end_datetime = Carbon::createFromFormat('H:i', $record->check_out_time);
 
-            $difference = $start_datetime->diff($end_datetime);
+                $difference = $start_datetime->diff($end_datetime);
 
-            // Add the difference in minutes to the total
-            $total_minutes += $difference->format('%i') + ($difference->format('%h') * 60);
+                // Add the difference in minutes to the total
+                $total_minutes += $difference->format('%i') + ($difference->format('%h') * 60);
             }
             // Build time HTML
             $time = '<ul>
@@ -161,7 +163,7 @@ class TimeSheetController extends Controller
                 $record->check_out_time,
                 $record->notes,
                 view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => url('edit-verify-record?id='. $record->id)
+                    'editUrl' => url('edit-verify-record?id=' . $record->id)
                 ])->render()
 
             ];
@@ -236,6 +238,7 @@ class TimeSheetController extends Controller
         return view('admin.timesheet.editDetail', $data);
 
     }
+
     public function editVerifyRecord(Request $request)
     {
         $data['title'] = 'Time Sheet';
@@ -246,6 +249,7 @@ class TimeSheetController extends Controller
         return view('admin.timesheet.editVerifyRecord', $data);
 
     }
+
     public function update(Request $request, string $id)
     {
         $data = TimeSheet::find($id);
@@ -283,7 +287,7 @@ class TimeSheetController extends Controller
             }
             $data->update();
         }
-        return redirect()->route('time-sheet.edit',$data->location_id)->with('msg', 'Time Sheet Updated Successfully!');
+        return redirect()->route('time-sheet.edit', $data->location_id)->with('msg', 'Time Sheet Updated Successfully!');
     }
 
     /**

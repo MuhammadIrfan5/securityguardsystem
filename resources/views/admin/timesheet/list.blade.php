@@ -38,7 +38,7 @@
                                         <input type="time" id="start_time" name="start_time"
                                                class="form-control-sm"
                                                value="">
-                                        <input type="time" id="end_time" name="start_time"
+                                        <input type="time" id="end_time" name="end_time"
                                                class="form-control-sm"
                                                value="">
 
