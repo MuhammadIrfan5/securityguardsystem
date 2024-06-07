@@ -61,6 +61,9 @@ class TimeSheetController extends Controller
                 $number = '';
                 $matchType = '';
                 $times = '';
+                $timeSheet = '';
+                $timesheetTime = '';
+                $timesheetNotes = '';
                 if ($schedules->count()) {
                     foreach ($schedules as $schedule) {
                         if (!empty($schedule->employee)) {
@@ -75,7 +78,14 @@ class TimeSheetController extends Controller
                                     ' . $schedule->employee->name . '
                 </button>';
                                 $number = $schedule->employee->phone_one;
-                            } elseif ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime) {
+                                $obj=TimeSheet::where('schedule_id',$schedule->id)->first();
+                                if($obj){
+                                    $timesheetTime=$obj->check_out_time;
+                                    $timesheetNotes=$obj->notes;
+                                }
+                            }
+                            elseif ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime)
+                            {
                                 $matchType = 'OUT';
                                 $times = '<button
                                         onclick="loadDraftInModal(this)"
@@ -86,13 +96,22 @@ class TimeSheetController extends Controller
                                     ' . $schedule->employee->name . '
                 </button>';
                                 $number = $schedule->employee->phone_one;
+                                $obj=TimeSheet::where('schedule_id',$schedule->id)->first();
+                                if($obj){
+                                    $timesheetTime=$obj->check_out_time;
+                                    $timesheetNotes=$obj->notes;
+                                }
+
                             }
-                        }
-                        $time .= '<ul>
+                            $time .= '<ul>
                     <li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li>
                 </ul>
                 <td>';
-
+                            $timeSheet .= '<ul>
+                    <li>' . $timesheetTime .' / '.$timesheetNotes. '</li>
+                </ul>
+                <td>';
+                        }
                     }
 
                     $response['data'][] = [
@@ -105,7 +124,7 @@ class TimeSheetController extends Controller
                             ]
                         )->render(),
                         $time,
-                        ''
+                        $timeSheet
                     ];
                 }
             }
