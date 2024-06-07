@@ -88,6 +88,76 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="basicModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Time Sheet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUpdates" method="post">
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" name="id" id="schedule_id" value=""/>
+                                <table width="520" border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3" align="center" id="error_show" style="color:red;">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="200" align="center" height="50">Employee list</td>
+                                        <td width="">:</td>
+                                        <td width="170" align="center">
+                                            <select name="employee_id" id="employee_id" class="form-control">
+                                                <option value=""></option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td width="200" align="center" height="50"> Check In</td>
+                                        <td width="10">:</td>
+                                        <td width="170" align="left">
+                                            <input type="time" class="form-control" id="floatingName"
+                                                   placeholder="Check-In"
+                                                   name="check_in" value="" required>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="200" align="center" height="50"> Check Out</td>
+                                        <td width="10">:</td>
+                                        <td width="170" align="left">
+                                            <input type="time" class="form-control" id="floatingName"
+                                                   placeholder="Check-Out"
+                                                   name="check_out" value="">
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="200" align="center" height="50"> Notes</td>
+                                        <td width="10">:</td>
+                                        <td width="170" align="left">
+                                            <textarea class="form-control" style="height: 100px"
+                                                      name="notes"></textarea>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- End Basic Modal-->
+
 @endsection
 @section('page-js')
     @include('admin.timesheet.pageJs')

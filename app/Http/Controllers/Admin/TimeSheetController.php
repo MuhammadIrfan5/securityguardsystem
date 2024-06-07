@@ -46,21 +46,17 @@ class TimeSheetController extends Controller
             $endTime = request()->input('end_time');
 
             foreach ($records as $record) {
-                $id=$record->id;
                 $schedules = new Schedule();
                 if (!empty(request()->input('start_time')) && request()->input('end_time')) {
-                    $schedules = $schedules->whereDate('start_date', '>=', Carbon::today())
-                        ->whereDate('end_date', '<=', Carbon::tomorrow())->where(function ($query) use ($startTime, $endTime,$id) {
-                        $query->where('location_id', $id)->whereTime('start_time', '>=', $startTime)
-                            ->whereTime('start_time', '<=', $endTime);
-                    })
-                        ->orWhere(function ($query) use ($startTime,$id, $endTime) {
-                            $query->where('location_id', $id)->whereTime('end_time', '>=', $startTime)
-                                ->whereTime('end_time', '<=', $endTime);
-                        });
+                    $schedules = $schedules->where('location_id', $record->id)
+                        ->whereDate('start_date', '>=', Carbon::today())
+                        ->whereDate('end_date', '<=', Carbon::tomorrow())
+                        ->where(function($query) use ($startTime, $endTime) {
+                            $query->whereBetween('start_time', [$startTime, $endTime])
+                                ->orWhereBetween('end_time', [$startTime, $endTime]);
+                        })
+                        ->get();
                 }
-
-                $schedules = $schedules->get();
                 $time = '';
                 $number = '';
                 $matchType = '';
@@ -70,21 +66,34 @@ class TimeSheetController extends Controller
                         if (!empty($schedule->employee)) {
                             if ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) {
                                 $matchType = 'IN';
-                                $times = $schedule->employee->name;
-                                $number=$schedule->employee->phone_one;
+                                $times = '<button
+                                        onclick="loadDraftInModal(this)"
+                                        value="' . $schedule->id . '"
+                                        data-id="' . $schedule->employee_id . '"
+                                        type="button" class="btn btn-success btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#basicModal">
+                                    ' . $schedule->employee->name . '
+                </button>';
+                                $number = $schedule->employee->phone_one;
                             } elseif ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime) {
                                 $matchType = 'OUT';
-                                $times = $schedule->employee->name;
-                                $number=$schedule->employee->phone_one;
+                                $times = '<button
+                                        onclick="loadDraftInModal(this)"
+                                        value="' . $schedule->id . '"
+                                        data-id="' . $schedule->employee_id . '"
+                                        type="button" class="btn btn-success btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#basicModal">
+                                    ' . $schedule->employee->name . '
+                </button>';
+                                $number = $schedule->employee->phone_one;
                             }
                         }
                         $time .= '<ul>
-                    <li>' . $matchType . ': ' . $times . '  /  '.$number.'</li>
-                </ul>';
+                    <li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li>
+                </ul>
+                <td>';
+
                     }
-                    $editButton = view('admin.layout.defaultComponent.editButton', [
-                        'editUrl' => route('time-sheet.edit', $record->id)
-                    ])->render();
 
                     $response['data'][] = [
                         $record->id,
@@ -96,7 +105,7 @@ class TimeSheetController extends Controller
                             ]
                         )->render(),
                         $time,
-                        count($schedules) > 0 ? $editButton : ''
+                        ''
                     ];
                 }
             }
