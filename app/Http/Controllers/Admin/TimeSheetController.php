@@ -181,7 +181,7 @@ class TimeSheetController extends Controller
                                     '</button>';
                             } else {
                                 $times =
-                                    '<button onclick="loadDraftInModal1(this)" value="' . $schedule->id . '" 
+                                    '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" 
                                 data-id="' . $schedule->employee_id . '" type="button" 
                                 class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal2">'
                                     . $schedule->employee->name .
@@ -314,6 +314,7 @@ class TimeSheetController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'id' => 'required',
             'check_in' => 'required',
