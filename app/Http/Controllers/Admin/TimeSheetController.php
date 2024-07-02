@@ -136,10 +136,10 @@ class TimeSheetController extends Controller
     public function tableData(Request $request)
     {
         $response = [
-            "draw"            => $request->draw,
-            "recordsTotal"    => 0,
+            "draw" => $request->draw,
+            "recordsTotal" => 0,
             "recordsFiltered" => 0,
-            "data"            => [],
+            "data" => [],
         ];
 
         if (!empty($request->input('start_time')) && !empty($request->input('end_time'))) {
@@ -162,7 +162,7 @@ class TimeSheetController extends Controller
                 $schedules = Schedule::where('location_id', $record->id)
                     ->whereDate('start_date', '>=', Carbon::today())
                     ->whereDate('end_date', '<=', Carbon::tomorrow())
-                    ->where(function($query) use ($startTime, $endTime) {
+                    ->where(function ($query) use ($startTime, $endTime) {
                         $query->whereBetween('start_time', [$startTime, $endTime])
                             ->orWhereBetween('end_time', [$startTime, $endTime]);
                     })
@@ -172,9 +172,21 @@ class TimeSheetController extends Controller
                     foreach ($schedules as $schedule) {
                         if (!empty($schedule->employee)) {
                             $matchType = ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) ? 'IN' : 'OUT';
-
-                            $times = '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" data-id="' . $schedule->employee_id . '" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">' . $schedule->employee->name . '</button>';
-
+                            if ($matchType == 'IN') {
+                                $times =
+                                    '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" 
+                                data-id="' . $schedule->employee_id . '" type="button" 
+                                class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal1">'
+                                    . $schedule->employee->name .
+                                    '</button>';
+                            } else {
+                                $times =
+                                    '<button onclick="loadDraftInModal1(this)" value="' . $schedule->id . '" 
+                                data-id="' . $schedule->employee_id . '" type="button" 
+                                class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal2">'
+                                    . $schedule->employee->name .
+                                    '</button>';
+                            }
                             $number = $schedule->employee->phone_one;
 
                             $time .= '<ul><li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li></ul>';
@@ -213,15 +225,13 @@ class TimeSheetController extends Controller
     }
 
 
-
-
     public function updatedtableData(Request $request)
     {
         $response = [
-            "draw"            => $request->draw,
-            "recordsTotal"    => 0,
+            "draw" => $request->draw,
+            "recordsTotal" => 0,
             "recordsFiltered" => 0,
-            "data"            => [],
+            "data" => [],
         ];
 
         // Initialize total minutes
@@ -305,10 +315,10 @@ class TimeSheetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id'        => 'required',
-            'check_in'  => 'required',
+            'id' => 'required',
+            'check_in' => 'required',
             'check_out' => 'nullable',
-            'notes'     => 'nullable',
+            'notes' => 'nullable',
         ]);
 
         /*GET EMPLOYEE*/
@@ -423,7 +433,7 @@ class TimeSheetController extends Controller
         if (count($employee) > 0) {
             foreach ($employee as $item) {
                 $list[] = [
-                    'id'   => $item->employee->id,
+                    'id' => $item->employee->id,
                     'name' => $item->employee->name,
                 ];
             }
@@ -446,7 +456,7 @@ class TimeSheetController extends Controller
         if (count($employee) > 0) {
             foreach ($employee as $item) {
                 $list[] = [
-                    'id'   => $item->id,
+                    'id' => $item->id,
                     'name' => $item->name,
                 ];
             }
