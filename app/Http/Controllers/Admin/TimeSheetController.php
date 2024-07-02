@@ -25,6 +25,114 @@ class TimeSheetController extends Controller
         return view('admin.timesheet.list', $data);
     }
 
+//    public function tableData(Request $request)
+//    {
+//        $response = [
+//            "draw"            => $request->draw,
+//            "recordsTotal"    => 0,
+//            "recordsFiltered" => 0,
+//            "data"            => [],
+//        ];
+//        if (!empty(request()->input('start_time'))) {
+//            $records = new Location();
+//
+//            $response["recordsTotal"] = $records->count();
+//            $response["recordsFiltered"] = $records->count();
+//
+//            $records = $records->orderBy('id', 'ASC')
+//                ->skip($request->start)->take($request->length)
+//                ->get();
+//            $startTime = request()->input('start_time');
+//            $endTime = request()->input('end_time');
+//
+//            foreach ($records as $record) {
+//                $time = '';
+//                $number = '';
+//                $matchType = '';
+//                $times = '';
+//                $timeSheet = '';
+//                $timesheetTime = '';
+//                $timesheetNotes = '';
+//
+//
+//                $schedules = new Schedule();
+//                if (!empty(request()->input('start_time')) && request()->input('end_time')) {
+//                    $schedules = $schedules->where('location_id', $record->id)
+//                        ->whereDate('start_date', '>=', Carbon::today())
+//                        ->whereDate('end_date', '<=', Carbon::tomorrow())
+//                        ->where(function($query) use ($startTime, $endTime) {
+//                            $query->whereBetween('start_time', [$startTime, $endTime])
+//                                ->orWhereBetween('end_time', [$startTime, $endTime]);
+//                        })
+//                        ->get();
+//                }
+//                if ($schedules->count()) {
+//                    foreach ($schedules as $schedule) {
+//                        if (!empty($schedule->employee)) {
+//                            if ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) {
+//                                $matchType = 'IN';
+//                                $times = '<button
+//                                        onclick="loadDraftInModal(this)"
+//                                        value="' . $schedule->id . '"
+//                                        data-id="' . $schedule->employee_id . '"
+//                                        type="button" class="btn btn-success btn-sm"
+//                                        data-bs-toggle="modal" data-bs-target="#basicModal">
+//                                    ' . $schedule->employee->name . '
+//                </button>';
+//                                $number = $schedule->employee->phone_one;
+//                                $obj=TimeSheet::where('schedule_id',$schedule->id)->first();
+//                                if($obj){
+//                                    $timesheetTime=$obj->check_out_time;
+//                                    $timesheetNotes=$obj->notes;
+//                                    $timeSheet.= '<ul>
+//                    <li>' . $timesheetTime .' / '.$timesheetNotes. '</li>
+//                </ul>
+//                <td>';
+//                                }
+//                            }
+//                            elseif ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime)
+//                            {
+//                                $matchType = 'OUT';
+//                                $times = '<button
+//                                        onclick="loadDraftInModal(this)"
+//                                        value="' . $schedule->id . '"
+//                                        data-id="' . $schedule->employee_id . '"
+//                                        type="button" class="btn btn-success btn-sm"
+//                                        data-bs-toggle="modal" data-bs-target="#basicModal">
+//                                    ' . $schedule->employee->name . '
+//                </button>';
+//                                $number = $schedule->employee->phone_one;
+//                                $obj=TimeSheet::where('schedule_id',$schedule->id)->first();
+//                                if($obj){
+//                                    $timesheetTime=$obj->check_out_time;
+//                                    $timesheetNotes=$obj->notes;
+//                                }
+//
+//                            }
+//                            $time .= '<ul>
+//                    <li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li>
+//                </ul>
+//                <td>';
+//                        }
+//                    }
+//                    $response['data'][] = [
+//                        $record->id,
+//                        view('admin.layout.defaultComponent.linkDetail',
+//                            [
+//                                'is_location' => 1,
+//                                "url"         => route('location.show', $record->id),
+//                                "username"    => $record->name
+//                            ]
+//                        )->render(),
+//                        $time,
+//                        $timeSheet
+//                    ];
+//                }
+//            }
+//        }
+//        return response($response);
+//    }
+
     public function tableData(Request $request)
     {
         $response = [
@@ -33,104 +141,79 @@ class TimeSheetController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        if (!empty(request()->input('start_time'))) {
-            $records = new Location();
+
+        if (!empty($request->input('start_time')) && !empty($request->input('end_time'))) {
+            $startTime = $request->input('start_time');
+            $endTime = $request->input('end_time');
+
+            $records = Location::orderBy('id', 'ASC')
+                ->skip($request->start)
+                ->take($request->length)
+                ->get();
 
             $response["recordsTotal"] = $records->count();
             $response["recordsFiltered"] = $records->count();
 
-            $records = $records->orderBy('id', 'ASC')
-                ->skip($request->start)->take($request->length)
-                ->get();
-            $startTime = request()->input('start_time');
-            $endTime = request()->input('end_time');
-
             foreach ($records as $record) {
-                $schedules = new Schedule();
-                if (!empty(request()->input('start_time')) && request()->input('end_time')) {
-                    $schedules = $schedules->where('location_id', $record->id)
-                        ->whereDate('start_date', '>=', Carbon::today())
-                        ->whereDate('end_date', '<=', Carbon::tomorrow())
-                        ->where(function($query) use ($startTime, $endTime) {
-                            $query->whereBetween('start_time', [$startTime, $endTime])
-                                ->orWhereBetween('end_time', [$startTime, $endTime]);
-                        })
-                        ->get();
-                }
                 $time = '';
-                $number = '';
-                $matchType = '';
-                $times = '';
                 $timeSheet = '';
-                $timesheetTime = '';
-                $timesheetNotes = '';
+                $timeSheetComment = '';
+
+                $schedules = Schedule::where('location_id', $record->id)
+                    ->whereDate('start_date', '>=', Carbon::today())
+                    ->whereDate('end_date', '<=', Carbon::tomorrow())
+                    ->where(function($query) use ($startTime, $endTime) {
+                        $query->whereBetween('start_time', [$startTime, $endTime])
+                            ->orWhereBetween('end_time', [$startTime, $endTime]);
+                    })
+                    ->get();
+
                 if ($schedules->count()) {
                     foreach ($schedules as $schedule) {
                         if (!empty($schedule->employee)) {
-                            if ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) {
-                                $matchType = 'IN';
-                                $times = '<button
-                                        onclick="loadDraftInModal(this)"
-                                        value="' . $schedule->id . '"
-                                        data-id="' . $schedule->employee_id . '"
-                                        type="button" class="btn btn-success btn-sm"
-                                        data-bs-toggle="modal" data-bs-target="#basicModal">
-                                    ' . $schedule->employee->name . '
-                </button>';
-                                $number = $schedule->employee->phone_one;
-                                $obj=TimeSheet::where('schedule_id',$schedule->id)->first();
-                                if($obj){
-                                    $timesheetTime=$obj->check_out_time;
-                                    $timesheetNotes=$obj->notes;
-                                }
-                            }
-                            elseif ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime)
-                            {
-                                $matchType = 'OUT';
-                                $times = '<button
-                                        onclick="loadDraftInModal(this)"
-                                        value="' . $schedule->id . '"
-                                        data-id="' . $schedule->employee_id . '"
-                                        type="button" class="btn btn-success btn-sm"
-                                        data-bs-toggle="modal" data-bs-target="#basicModal">
-                                    ' . $schedule->employee->name . '
-                </button>';
-                                $number = $schedule->employee->phone_one;
-                                $obj=TimeSheet::where('schedule_id',$schedule->id)->first();
-                                if($obj){
-                                    $timesheetTime=$obj->check_out_time;
-                                    $timesheetNotes=$obj->notes;
-                                }
+                            $matchType = ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) ? 'IN' : 'OUT';
 
+                            $times = '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" data-id="' . $schedule->employee_id . '" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">' . $schedule->employee->name . '</button>';
+
+                            $number = $schedule->employee->phone_one;
+
+                            $time .= '<ul><li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li></ul>';
+
+                            $obj = TimeSheet::where('schedule_id', $schedule->id)->first();
+
+                            if ($obj) {
+                                $timesheetTime = $matchType == 'IN' ? $obj->check_in_time : $obj->check_out_time;
+                                $timesheetNotes = $obj->notes;
+
+                                $timeSheet .= '<ul><li>' . $matchType . ': ' . $timesheetTime
+                                    .
+//                                    '  /  ' . $number .
+                                    '</li></ul>';
+                                $timeSheetComment .= '<ul><li>' . $timesheetNotes . '</li></ul>';
                             }
-                            $time .= '<ul>
-                    <li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li>
-                </ul>
-                <td>';
-                            $timeSheet .= '<ul>
-                    <li>' . $timesheetTime .' / '.$timesheetNotes. '</li>
-                </ul>
-                <td>';
                         }
                     }
 
                     $response['data'][] = [
                         $record->id,
-                        view('admin.layout.defaultComponent.linkDetail',
-                            [
-                                'is_location' => 1,
-                                "url"         => route('location.show', $record->id),
-                                "username"    => $record->name
-                            ]
-                        )->render(),
+                        view('admin.layout.defaultComponent.linkDetail', [
+                            'is_location' => 1,
+                            'url' => route('location.show', $record->id),
+                            'username' => $record->name
+                        ])->render(),
                         $time,
-                        $timeSheet
+                        $timeSheet,
+                        $timeSheetComment,
                     ];
                 }
             }
         }
-        return response($response);
+
+        return response()->json($response);
     }
+
+
+
 
     public function updatedtableData(Request $request)
     {

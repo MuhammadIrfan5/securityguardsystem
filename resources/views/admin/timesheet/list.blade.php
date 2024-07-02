@@ -78,7 +78,8 @@
                                 <th>ID</th>
                                 <th>Location</th>
                                 <th>Attendance</th>
-                                <th>Actions</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                         </table>
