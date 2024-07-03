@@ -30,13 +30,11 @@
     })
 
     function loadDraftInModal(data) {
-        console.log(data.value)
-        $('#schedule_id1').val(data.value);
-
+        $('#schedule_id').val(data.value);
         var employeeId=$(data).data('id');
-        $('.employee_id').empty();
+        $('#employee_id').empty();
         let location = $('#location_id').val();
-        var employee = $('.employee_id');
+        var employee = $('#employee_id');
         employee.empty();
         $.ajax({
             url: "{{url('get-employee-By-locationId')}}",
@@ -61,37 +59,43 @@
         });
 
     }
+    function loadDraftInModal1(data) {
 
-    $('#addUpdates').submit(function (e) {
-        e.preventDefault();
-
-        $('#basicModal').modal('hide');
-
-        var formData = $(this).serialize();
-        var form = $(this);
+        $('.schedule_id').val(data.value);
+        var employeeId=$(data).data('id');
+        $('#employee_id').empty();
+        let location = $('#location_id').val();
+        var employee = $('#employee_id1');
+        employee.empty();
         $.ajax({
-            type: 'POST',
-            url: '{{ route("time-sheet.store") }}',
-            data: formData,
-            success: function (response) {
-                // Handle success response
-                table.ajax.reload();
-                form.trigger("reset");
+            url: "{{url('get-employee-By-locationId')}}",
+            type: 'GET',
+            data: {
+                location_id: location,
             },
-            error: function (xhr, status, error) {
-                // Handle error response
-                console.error(xhr.responseText);
+            success: function (result) {
+                $.each(result, function (index, value) {
+
+                    if(value.id==employeeId){
+                        employee.append('<option value ="' + value.id + '" selected>' + value.name + '</option>');
+                    }
+                    else {
+                        employee.append('<option value ="' + value.id + '">' + value.name + '</option>');
+                    }
+                });
+            },
+            error: function (error) {
+                console.log(error.status)
             }
         });
-    });
 
+    }
     $('#addUpdates1').submit(function (e) {
         e.preventDefault();
 
-        $('#basicModal').modal('hide');
+        $('#basicModal1').modal('hide');
 
         var formData = $(this).serialize();
-        console.log(formData)
         var form = $(this);
         $.ajax({
             type: 'POST',
@@ -108,4 +112,54 @@
             }
         });
     });
+    $('#addUpdates').submit(function (e) {
+        e.preventDefault();
+
+        $('#basicModal1').modal('hide');
+
+        var formData = $(this).serialize();
+        var form = $(this);
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("time-sheet.store") }}',
+            data: formData,
+            success: function (response) {
+                // Handle success response
+                table.ajax.reload();
+                form.trigger("reset");
+
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.error(xhr.responseText);
+            }
+        });
+    });
+    $('#addUpdates1').submit(function (e) {
+        e.preventDefault();
+
+        $('#basicModal2').modal('hide');
+
+        var formData = $(this).serialize();
+        var form = $(this);
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("time-sheet.store") }}',
+            data: formData,
+            success: function (response) {
+                // Handle success response
+                table.ajax.reload();
+                form.trigger("reset");
+
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.error(xhr.responseText);
+            }
+        });
+    });
+    $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    })
+
 </script>
