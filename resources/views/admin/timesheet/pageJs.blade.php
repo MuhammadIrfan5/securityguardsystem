@@ -60,7 +60,8 @@
 
     }
     function loadDraftInModal1(data) {
-        $('#schedule_id').val(data.value);
+
+        $('.schedule_id').val(data.value);
         var employeeId=$(data).data('id');
         $('#employee_id').empty();
         let location = $('#location_id').val();
@@ -114,7 +115,7 @@
     $('#addUpdates').submit(function (e) {
         e.preventDefault();
 
-        $('#basicModal').modal('hide');
+        $('#basicModal1').modal('hide');
 
         var formData = $(this).serialize();
         var form = $(this);
@@ -126,6 +127,7 @@
                 // Handle success response
                 table.ajax.reload();
                 form.trigger("reset");
+
             },
             error: function (xhr, status, error) {
                 // Handle error response
@@ -133,28 +135,34 @@
             }
         });
     });
-    {{--let locationId = $('#location_id').val();--}}
-    {{--let table1 = new DataTable('#dataTable', {--}}
-    {{--    responsive: true,--}}
-    {{--    searchable: false,--}}
-    {{--    paging: true,--}}
-    {{--    autoWidth: true,--}}
-    {{--    processing: true,--}}
-    {{--    serverSide: true,--}}
-    {{--    ajax: {--}}
-    {{--        "url": "{{ route('updated.time.sheet.tableData') }}",--}}
-    {{--        "data": function (d) {--}}
-    {{--            // Add location_id to the data being sent--}}
-    {{--            d.location_id = $('#location_id').val();--}}
-    {{--        },--}}
-    {{--        "dataSrc": function (json) {--}}
-    {{--            // Update the footer with the total hours--}}
-    {{--            $('#totalHoursFooter').text('Total Hours: ' + json.totalHours);--}}
+    $('#addUpdates1').submit(function (e) {
+        e.preventDefault();
 
-    {{--            // Return the data for the DataTable to consume--}}
-    {{--            return json.data;--}}
-    {{--        }--}}
-    {{--    }--}}
-    {{--});--}}
+        $('#basicModal2').modal('hide');
+
+        var formData = $(this).serialize();
+        var form = $(this);
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("time-sheet.store") }}',
+            data: formData,
+            success: function (response) {
+                // Handle success response
+                table.ajax.reload();
+                form.trigger("reset");
+
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.error(xhr.responseText);
+            }
+        });
+    });
+    // $(".modal").on("hidden.bs.modal", function(){
+    //     $(".modal-body").html("");
+    // });
+    $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    })
 
 </script>

@@ -100,7 +100,7 @@
                     <form id="addUpdates" method="post">
                         <div class="modal-body">
                             <div class="row">
-                                <input type="hidden" name="id" id="schedule_id" value=""/>
+                                <input type="hidden" name="id" id="schedule_id" class="schedule_id" value=""/>
                                 <table width="520" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td colspan="3" align="center" id="error_show" style="color:red;">
@@ -160,7 +160,7 @@
                     <form id="addUpdates1" method="post">
                         <div class="modal-body">
                             <div class="row">
-                                <input type="hidden" name="id" id="schedule_id" value=""/>
+                                <input type="hidden" name="id" id="schedule_id" class="schedule_id" value=""/>
                                 <table width="520" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td colspan="3" align="center" id="error_show" style="color:red;">
