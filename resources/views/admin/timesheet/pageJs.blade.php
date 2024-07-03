@@ -15,7 +15,6 @@
             "url": "{{route('time.sheet.tableData')}}",
             "data": function (d) {
                 var unindexed_array = $("#filterForm").serializeArray();
-                console.log('here',unindexed_array);
                 $.map(unindexed_array, function (n, i) {
                     d[n['name']] = n['value'];
 // console.log(n['value']);
