@@ -20,19 +20,16 @@
                     </div>
                 @endif
             </div>
-            <div class="col-md-3">
-                    <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
-                        <option value="#" disabled selected>Select location</option>
-                        @foreach($locations as $location)
-                            <option value="{{$location->id}}">{{$location->name}}</option>
-                        @endforeach
-                    </select>
+            <div class="col-md-2">
+                <select id="locationDropdown" class="form-select" onchange="loadCalendarEvents()">
+                    <option value="#" disabled selected>Select location</option>
+                    @foreach($locations as $location)
+                        <option value="{{$location->id}}">{{$location->name}}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col-md-9">
-
-                <div class="container">
-                    <div id='calendar'></div>
-                </div>
+            <div class="col-md-10">
+                <div id='calendar'></div>
             </div>
         </div>
 
