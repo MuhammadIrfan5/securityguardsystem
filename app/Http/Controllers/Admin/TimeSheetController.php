@@ -23,10 +23,11 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
-        Schedule::truncate();
-        TimeSheet::truncate();
+
         ConfirmationCall::truncate();
         Monitoring::truncate();
+        TimeSheet::truncate();
+        Schedule::truncate();
         $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
     }
