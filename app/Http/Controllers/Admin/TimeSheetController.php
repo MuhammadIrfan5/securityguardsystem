@@ -9,6 +9,7 @@ use App\Models\Job;
 use App\Models\Location;
 use App\Models\Monitoring;
 use App\Models\Schedule;
+use App\Models\ScheduleDay;
 use App\Models\TimeSheet;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
-        $s=Schedule::truncate();
-        dd('here',$s);
+        $s=ScheduleDay::truncate();
+        $d=Schedule::truncate();
+        dd('here',$s,$d);
         $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
     }
