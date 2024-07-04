@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ConfirmationCall;
 use App\Models\Employee;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Monitoring;
 use App\Models\Schedule;
 use App\Models\TimeSheet;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +23,10 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
+        Schedule::truncate();
+        TimeSheet::truncate();
+        ConfirmationCall::truncate();
+        Monitoring::truncate();
         $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
     }
