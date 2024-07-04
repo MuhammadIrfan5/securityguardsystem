@@ -24,7 +24,9 @@ class TimeSheetController extends Controller
     public function index()
     {
 
-        ConfirmationCall::truncate();
+        $d=ConfirmationCall::count();
+        dd($d);
+        $d->truncate();
         Monitoring::truncate();
         TimeSheet::truncate();
         Schedule::truncate();
