@@ -35,15 +35,19 @@
                                 <tr >
                                     <td width="21%" style="font-size:14px;  text-indent: 5px;">Please Select Date:</td>
                                     <td width="16%" colspan="2">
+                                        <input type="text" id="daterange" name="daterange" value="" />
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td width="21%" style="font-size:14px;  text-indent: 5px;">Please Select Time:</td>
+                                    <td width="16%" colspan="2">
                                         <input type="time" id="start_time" name="start_time"
                                                class="form-control-sm"
                                                value="">
                                         <input type="time" id="end_time" name="end_time"
                                                class="form-control-sm"
                                                value="">
-
                                     </td>
-
                                 </tr>
                                 <tr>
                                     <td width="21%"></td>

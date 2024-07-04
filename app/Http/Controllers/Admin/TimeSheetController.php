@@ -51,9 +51,12 @@ class TimeSheetController extends Controller
                 $timeSheet = '';
                 $timeSheetComment = '';
 
+                $dates = explode(' - ', $request->daterange);
+                $start = date('Y-m-d', strtotime($dates[0]));
+                $end = date('Y-m-d', strtotime($dates[1]));
+
                 $schedules = Schedule::where('location_id', $record->id)
-                    ->whereDate('start_date', '>=', Carbon::today())
-                    ->whereDate('end_date', '<=', Carbon::tomorrow())
+                    ->whereBetween('start_date', [$start, $end])
                     ->where(function ($query) use ($startTime, $endTime) {
                         $query->whereBetween('start_time', [$startTime, $endTime])
                             ->orWhereBetween('end_time', [$startTime, $endTime]);
@@ -63,37 +66,45 @@ class TimeSheetController extends Controller
                 if ($schedules->count()) {
                     foreach ($schedules as $schedule) {
                         if (!empty($schedule->employee)) {
-                            $matchType = ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) ? 'IN' : 'OUT';
-                            if ($matchType == 'IN') {
-                                $times =
-                                    '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" 
+                            $inTimeButton = '';
+                            $outTimeButton = '';
+
+                            // "IN" time button
+                            if ($schedule->start_time >= $startTime && $schedule->start_time <= $endTime) {
+                                $inTimeButton = '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" 
                                 data-id="' . $schedule->employee_id . '" type="button" 
                                 class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal1">'
-                                    . $schedule->employee->name .
-                                    '</button>';
-                            } else {
-                                $times =
-                                    '<button onclick="loadDraftInModal1(this)" value="' . $schedule->id . '" 
+                                    . $schedule->employee->name . '</button>';
+                            }
+
+                            // "OUT" time button
+                            if ($schedule->end_time >= $startTime && $schedule->end_time <= $endTime) {
+                                $outTimeButton = '<button onclick="loadDraftInModal1(this)" value="' . $schedule->id . '" 
                                 data-id="' . $schedule->employee_id . '" type="button" 
                                 class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal2">'
-                                    . $schedule->employee->name .
-                                    '</button>';
+                                    . $schedule->employee->name . '</button>';
                             }
+
                             $number = $schedule->employee->phone_one;
 
-                            $time .= '<ul><li>' . $matchType . ': ' . $times . '  /  ' . $number . '</li></ul>';
+                            if ($inTimeButton) {
+                                $time .= '<ul><li>IN: ' . $inTimeButton . '  /  ' . $number . '</li></ul>';
+                            }
+                            if ($outTimeButton) {
+                                $time .= '<ul><li>OUT: ' . $outTimeButton . '  /  ' . $number . '</li></ul>';
+                            }
 
                             $obj = TimeSheet::where('schedule_id', $schedule->id)->first();
 
                             if ($obj) {
-                                $timesheetTime = $matchType == 'IN' ? $obj->check_in_time : $obj->check_out_time;
-                                $timesheetNotes = $obj->notes;
-
-                                $timeSheet .= '<ul><li>' . $matchType . ': ' . $timesheetTime
-                                    .
-//                                    '  /  ' . $number .
-                                    '</li></ul>';
-                                $timeSheetComment .= '<ul><li>' . $timesheetNotes . '</li></ul>';
+                                if ($inTimeButton) {
+                                    $timeSheet .= '<ul><li>IN: ' . $obj->check_in_time . '</li></ul>';
+                                    $timeSheetComment .= '<ul><li>' . $obj->notes . '</li></ul>';
+                                }
+                                if ($outTimeButton) {
+                                    $timeSheet .= '<ul><li>OUT: ' . $obj->check_out_time . '</li></ul>';
+                                    $timeSheetComment .= '<ul><li>' . $obj->notes . '</li></ul>';
+                                }
                             }
                         }
                     }
@@ -115,7 +126,6 @@ class TimeSheetController extends Controller
 
         return response()->json($response);
     }
-
 
     /**
      * Show the form for creating a new resource.
