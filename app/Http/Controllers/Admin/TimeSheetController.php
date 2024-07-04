@@ -23,8 +23,8 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
-        $s=Schedule::count();
-        dd($s);
+        $s=Schedule::truncate();
+        dd('here',$s);
         $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
     }
