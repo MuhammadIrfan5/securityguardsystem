@@ -24,11 +24,9 @@ class TimeSheetController extends Controller
     public function index()
     {
 
-        $d=ConfirmationCall::count();
-        dd($d);
-        $d->truncate();
-        Monitoring::truncate();
-        TimeSheet::truncate();
+        $d=Monitoring::count();
+        $s=TimeSheet::count();
+        dd($d,$s);
         Schedule::truncate();
         $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
