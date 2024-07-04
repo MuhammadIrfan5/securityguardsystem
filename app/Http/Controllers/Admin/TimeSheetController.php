@@ -3,19 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ConfirmationCall;
 use App\Models\Employee;
-use App\Models\Job;
 use App\Models\Location;
-use App\Models\Monitoring;
 use App\Models\Schedule;
-use App\Models\ScheduleDay;
 use App\Models\TimeSheet;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Ramsey\Uuid\Type\Time;
 
 class TimeSheetController extends Controller
 {
@@ -24,9 +17,6 @@ class TimeSheetController extends Controller
      */
     public function index()
     {
-        $s=ScheduleDay::truncate();
-        $d=Schedule::truncate();
-        dd('here',$s,$d);
         $data['title'] = "Verify Records";
         return view('admin.timesheet.list', $data);
     }
