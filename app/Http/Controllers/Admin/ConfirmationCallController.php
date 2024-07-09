@@ -30,7 +30,7 @@ class ConfirmationCallController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $records  = new ConfirmationCall();
+        $records  = new TimeSheet();
 
         /*Search function*/
         if (!empty($request->search["value"])) {
@@ -42,18 +42,23 @@ class ConfirmationCallController extends Controller
 
         $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         foreach ($records as $record) {
-            $item   = TimeSheet::where('schedule_id', $record->schedule_id)->first();
+//            $item   = TimeSheet::where('schedule_id', $record->schedule_id)->first();
             $button = '';
             $time   = '';
-            if (!empty($item)) {
-                $button = \App\Models\UserPrivilege::get_single_privilige(auth()->id(), '/confirmation-call/{confirmation-call}/edit') == true ? view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('confirmation-call.edit', $item->id)
-                ])->render() : '';
-                $time   = '<ul>
-                    <li>Check-In:' . $item->check_in_time . '</li>
-                    <li>Check-Out:' . $item->check_out_time . '</li>
-                </ul>';
-            }
+//            if (!empty($item)) {
+//                $button = \App\Models\UserPrivilege::get_single_privilige(auth()->id(), '/confirmation-call/{confirmation-call}/edit') == true ? view('admin.layout.defaultComponent.editButton', [
+//                    'editUrl' => route('confirmation-call.edit', $item->id)
+//                ])->render() : '';
+//                $time   = '<ul>
+//                    <li>Check-In:' . $item->check_in_time . '</li>
+//                    <li>Check-Out:' . $item->check_out_time . '</li>
+//                </ul>';
+//            }
+            $scheduleList = collect(json_decode($record->location->schedule_list, true));
+
+            $formattedSchedule = $scheduleList->map(function ($schedule) {
+                return $schedule['day'] . ': ' . $schedule['start_time'] . ' - ' . $schedule['end_time'];
+            })->implode('<br>');
             $response['data'][] = [
                 $record->id,
                 view('admin.layout.defaultComponent.linkDetail',
@@ -62,11 +67,16 @@ class ConfirmationCallController extends Controller
                       "username"    => $record->location->name
                     ]
                 )->render(),
+                $record->employee->id_number,
                 $record->employee->name,
-                $time,
-                $record->user->first_name.' : ' .$record->call_time,
-                $record->notes ?? '',
-                view('admin.layout.defaultComponent.approved', [ "boolean" =>  $record->status=='approved'?true:false ])->render(),
+                $formattedSchedule,
+                $record->employee->phone_one,
+                '',
+                '',
+                '',
+                '',
+                '',
+//                view('admin.layout.defaultComponent.approved', [ "boolean" =>  $record->status=='approved'?true:false ])->render(),
                 $button,
             ];
         }

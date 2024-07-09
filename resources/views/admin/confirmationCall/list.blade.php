@@ -35,11 +35,15 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Location</th>
-                                <th>Employee</th>
-                                <th>Attendance</th>
+                                <th>Customer</th>
+                                <th>Guard ID</th>
+                                <th>Guard Name</th>
+                                <th>Timings</th>
+                                <th>Phone</th>
+                                <th>Combat Number</th>
+                                <th>Gate Combo</th>
+                                <th>Post-Phone</th>
                                 <th>Call Time</th>
-                                <th>Notes</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
