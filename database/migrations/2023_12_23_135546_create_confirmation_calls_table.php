@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreignId('schedule_id')->constrained('schedules');
             $table->foreignId('location_id')->constrained('locations');
             $table->foreignId('employee_id')->constrained('employees');
+            $table->string('gate_combo');
             $table->string('call_time');
+            $table->string('post_phone');
             $table->string('status');
             $table->longText('notes');
             $table->timestamps();

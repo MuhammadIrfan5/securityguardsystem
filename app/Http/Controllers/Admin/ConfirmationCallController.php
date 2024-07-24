@@ -30,54 +30,41 @@ class ConfirmationCallController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $records  = new TimeSheet();
+        $records = new TimeSheet();
 
         /*Search function*/
-        if (!empty($request->search["value"])) {
-            $records = $records->where("id", "like", "%" . $request->search["value"] . "%");
-            $records = $records->orWhere("name", "like", "%" . $request->search["value"] . "%");
-        }
-        $response["recordsTotal"]    = $records->count();
+        $records->whereNull('check_out_time');
+        $response["recordsTotal"] = $records->count();
         $response["recordsFiltered"] = $records->count();
 
         $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
+        $today = now()->format('l');
         foreach ($records as $record) {
-//            $item   = TimeSheet::where('schedule_id', $record->schedule_id)->first();
-            $button = '';
-            $time   = '';
-//            if (!empty($item)) {
-//                $button = \App\Models\UserPrivilege::get_single_privilige(auth()->id(), '/confirmation-call/{confirmation-call}/edit') == true ? view('admin.layout.defaultComponent.editButton', [
-//                    'editUrl' => route('confirmation-call.edit', $item->id)
-//                ])->render() : '';
-//                $time   = '<ul>
-//                    <li>Check-In:' . $item->check_in_time . '</li>
-//                    <li>Check-Out:' . $item->check_out_time . '</li>
-//                </ul>';
-//            }
             $scheduleList = collect(json_decode($record->location->schedule_list, true));
-
-            $formattedSchedule = $scheduleList->map(function ($schedule) {
+            $formattedSchedule = $scheduleList->filter(function ($schedule) use ($today) {
+                return $schedule['day'] === $today;
+            })->map(function ($schedule) {
                 return $schedule['day'] . ': ' . $schedule['start_time'] . ' - ' . $schedule['end_time'];
             })->implode('<br>');
             $response['data'][] = [
-                $record->id,
-                view('admin.layout.defaultComponent.linkDetail',
-                    [ 'is_location' => 1,
-                      "url"         => route('location.show', $record->location_id),
-                      "username"    => $record->location->name
+                'id'         => $record->id,
+                'customer'   => view('admin.layout.defaultComponent.linkDetail',
+                    ['is_location' => 1,
+                     "url"         => route('location.show', $record->location_id),
+                     "username"    => $record->location->name
                     ]
                 )->render(),
-                $record->employee->id_number,
-                $record->employee->name,
-                $formattedSchedule,
-                $record->employee->phone_one,
-                '',
-                '',
-                '',
-                '',
-                '',
-//                view('admin.layout.defaultComponent.approved', [ "boolean" =>  $record->status=='approved'?true:false ])->render(),
-                $button,
+                'guard_id'   => $record->employee->id_number,
+                'guard_name' => $record->employee->name,
+                'timings'    => $formattedSchedule,
+                'phone'      => $record->employee->phone_one,
+                'gate_combo' => '',
+                'post_phone' => '',
+                'call_time'  => '',
+                'status'     => $record->status,
+                'edit'       => view('admin.layout.defaultComponent.editButton', [
+                    'editUrl' => route('location.edit', $record->id)
+                ])->render(),
             ];
         }
         return response($response, 201);
@@ -88,7 +75,7 @@ class ConfirmationCallController extends Controller
      */
     public function create()
     {
-        $data['title']    = 'Confirmation Call';
+        $data['title'] = 'Confirmation Call';
         $data['location'] = Location::all();
         return view('admin.confirmationCall.add', $data);
     }
@@ -104,14 +91,14 @@ class ConfirmationCallController extends Controller
             'status'      => 'required|string',
             'notes'       => 'nullable|string',
         ]);
-        $data              = new ConfirmationCall();
-        $data->user_id     = $request->user()['id'];
+        $data = new ConfirmationCall();
+        $data->user_id = $request->user()['id'];
         $data->location_id = $request->location_id;
         $data->schedule_id = $request->schedule_id;
         $data->employee_id = $request->employee_id;
-        $data->status      = $request->status;
-        $data->notes       = $request->notes;
-        $data->call_time       = $request->call_time;
+        $data->status = $request->status;
+        $data->notes = $request->notes;
+        $data->call_time = $request->call_time;
         $data->save();
 
         return redirect()->route('confirmation-call.index')->with('msg', 'Confirmation call updated Successfully!');
@@ -131,7 +118,7 @@ class ConfirmationCallController extends Controller
     public function edit(string $id)
     {
         $data['title'] = 'Confirmation Call';
-        $data['data']  = TimeSheet::find($id);
+        $data['data'] = TimeSheet::find($id);
         return view('admin.confirmationCall.edit', $data);
     }
 

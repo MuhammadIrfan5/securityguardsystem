@@ -40,7 +40,6 @@
                                 <th>Guard Name</th>
                                 <th>Timings</th>
                                 <th>Phone</th>
-                                <th>Combat Number</th>
                                 <th>Gate Combo</th>
                                 <th>Post-Phone</th>
                                 <th>Call Time</th>
