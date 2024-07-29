@@ -229,7 +229,12 @@ class TimeSheetController extends Controller
             }
             if (!empty($request->notes)) {
                 $notes = $data->notes ?? '';
-                $notes .= $request->notes;
+                if (!empty($request->check_in)) {
+                    $notes .= "Check-in Note: " . $request->notes . "\n";
+                }
+                if (!empty($request->check_out)) {
+                    $notes .= "Check-out Note: " . $request->notes . "\n";
+                }
                 $data->notes = $notes;
             }
             $data->update();
