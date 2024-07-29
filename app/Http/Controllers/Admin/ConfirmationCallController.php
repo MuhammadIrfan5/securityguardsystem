@@ -30,6 +30,11 @@ class ConfirmationCallController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
+        $dates = explode(' - ', $request->daterange);
+        $start = date('Y-m-d', strtotime($dates[0]));
+        $end = date('Y-m-d', strtotime($dates[1]));
+
+
         $records = new TimeSheet();
 
         /*Search function*/
@@ -37,7 +42,8 @@ class ConfirmationCallController extends Controller
         $response["recordsTotal"] = $records->count();
         $response["recordsFiltered"] = $records->count();
 
-        $records = $records->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
+        $records = $records->whereBetween('start_date', [$start, $end])
+            ->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
         $today = now()->format('l');
         foreach ($records as $record) {
             $scheduleList = collect(json_decode($record->location->schedule_list, true));
