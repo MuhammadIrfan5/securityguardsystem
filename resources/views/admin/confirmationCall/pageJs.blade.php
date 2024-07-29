@@ -1,5 +1,9 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <script>
     $(document).ready(function() {
@@ -17,7 +21,9 @@
                     $.map(unindexed_array, function (n, i) {
                         d[n['name']] = n['value'];
                     });
+                    d.daterange = $('#daterange').val();
                 }
+
             },
             columns: [
                 { data: 'id' },
@@ -33,7 +39,10 @@
                 { data: 'edit' },
             ]
         });
-
+        $("#filterForm").on("submit", function (e) {
+            e.preventDefault();
+            table.ajax.reload()
+        })
         // Inline editing
         $('#dataTable tbody').on('click', 'td', function () {
             var cell = table.cell(this);
@@ -74,5 +83,11 @@
             // Handle the edit action (e.g., open a modal for editing)
             console.log('Editing row:', data);
         });
+    });
+
+</script>
+<script>
+    $(function() {
+        $('input[name="daterange"]').daterangepicker();
     });
 </script>

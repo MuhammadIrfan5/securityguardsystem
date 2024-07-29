@@ -30,48 +30,49 @@ class ConfirmationCallController extends Controller
             "recordsFiltered" => 0,
             "data"            => [],
         ];
-        $dates = explode(' - ', $request->daterange);
-        $start = date('Y-m-d', strtotime($dates[0]));
-        $end = date('Y-m-d', strtotime($dates[1]));
+        if ($request->daterange) {
+            $dates = explode(' - ', $request->daterange ?? []);
+            $start = date('Y-m-d', strtotime($dates[0]));
+            $end = date('Y-m-d', strtotime($dates[1]));
 
+            $records = new TimeSheet();
 
-        $records = new TimeSheet();
+            /*Search function*/
+            $records->whereNull('check_out_time');
+            $response["recordsTotal"] = $records->count();
+            $response["recordsFiltered"] = $records->count();
 
-        /*Search function*/
-        $records->whereNull('check_out_time');
-        $response["recordsTotal"] = $records->count();
-        $response["recordsFiltered"] = $records->count();
-
-        $records = $records->whereBetween('start_date', [$start, $end])
-            ->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
-        $today = now()->format('l');
-        foreach ($records as $record) {
-            $scheduleList = collect(json_decode($record->location->schedule_list, true));
-            $formattedSchedule = $scheduleList->filter(function ($schedule) use ($today) {
-                return $schedule['day'] === $today;
-            })->map(function ($schedule) {
-                return $schedule['day'] . ': ' . $schedule['start_time'] . ' - ' . $schedule['end_time'];
-            })->implode('<br>');
-            $response['data'][] = [
-                'id'         => $record->id,
-                'customer'   => view('admin.layout.defaultComponent.linkDetail',
-                    ['is_location' => 1,
-                     "url"         => route('location.show', $record->location_id),
-                     "username"    => $record->location->name
-                    ]
-                )->render(),
-                'guard_id'   => $record->employee->id_number,
-                'guard_name' => $record->employee->name,
-                'timings'    => $formattedSchedule,
-                'phone'      => $record->employee->phone_one,
-                'gate_combo' => '',
-                'post_phone' => '',
-                'call_time'  => '',
-                'status'     => $record->status,
-                'edit'       => view('admin.layout.defaultComponent.editButton', [
-                    'editUrl' => route('location.edit', $record->id)
-                ])->render(),
-            ];
+            $records = $records->whereBetween('start_date', [$start, $end])
+                ->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
+            $today = now()->format('l');
+            foreach ($records as $record) {
+                $scheduleList = collect(json_decode($record->location->schedule_list, true));
+                $formattedSchedule = $scheduleList->filter(function ($schedule) use ($today) {
+                    return $schedule['day'] === $today;
+                })->map(function ($schedule) {
+                    return $schedule['day'] . ': ' . $schedule['start_time'] . ' - ' . $schedule['end_time'];
+                })->implode('<br>');
+                $response['data'][] = [
+                    'id'         => $record->id,
+                    'customer'   => view('admin.layout.defaultComponent.linkDetail',
+                        ['is_location' => 1,
+                         "url"         => route('location.show', $record->location_id),
+                         "username"    => $record->location->name
+                        ]
+                    )->render(),
+                    'guard_id'   => $record->employee->id_number,
+                    'guard_name' => $record->employee->name,
+                    'timings'    => $formattedSchedule,
+                    'phone'      => $record->employee->phone_one,
+                    'gate_combo' => '',
+                    'post_phone' => '',
+                    'call_time'  => '',
+                    'status'     => $record->status,
+                    'edit'       => view('admin.layout.defaultComponent.editButton', [
+                        'editUrl' => route('location.edit', $record->id)
+                    ])->render(),
+                ];
+            }
         }
         return response($response, 201);
     }
