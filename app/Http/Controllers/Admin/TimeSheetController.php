@@ -51,7 +51,6 @@ class TimeSheetController extends Controller
                 $dates = explode(' - ', $request->daterange);
                 $start = date('Y-m-d', strtotime($dates[0]));
                 $end = date('Y-m-d', strtotime($dates[1]));
-                dd($start,$end);
                 $schedules = Schedule::where('location_id', $record->id)
                     ->whereBetween('start_date', [$start, $end])
 //                    ->where(function ($query) use ($startTime, $endTime) {
