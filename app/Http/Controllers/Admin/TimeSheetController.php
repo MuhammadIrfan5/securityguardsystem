@@ -30,7 +30,8 @@ class TimeSheetController extends Controller
             "data" => [],
         ];
 
-        if (!empty($request->input('start_time')) && !empty($request->input('end_time'))) {
+//        if (!empty($request->input('start_time')) && !empty($request->input('end_time'))) {
+        if (!empty($request->daterange)) {
             $startTime = $request->input('start_time');
             $endTime = $request->input('end_time');
 
@@ -50,55 +51,49 @@ class TimeSheetController extends Controller
                 $dates = explode(' - ', $request->daterange);
                 $start = date('Y-m-d', strtotime($dates[0]));
                 $end = date('Y-m-d', strtotime($dates[1]));
-
-                $schedules = Schedule::where('location_id', $record->id)->whereNotNull('employee_id')
+                $schedules = Schedule::where('location_id', $record->id)
                     ->whereBetween('start_date', [$start, $end])
 //                    ->where(function ($query) use ($startTime, $endTime) {
-//                        $query->whereRaw("(TIME(start_time) >= ? AND TIME(end_time) <= ?)", [$startTime, $endTime])
-//                            ->orWhereRaw("(TIME(end_time) >= ? AND TIME(end_time) <= ?)", [$startTime, $endTime]);
+//                        $query->whereBetween('start_time', [$startTime, $endTime])
+//                        $query->where('start_time','>=', $startTime)
+//                            ->orWhereBetween('end_time', [$startTime, $endTime])
+//                        ;
 //                    })
                     ->get();
-//                dd($schedules->count());
+
                 if ($schedules->count()) {
                     foreach ($schedules as $schedule) {
                         if (!empty($schedule->employee)) {
                             $inTimeButton = '';
                             $outTimeButton = '';
-                            // Combine date and time for comparison
-                            $scheduleStartDateTime = new \DateTime($schedule->start_date . ' ' . $schedule->start_time);
-                            $scheduleEndDateTime = new \DateTime($schedule->start_date . ' ' . $schedule->end_time);
-                            $filterStartDateTime = new \DateTime($start . ' ' . $startTime);
-                            $filterEndDateTime1 = new \DateTime($start . ' 23:59:59');
-                            $filterEndDateTime2 = new \DateTime($end . ' ' . $endTime);
 
                             // "IN" time button
-                            if (
-                                ($scheduleStartDateTime >= $filterStartDateTime && $scheduleStartDateTime <= $filterEndDateTime1) ||
-                                ($scheduleStartDateTime >= $filterStartDateTime && $scheduleStartDateTime <= $filterEndDateTime2)
+                            if ($schedule->start_time
+//                                >= $startTime && $schedule->start_time <= $endTime
                             ) {
                                 $inTimeButton = '<button onclick="loadDraftInModal(this)" value="' . $schedule->id . '" 
-                    data-id="' . $schedule->employee_id . '" type="button" 
-                    class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal1">'
+                                data-id="' . $schedule->employee_id . '" type="button" 
+                                class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal1">'
                                     . $schedule->employee->name . '</button>';
                             }
 
                             // "OUT" time button
-                            if (
-                                ($scheduleEndDateTime >= $filterStartDateTime && $scheduleEndDateTime <= $filterEndDateTime1) ||
-                                ($scheduleEndDateTime >= $filterStartDateTime && $scheduleEndDateTime <= $filterEndDateTime2)
+                            if ($schedule->end_time
+//                                >= $startTime && $schedule->end_time <= $endTime
                             ) {
                                 $outTimeButton = '<button onclick="loadDraftInModal1(this)" value="' . $schedule->id . '" 
-                    data-id="' . $schedule->employee_id . '" type="button" 
-                    class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal2">'
+                                data-id="' . $schedule->employee_id . '" type="button" 
+                                class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal2">'
                                     . $schedule->employee->name . '</button>';
                             }
+
                             $number = $schedule->employee->phone_one;
 
                             if ($inTimeButton) {
-                                $time .= '<ul><li>IN: ' . $inTimeButton . '  /  ' . $number . '</li></ul>';
+                                $time .= '<ul><li>IN: '.$schedule->start_time . $inTimeButton . '  /  ' . $number . '</li></ul>';
                             }
                             if ($outTimeButton) {
-                                $time .= '<ul><li>OUT: ' . $outTimeButton . '  /  ' . $number . '</li></ul>';
+                                $time .= '<ul><li>OUT: ' .$schedule->end_time.'  /  ' . $outTimeButton . '  /  ' . $number . '</li></ul>';
                             }
 
                             $obj = TimeSheet::where('schedule_id', $schedule->id)->first();
