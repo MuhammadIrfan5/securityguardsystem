@@ -24,10 +24,10 @@ class TimeSheetController extends Controller
     public function tableData(Request $request)
     {
         $response = [
-            "draw" => $request->draw,
-            "recordsTotal" => 0,
+            "draw"            => $request->draw,
+            "recordsTotal"    => 0,
             "recordsFiltered" => 0,
-            "data" => [],
+            "data"            => [],
         ];
 
 //        if (!empty($request->input('start_time')) && !empty($request->input('end_time'))) {
@@ -90,10 +90,10 @@ class TimeSheetController extends Controller
                             $number = $schedule->employee->phone_one;
 
                             if ($inTimeButton) {
-                                $time .= '<ul><li>IN: '.$schedule->start_time . $inTimeButton . '  /  ' . $number . '</li></ul>';
+                                $time .= '<ul><li>IN: ' . $schedule->start_time . $inTimeButton . '  /  ' . $number . '</li></ul>';
                             }
                             if ($outTimeButton) {
-                                $time .= '<ul><li>OUT: ' .$schedule->end_time.'  /  ' . $outTimeButton . '  /  ' . $number . '</li></ul>';
+                                $time .= '<ul><li>OUT: ' . $schedule->end_time . '  /  ' . $outTimeButton . '  /  ' . $number . '</li></ul>';
                             }
 
                             $obj = TimeSheet::where('schedule_id', $schedule->id)->first();
@@ -115,8 +115,8 @@ class TimeSheetController extends Controller
                         $record->id,
                         view('admin.layout.defaultComponent.linkDetail', [
                             'is_location' => 1,
-                            'url' => route('location.show', $record->id),
-                            'username' => $record->name
+                            'url'         => route('location.show', $record->id),
+                            'username'    => $record->name
                         ])->render(),
                         $time,
                         $timeSheet,
@@ -147,10 +147,10 @@ class TimeSheetController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id' => 'required',
-            'check_in' => 'nullable',
+            'id'        => 'required',
+            'check_in'  => 'nullable',
             'check_out' => 'nullable',
-            'notes' => 'nullable',
+            'notes'     => 'nullable',
         ]);
 
         /*GET Schedule*/
@@ -228,7 +228,9 @@ class TimeSheetController extends Controller
                 $data->check_out_time = $request->check_out;
             }
             if (!empty($request->notes)) {
-                $data->notes = $request->notes;
+                $notes = $data->notes ?? '';
+                $notes .= $request->notes;
+                $data->notes = $notes;
             }
             $data->update();
         }
@@ -279,7 +281,7 @@ class TimeSheetController extends Controller
         if (count($employee) > 0) {
             foreach ($employee as $item) {
                 $list[] = [
-                    'id' => $item->employee->id,
+                    'id'   => $item->employee->id,
                     'name' => $item->employee->name,
                 ];
             }
@@ -302,7 +304,7 @@ class TimeSheetController extends Controller
         if (count($employee) > 0) {
             foreach ($employee as $item) {
                 $list[] = [
-                    'id' => $item->id,
+                    'id'   => $item->id,
                     'name' => $item->name,
                 ];
             }
