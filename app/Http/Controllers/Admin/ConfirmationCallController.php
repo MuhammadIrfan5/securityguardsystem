@@ -37,13 +37,13 @@ class ConfirmationCallController extends Controller
 
             $records = new TimeSheet();
 
-            /*Search function*/
-            $records->whereNull('check_out_time');
+            $records = $records->whereNull('check_out_time')
+                ->whereHas('getSchedule',function ($q) use ($start, $end){
+                $q->whereBetween('start_date', [$start, $end]);
+            })->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
             $response["recordsTotal"] = $records->count();
             $response["recordsFiltered"] = $records->count();
 
-            $records = $records->whereBetween('start_date', [$start, $end])
-                ->orderBy('id', 'DESC')->skip($request->start)->take($request->length)->get();
             $today = now()->format('l');
             foreach ($records as $record) {
                 $scheduleList = collect(json_decode($record->location->schedule_list, true));
@@ -68,9 +68,7 @@ class ConfirmationCallController extends Controller
                     'post_phone' => '',
                     'call_time'  => '',
                     'status'     => $record->status,
-                    'edit'       => view('admin.layout.defaultComponent.editButton', [
-                        'editUrl' => route('location.edit', $record->id)
-                    ])->render(),
+                    'note'     => $record->note,
                 ];
             }
         }

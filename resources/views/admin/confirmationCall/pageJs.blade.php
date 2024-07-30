@@ -16,14 +16,13 @@
             serverSide: true,
             ajax: {
                 url: "{{ route('confirmation.call.tableData') }}",
-                data: function (d) {
+                data: function(d) {
                     var unindexed_array = $("#filterForm").serializeArray();
-                    $.map(unindexed_array, function (n, i) {
+                    $.map(unindexed_array, function(n, i) {
                         d[n['name']] = n['value'];
                     });
                     d.daterange = $('#daterange').val();
                 }
-
             },
             columns: [
                 { data: 'id' },
@@ -35,29 +34,44 @@
                 { data: 'gate_combo' },
                 { data: 'post_phone' },
                 { data: 'call_time' },
-                { data: 'status' },
-                { data: 'edit' },
+                {
+                    data: 'status',
+                    render: function(data, type, row) {
+                        var checked = data ? 'checked' : '';
+                        return `
+                        <label class="switch">
+                            <input type="checkbox" ${checked} data-id="${row.id}">
+                            <span class="slider round"></span>
+                        </label>
+                    `;
+                    }
+                },
+                { data: 'note' }
             ]
         });
-        $("#filterForm").on("submit", function (e) {
+
+        $("#filterForm").on("submit", function(e) {
             e.preventDefault();
-            table.ajax.reload()
-        })
-        // Inline editing
-        $('#dataTable tbody').on('click', 'td', function () {
+            table.ajax.reload();
+        });
+
+        // Inline editing for call_time and note
+        $('#dataTable tbody').on('click', 'td', function() {
             var cell = table.cell(this);
-            var cellData = cell.data();
-            if ($(this).find('input').length === 0 && $(this).index() !== 0) { // Exclude the ID field
+            var columnIndex = cell.index().column;
+
+            if ($(this).find('input').length === 0 && (columnIndex === 8 || columnIndex === 10)) { // Only for call_time and note columns
+                var cellData = cell.data();
                 $(this).html('<input type="text" value="' + cellData + '" />');
                 $(this).find('input').focus();
 
-                $(this).find('input').on('blur', function () {
+                $(this).find('input').on('blur', function() {
                     var newValue = $(this).val();
                     cell.data(newValue).draw();
 
                     // Send the update to the server
                     var rowData = table.row($(this).parents('tr')).data();
-                    var columnName = table.column(cell.index().column).header().textContent.toLowerCase().replace(/ /g, '_');
+                    var columnName = columnIndex === 8 ? 'call_time' : 'note';
 
                     $.ajax({
                         url: '/api/guards/' + rowData.id, // Update with your actual endpoint
@@ -77,14 +91,28 @@
             }
         });
 
-        // Handle edit button click
-        $('#dataTable tbody').on('click', 'button.edit-btn', function () {
-            var data = table.row($(this).parents('tr')).data();
-            // Handle the edit action (e.g., open a modal for editing)
-            console.log('Editing row:', data);
+        // Handle status toggle
+        $('#dataTable tbody').on('change', 'input[type="checkbox"]', function() {
+            var isChecked = $(this).is(':checked');
+            var id = $(this).data('id');
+            var newStatus = isChecked ? 1 : 0;
+
+            $.ajax({
+                url: '/api/guards/' + id, // Update with your actual endpoint
+                type: 'PUT',
+                data: {
+                    status: newStatus,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log('Status updated successfully');
+                },
+                error: function() {
+                    console.error('Status update failed');
+                }
+            });
         });
     });
-
 </script>
 <script>
     $(function() {
