@@ -72,7 +72,7 @@ class ConfirmationCallController extends Controller
                     'post_phone' => '',
                     'call_time'  => !empty($confimationCall)?$confimationCall->call_time:"",
                     'status'     => !empty($confimationCall)?$confimationCall->status:"",
-                    'note'       => !empty($confimationCall)?$confimationCall->note:"",
+                    'note'       => !empty($confimationCall)?$confimationCall->notes:"",
                 ];
             }
         }
@@ -118,7 +118,7 @@ class ConfirmationCallController extends Controller
                 $confirmationCall->status = $request->input('status');
             }
             if ($request->has('note')) {
-                $confirmationCall->note = $request->input('note');
+                $confirmationCall->notes = $request->input('note');
             }
         } else {
             $confirmationCall = new ConfirmationCall();
@@ -134,7 +134,7 @@ class ConfirmationCallController extends Controller
                 $confirmationCall->status = $request->input('status');
             }
             if ($request->has('note')) {
-                $confirmationCall->note = $request->input('note');
+                $confirmationCall->notes = $request->input('note');
             }
         }
 
