@@ -62,7 +62,8 @@
 
             if ($(this).find('input').length === 0 && (columnIndex === 8 || columnIndex === 10)) { // Only for call_time and note columns
                 var cellData = cell.data();
-                $(this).html('<input type="text" value="' + cellData + '" />');
+                var inputType = columnIndex === 8 ? 'time' : 'text'; // Set input type based on the column
+                $(this).html('<input type="' + inputType + '" value="' + cellData + '" />');
                 $(this).find('input').focus();
 
                 $(this).find('input').on('blur', function() {
@@ -98,8 +99,8 @@
             var newStatus = isChecked ? 1 : 0;
 
             $.ajax({
-                url: '/api/guards/' + id, // Update with your actual endpoint
-                type: 'PUT',
+                url: '{{route('create.confirmation.record')}}' + id, // Update with your actual endpoint
+                type: 'POST',
                 data: {
                     status: newStatus,
                     _token: '{{ csrf_token() }}'

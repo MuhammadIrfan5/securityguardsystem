@@ -137,4 +137,7 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
     Route::get('/get-state/', [StateController::class, 'getStatesById'])->name('getStatesById');
     Route::get('/get-cities/', [CityController::class, 'getCitiesById'])->name('getCitiesById');
+
+    Route::post('create-confirmation-record', [ConfirmationCallController::class, 'store'])->name('create.confirmation.record');
+
 });

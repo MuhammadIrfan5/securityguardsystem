@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('confirmation_calls', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->foreignId('time_sheet_id')->constrained('time_sheets');
             $table->foreignId('schedule_id')->constrained('schedules');
             $table->foreignId('location_id')->constrained('locations');
             $table->foreignId('employee_id')->constrained('employees');
-            $table->string('gate_combo');
-            $table->string('call_time');
-            $table->string('post_phone');
-            $table->string('status');
-            $table->longText('notes');
+            $table->string('gate_combo')->nullable();
+            $table->string('call_time')->nullable();
+            $table->string('post_phone')->nullable();
+            $table->string('status')->nullable();
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }
