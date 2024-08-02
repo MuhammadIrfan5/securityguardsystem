@@ -52,6 +52,10 @@ class ConfirmationCallController extends Controller
                 })->map(function ($schedule) {
                     return $schedule['day'] . ': ' . $schedule['start_time'] . ' - ' . $schedule['end_time'];
                 })->implode('<br>');
+
+
+                $confimationCall=ConfirmationCall::where('time_sheet_id' , $record->id)->first();
+
                 $response['data'][] = [
                     'id'         => $record->id,
                     'customer'   => view('admin.layout.defaultComponent.linkDetail',
@@ -66,9 +70,9 @@ class ConfirmationCallController extends Controller
                     'phone'      => $record->employee->phone_one,
                     'gate_combo' => '',
                     'post_phone' => '',
-                    'call_time'  => '',
-                    'status'     => $record->status,
-                    'note'       => $record->note,
+                    'call_time'  => !empty($confimationCall)?$confimationCall->call_time:"",
+                    'status'     => !empty($confimationCall)?$confimationCall->status:"",
+                    'note'       => !empty($confimationCall)?$confimationCall->note:"",
                 ];
             }
         }
@@ -88,7 +92,7 @@ class ConfirmationCallController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
         // Validate the incoming request data
         $request->validate([
@@ -98,7 +102,7 @@ class ConfirmationCallController extends Controller
         ]);
 
         // Find the guard record by its ID
-        $guard = TimeSheet::findOrFail($id);
+        $guard = TimeSheet::findOrFail($request->id);
 
         $confirmationCall = ConfirmationCall::where([
             'time_sheet_id' => $guard->id,
@@ -108,33 +112,34 @@ class ConfirmationCallController extends Controller
         ])->first();
         if (!empty($confirmationCall)) {
             if ($request->has('call_time')) {
-                $guard->call_time = $request->input('call_time');
+                $confirmationCall->call_time = $request->input('call_time');
             }
             if ($request->has('status')) {
-                $guard->status = $request->input('status');
+                $confirmationCall->status = $request->input('status');
             }
             if ($request->has('note')) {
-                $guard->note = $request->input('note');
+                $confirmationCall->note = $request->input('note');
             }
         } else {
             $confirmationCall = new ConfirmationCall();
+            $confirmationCall->user_id = $request->user()['id'];
             $confirmationCall->time_sheet_id = $guard->id;
             $confirmationCall->schedule_id = $guard->schedule_id;
             $confirmationCall->location_id = $guard->location_id;
             $confirmationCall->employee_id = $guard->employee_id;
             if ($request->has('call_time')) {
-                $guard->call_time = $request->input('call_time');
+                $confirmationCall->call_time = $request->input('call_time');
             }
             if ($request->has('status')) {
-                $guard->status = $request->input('status');
+                $confirmationCall->status = $request->input('status');
             }
             if ($request->has('note')) {
-                $guard->note = $request->input('note');
+                $confirmationCall->note = $request->input('note');
             }
         }
 
         // Save the changes to the database
-        $guard->save();
+        $confirmationCall->save();
 
         // Return a response
         return response()->json(['message' => 'Data updated successfully']);

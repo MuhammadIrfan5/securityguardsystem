@@ -3,10 +3,11 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        // DataTable initialization
         let table = new DataTable('#dataTable', {
             responsive: true,
             searchable: false,
@@ -16,27 +17,27 @@
             serverSide: true,
             ajax: {
                 url: "{{ route('confirmation.call.tableData') }}",
-                data: function(d) {
+                data: function (d) {
                     var unindexed_array = $("#filterForm").serializeArray();
-                    $.map(unindexed_array, function(n, i) {
+                    $.map(unindexed_array, function (n, i) {
                         d[n['name']] = n['value'];
                     });
                     d.daterange = $('#daterange').val();
                 }
             },
             columns: [
-                { data: 'id' },
-                { data: 'customer' },
-                { data: 'guard_id' },
-                { data: 'guard_name' },
-                { data: 'timings' },
-                { data: 'phone' },
-                { data: 'gate_combo' },
-                { data: 'post_phone' },
-                { data: 'call_time' },
+                {data: 'id'},
+                {data: 'customer'},
+                {data: 'guard_id'},
+                {data: 'guard_name'},
+                {data: 'timings'},
+                {data: 'phone'},
+                {data: 'gate_combo'},
+                {data: 'post_phone'},
+                {data: 'call_time'},
                 {
                     data: 'status',
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         var checked = data ? 'checked' : '';
                         return `
                         <label class="switch">
@@ -46,19 +47,20 @@
                     `;
                     }
                 },
-                { data: 'note' }
+                {data: 'note'}
             ]
         });
 
-        $("#filterForm").on("submit", function(e) {
+        $("#filterForm").on("submit", function (e) {
             e.preventDefault();
             table.ajax.reload();
         });
 
         // Inline editing for call_time and note
-        $('#dataTable tbody').on('click', 'td', function() {
+        $('#dataTable tbody').on('click', 'td', function () {
             var cell = table.cell(this);
             var columnIndex = cell.index().column;
+            var rowData = table.row(cell.index().row).data(); // Ensure rowData is correctly accessed
 
             if ($(this).find('input').length === 0 && (columnIndex === 8 || columnIndex === 10)) { // Only for call_time and note columns
                 var cellData = cell.data();
@@ -66,25 +68,25 @@
                 $(this).html('<input type="' + inputType + '" value="' + cellData + '" />');
                 $(this).find('input').focus();
 
-                $(this).find('input').on('blur', function() {
+                $(this).find('input').on('blur', function () {
                     var newValue = $(this).val();
                     cell.data(newValue).draw();
 
                     // Send the update to the server
-                    var rowData = table.row($(this).parents('tr')).data();
                     var columnName = columnIndex === 8 ? 'call_time' : 'note';
 
                     $.ajax({
-                        url: '/api/guards/' + rowData.id, // Update with your actual endpoint
-                        type: 'PUT',
+                        url: "{{ url('create-confirmation-record/') }}",
+                        type: 'POST',
                         data: {
+                            id: rowData.id,
                             [columnName]: newValue,
                             _token: '{{ csrf_token() }}'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             console.log('Data updated successfully');
                         },
-                        error: function() {
+                        error: function () {
                             console.error('Update failed');
                         }
                     });
@@ -93,30 +95,32 @@
         });
 
         // Handle status toggle
-        $('#dataTable tbody').on('change', 'input[type="checkbox"]', function() {
+        $('#dataTable tbody').on('change', 'input[type="checkbox"]', function () {
             var isChecked = $(this).is(':checked');
             var id = $(this).data('id');
             var newStatus = isChecked ? 1 : 0;
 
             $.ajax({
-                url: '{{route('create.confirmation.record')}}' + id, // Update with your actual endpoint
+                url: "{{ url('create-confirmation-record/') }}",
                 type: 'POST',
                 data: {
+                    id: id,
                     status: newStatus,
                     _token: '{{ csrf_token() }}'
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log('Status updated successfully');
                 },
-                error: function() {
+                error: function () {
                     console.error('Status update failed');
                 }
             });
         });
     });
+
 </script>
 <script>
-    $(function() {
+    $(function () {
         $('input[name="daterange"]').daterangepicker();
     });
 </script>
