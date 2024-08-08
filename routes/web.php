@@ -141,3 +141,12 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
     Route::post('create-confirmation-record', [ConfirmationCallController::class, 'store']);
 
 });
+Route::get('get-git-pullet',function (){
+    $repoDir = base_path(); // Directory of your Laravel project or specify the path
+    chdir($repoDir);
+
+    $command = 'git pull origin main 2>&1'; // Adjust the command if needed
+    $output = shell_exec($command);
+
+    return nl2br($output);
+});
