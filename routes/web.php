@@ -145,10 +145,16 @@ Route::get('get-git-pullet',function (){
     $repoUrl = 'https://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@github.com/MuhammadIrfan5/securityguardsystem.git';
     $branch = 'main';
     $repoDir = base_path(); // Directory of your Laravel project
+
+    // Ensure the directory is marked as safe
+    shell_exec("git config --global --add safe.directory $repoDir");
+
+    // Change to the repository directory
     chdir($repoDir);
 
+    // Execute the git pull command
     $command = "git pull $repoUrl $branch 2>&1";
     $output = shell_exec($command);
 
-    return nl2br($output);
+    return nl2br(e($output)); // Display output with HTML escaping
 });
