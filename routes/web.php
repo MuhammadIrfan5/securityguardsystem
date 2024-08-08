@@ -142,10 +142,12 @@ Route::group(["prefix" => "/", "middleware" => "auth:admin"], function () {
 
 });
 Route::get('get-git-pullet',function (){
-    $repoDir = base_path(); // Directory of your Laravel project or specify the path
+    $repoUrl = 'https://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@github.com/MuhammadIrfan5/securityguardsystem.git';
+    $branch = 'main';
+    $repoDir = base_path(); // Directory of your Laravel project
     chdir($repoDir);
 
-    $command = 'git pull origin main 2>&1'; // Adjust the command if needed
+    $command = "git pull $repoUrl $branch 2>&1";
     $output = shell_exec($command);
 
     return nl2br($output);
