@@ -85,6 +85,7 @@
                         },
                         success: function (response) {
                             console.log('Data updated successfully');
+                            table.ajax.reload();
                         },
                         error: function () {
                             console.error('Update failed');
