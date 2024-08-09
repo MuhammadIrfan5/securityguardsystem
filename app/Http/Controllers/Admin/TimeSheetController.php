@@ -106,7 +106,7 @@ class TimeSheetController extends Controller
                                 if ($outTimeButton) {
 
                                     $timeSheet .= '<ul><li>OUT: ' . $obj->check_out_time . '</li></ul>';
-                                    $timeSheetComment .= '<ul><li>' . $obj->check_out_note ?? "" . '</li></ul>';
+                                    $timeSheetComment .= '<ul><li>' . $obj->check_out_note  . '</li></ul>';
                                 }
                             }
                         }
