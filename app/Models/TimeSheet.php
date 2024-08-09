@@ -15,7 +15,8 @@ class TimeSheet extends Model
         'location_id',
         'check_in_time',
         'check_out_time',
-        'notes',
+        'check_in_note',
+        'check_out_note',
         'is_approved',
     ];
     public function getSchedule(){

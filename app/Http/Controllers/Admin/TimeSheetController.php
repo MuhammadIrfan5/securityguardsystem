@@ -100,16 +100,13 @@ class TimeSheetController extends Controller
 
                             if ($obj) {
                                 if ($inTimeButton) {
-                                    $noteIN = json_decode($obj->notes, true) ?? [];
-
                                     $timeSheet .= '<ul><li>IN: ' . $obj->check_in_time . '</li></ul>';
-                                    $timeSheetComment .= '<ul><li>' . $noteIN['check_in_note'] . '</li></ul>';
+                                    $timeSheetComment .= '<ul><li>' . $obj->check_in_note . '</li></ul>';
                                 }
                                 if ($outTimeButton) {
-                                    $noteIN = json_decode($obj->notes, true) ?? [];
 
                                     $timeSheet .= '<ul><li>OUT: ' . $obj->check_out_time . '</li></ul>';
-                                    $timeSheetComment .= '<ul><li>' . $noteIN['check_out_note'] ?? "" . '</li></ul>';
+                                    $timeSheetComment .= '<ul><li>' . $obj->check_out_note ?? "" . '</li></ul>';
                                 }
                             }
                         }
