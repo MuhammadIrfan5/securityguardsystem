@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->foreignId('location_id')->constrained('locations');
             $table->string('check_in_time')->nullable();
             $table->string('check_out_time')->nullable();
-            $table->longText('notes')->nullable();
+            $table->longText('check_in_note')->nullable();
+            $table->longText('check_out_note')->nullable();
             $table->boolean('is_approved')->default(0);
             $table->timestamps();
         });
