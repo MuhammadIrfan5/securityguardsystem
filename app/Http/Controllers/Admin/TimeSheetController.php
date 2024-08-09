@@ -183,16 +183,11 @@ class TimeSheetController extends Controller
             $data->employee_id = $request->employee_id;
             $data->check_in_time = $request->check_in;
             $data->check_out_time = $request->check_out;
-            if (!empty($request->notes)) {
-                $existingNotes = json_decode($data->notes, true) ?? [];
-                if (!empty($request->check_in)) {
-                    $existingNotes['check_in_note'] = $request->notes;
-                    $existingNotes['check_out_note'] = '';
-                }
-                if (!empty($request->check_out)) {
-                    $existingNotes['check_out_note'] = $request->notes;
-                }
-                $data->notes = json_encode($existingNotes);
+            if (!empty($request->check_in)) {
+                $data->check_in_note = $request->notes;
+            }
+            if (!empty($request->check_out)) {
+                $data->check_out_note = $request->notes;
             }
             $data->save();
         }
