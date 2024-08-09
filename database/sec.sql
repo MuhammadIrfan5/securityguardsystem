@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 09, 2024 at 02:12 PM
+-- Generation Time: Aug 09, 2024 at 02:23 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -109,13 +109,6 @@ CREATE TABLE `confirmation_calls` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `confirmation_calls`
---
-
-INSERT INTO `confirmation_calls` (`id`, `user_id`, `time_sheet_id`, `schedule_id`, `location_id`, `employee_id`, `gate_combo`, `call_time`, `post_phone`, `status`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 11, 500, 1, 2, NULL, '06:28', NULL, NULL, 'hahhahahaha', '2024-08-08 08:27:56', '2024-08-08 08:29:06');
 
 -- --------------------------------------------------------
 
@@ -1951,7 +1944,7 @@ ALTER TABLE `client_locations`
 -- AUTO_INCREMENT for table `confirmation_calls`
 --
 ALTER TABLE `confirmation_calls`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `countries`
