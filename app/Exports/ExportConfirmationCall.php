@@ -11,10 +11,20 @@ class ExportConfirmationCall implements FromCollection, WithHeadings
     /**
      * @return \Illuminate\Support\Collection
      */
+    protected $startDate;
+    protected $endDate;
+
+    public function __construct($startDate, $endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
+
     public function collection()
     {
-        return ConfirmationCall::with(['user','employee']) // Eager load the user relationship
-        ->get()
+        return ConfirmationCall::with(['user','employee','location'])
+            ->whereBetween('created_at', [$this->startDate, $this->endDate])
+            ->get()
             ->map(function ($confirmationCall) {
                 return [
                     'ID'            => $confirmationCall->id,

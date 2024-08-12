@@ -189,6 +189,8 @@ class ConfirmationCallController extends Controller
     }
 
     public function exportConfirmationCall(Request $request){
-        return Excel::download(new ExportConfirmationCall(), 'users.xlsx');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        return Excel::download(new ExportConfirmationCall($startDate,$endDate), 'users.xlsx');
     }
 }
