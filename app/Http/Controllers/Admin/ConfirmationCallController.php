@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportConfirmationCall;
 use App\Http\Controllers\Controller;
 use App\Models\ConfirmationCall;
 use App\Models\Location;
-use App\Models\Schedule;
 use App\Models\TimeSheet;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ConfirmationCallController extends Controller
 {
@@ -187,5 +186,9 @@ class ConfirmationCallController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exportConfirmationCall(Request $request){
+        return Excel::download(new ExportConfirmationCall(), 'users.xlsx');
     }
 }
